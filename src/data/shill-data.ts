@@ -126,6 +126,23 @@ export const categoryPills: CategoryPill[] = [
 // 36 Real Products from Shill
 export const productsData: Product[] = [
   {
+    id: 'shill-perfume-noir',
+    title: 'Parfume Shillstore Noir Eau De Parfum 100ml',
+    category: 'Parfum',
+    price: 149000,
+    formattedPrice: 'Rp 149.000',
+    compareAtPrice: 249000,
+    formattedCompareAtPrice: 'Rp 249.000',
+    discountBadge: 'Sale',
+    images: ['/sites/shillstore/root/images/prod-perfume-shillstore-noir.jpg'],
+    link: '/products/shillstore-noir',
+    rating: 5.0,
+    reviewCount: 189,
+    sizes: ['100ml'],
+    colors: ['Noir Black'],
+    isNew: true
+  },
+  {
     id: 'shill-p-1',
     title: 'Shill T-Shirt Oversize Antelope Black Unisex',
     category: 'Kaos',

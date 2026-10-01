@@ -141,7 +141,7 @@ function CollectionProductCard({
 }) {
   return (
     <div className="group flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300">
-      <div className="relative aspect-3/4 w-full overflow-hidden bg-gray-50">
+      <div className={`relative aspect-3/4 w-full overflow-hidden ${product.category === 'Parfum' ? 'bg-[#121212]' : 'bg-gray-50'}`}>
         {product.discountBadge && (
           <span className="absolute top-2.5 left-2.5 z-10 bg-[#ff1b2d] text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
             {product.discountBadge}
@@ -153,7 +153,7 @@ function CollectionProductCard({
             src={product.images[0]}
             alt={product.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className={product.category === 'Parfum' ? 'object-contain group-hover:scale-105 transition-transform duration-500' : 'object-cover group-hover:scale-105 transition-transform duration-500'}
           />
         </Link>
 

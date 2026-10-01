@@ -27,9 +27,6 @@ export default function ProductDetailPage({
 
 function ProductDetailContent({ handle }: { handle: string }) {
   const { addToCart } = useCart();
-  const [selectedSize, setSelectedSize] = useState('L');
-  const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<'desc' | 'size' | 'shipping'>('desc');
 
   // Find product by matching handle in link or title
   const product: Product = productsData.find(
@@ -53,7 +50,11 @@ function ProductDetailContent({ handle }: { handle: string }) {
     isNew: true,
   };
 
-  const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+  const isPerfume = product.category === 'Parfum';
+  const sizes = product.sizes || (isPerfume ? ['100ml'] : ['S', 'M', 'L', 'XL', 'XXL']);
+  const [selectedSize, setSelectedSize] = useState(sizes[0]);
+  const [quantity, setQuantity] = useState(1);
+  const [activeTab, setActiveTab] = useState<'desc' | 'size' | 'shipping'>('desc');
 
   const relatedProducts = productsData.filter((p) => p.id !== product.id).slice(0, 4);
 
@@ -80,7 +81,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
             {/* Gallery Left */}
             <div className="flex flex-col gap-4">
-              <div className="relative aspect-3/4 w-full rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shadow-xs">
+              <div className={`relative aspect-square md:aspect-3/4 w-full rounded-2xl overflow-hidden border border-gray-100 shadow-xs ${isPerfume ? 'bg-[#121212]' : 'bg-gray-50'}`}>
                 {product.discountBadge && (
                   <span className="absolute top-4 left-4 z-10 bg-[#ff1b2d] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
                     {product.discountBadge}
@@ -91,7 +92,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
                   alt={product.title}
                   fill
                   priority
-                  className="object-cover"
+                  className={isPerfume ? 'object-contain' : 'object-cover'}
                 />
               </div>
             </div>
@@ -139,7 +140,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
                       onClick={() => setActiveTab('size')}
                       className="text-xs text-red-600 hover:underline font-medium"
                     >
-                      Panduan Ukuran
+                      {isPerfume ? 'Fragrance Notes' : 'Panduan Ukuran'}
                     </button>
                   </div>
 
@@ -148,7 +149,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
                       <button
                         key={s}
                         onClick={() => setSelectedSize(s)}
-                        className={`w-12 h-12 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
+                        className={`min-w-12 h-12 px-3 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
                           selectedSize === s
                             ? 'bg-black text-white border-black shadow-xs'
                             : 'bg-white text-gray-800 border-gray-200 hover:border-gray-400'
@@ -227,7 +228,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
                         : 'border-transparent text-gray-400 hover:text-black'
                     }`}
                   >
-                    Size Chart
+                    {isPerfume ? 'Fragrance Notes' : 'Size Chart'}
                   </button>
                   <button
                     onClick={() => setActiveTab('shipping')}
@@ -244,30 +245,68 @@ function ProductDetailContent({ handle }: { handle: string }) {
                 <div className="text-xs text-gray-600 leading-relaxed py-2">
                   {activeTab === 'desc' && (
                     <div className="space-y-2">
-                      <p>
-                        Didesain untuk kenyamanan maksimal dan penampilan kasual yang trendi, produk Shill menggunakan material katun pilihan dengan sirkulasi udara yang baik. Cocok digunakan sehari-hari untuk aktivitas santai maupun hangout.
-                      </p>
-                      <ul className="list-disc pl-4 space-y-1">
-                        <li>Bahan: 100% Katun Premium Combed / Twill Breathable</li>
-                        <li>Jahitan: Standar ekspor rapi dan kuat</li>
-                        <li>Fitting: Regular & Relaxed Fit Unisex</li>
-                      </ul>
+                      {isPerfume ? (
+                        <>
+                          <p>
+                            <strong>Shillstore Noir Eau De Parfum 100ml</strong> dirancang untuk pria dan wanita yang mendambakan wewangian berkarakter bold, percaya diri, dan tak lekang oleh waktu (<em>Bold, Confident, Timeless</em>).
+                          </p>
+                          <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Konsentrasi:</strong> Eau De Parfum (EDP)</li>
+                            <li><strong>Ukuran:</strong> 100 ML</li>
+                            <li><strong>Ketahanan:</strong> 8 - 12 Jam (Long Lasting)</li>
+                            <li><strong>Karakter:</strong> Warm Spicy, Woody, Citrus & Musky</li>
+                          </ul>
+                        </>
+                      ) : (
+                        <>
+                          <p>
+                            Didesain untuk kenyamanan maksimal dan penampilan kasual yang trendi, produk Shill menggunakan material katun pilihan dengan sirkulasi udara yang baik. Cocok digunakan sehari-hari untuk aktivitas santai maupun hangout.
+                          </p>
+                          <ul className="list-disc pl-4 space-y-1">
+                            <li>Bahan: 100% Katun Premium Combed / Twill Breathable</li>
+                            <li>Jahitan: Standar ekspor rapi dan kuat</li>
+                            <li>Fitting: Regular & Relaxed Fit Unisex</li>
+                          </ul>
+                        </>
+                      )}
                     </div>
                   )}
 
                   {activeTab === 'size' && (
                     <div className="space-y-2">
-                      <p>Rekomendasi ukuran berdasarkan tinggi dan berat badan:</p>
-                      <div className="grid grid-cols-4 gap-2 text-center border border-gray-200 p-2 rounded-lg font-mono">
-                        <span className="font-bold">Size</span>
-                        <span className="font-bold">Lebar Dada</span>
-                        <span className="font-bold">Panjang</span>
-                        <span className="font-bold">Pinggang</span>
-                        <span>S</span><span>50 cm</span><span>70 cm</span><span>28-30</span>
-                        <span>M</span><span>52 cm</span><span>72 cm</span><span>31-32</span>
-                        <span>L</span><span>54 cm</span><span>74 cm</span><span>33-34</span>
-                        <span>XL</span><span>56 cm</span><span>76 cm</span><span>35-36</span>
-                      </div>
+                      {isPerfume ? (
+                        <div className="space-y-3">
+                          <p className="font-semibold text-gray-800">Piramida Aroma (Fragrance Notes):</p>
+                          <div className="space-y-2 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <div>
+                              <span className="font-bold text-xs uppercase text-red-600 block">Top Notes:</span>
+                              <span className="text-gray-700">Bergamot, Black Pepper</span>
+                            </div>
+                            <div>
+                              <span className="font-bold text-xs uppercase text-red-600 block">Middle Notes:</span>
+                              <span className="text-gray-700">Lavender, Cedarwood</span>
+                            </div>
+                            <div>
+                              <span className="font-bold text-xs uppercase text-red-600 block">Base Notes:</span>
+                              <span className="text-gray-700">Amber, Musk</span>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          <p>Rekomendasi ukuran berdasarkan tinggi dan berat badan:</p>
+                          <div className="grid grid-cols-4 gap-2 text-center border border-gray-200 p-2 rounded-lg font-mono">
+                            <span className="font-bold">Size</span>
+                            <span className="font-bold">Lebar Dada</span>
+                            <span className="font-bold">Panjang</span>
+                            <span className="font-bold">Pinggang</span>
+                            <span>S</span><span>50 cm</span><span>70 cm</span><span>28-30</span>
+                            <span>M</span><span>52 cm</span><span>72 cm</span><span>31-32</span>
+                            <span>L</span><span>54 cm</span><span>74 cm</span><span>33-34</span>
+                            <span>XL</span><span>56 cm</span><span>76 cm</span><span>35-36</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
 
