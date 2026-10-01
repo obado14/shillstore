@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { productsData } from '@/data/shill-data';
 import { ModernProductCard } from '@/components/sites/shillstore/root/ModernProductCard';
@@ -9,11 +10,22 @@ export function FeaturedProducts() {
   const { addToCart } = useCart();
   const [activeCategory, setActiveCategory] = useState('Semua');
 
-  const categories = ['Semua', 'Kemeja', 'Kaos', 'Jaket', 'Celana', 'Parfum'];
+  const categories = ['Semua', 'Parfum', 'Jaket', 'Kaos', 'Celana', 'Kemeja'];
+
+  // Curated 15 products for homepage "Semua": exactly 3 Parfum, 3 Jaket, 3 Kaos, 3 Celana, 3 Kemeja
+  const curatedHomeProducts = useMemo(() => {
+    const perfumes = productsData.filter((p) => p.category === 'Parfum').slice(0, 3);
+    const jackets = productsData.filter((p) => p.category === 'Jaket').slice(0, 3);
+    const tshirts = productsData.filter((p) => p.category === 'Kaos').slice(0, 3);
+    const pants = productsData.filter((p) => p.category === 'Celana').slice(0, 3);
+    const shirts = productsData.filter((p) => p.category === 'Kemeja').slice(0, 3);
+
+    return [...perfumes, ...jackets, ...tshirts, ...pants, ...shirts];
+  }, []);
 
   const filteredProducts =
     activeCategory === 'Semua'
-      ? productsData
+      ? curatedHomeProducts
       : productsData.filter((p) => p.category === activeCategory);
 
   return (
@@ -54,6 +66,29 @@ export function FeaturedProducts() {
             <ModernProductCard key={product.id} product={product} onAddToCart={addToCart} />
           ))}
         </div>
+      </div>
+
+      {/* View Full Collection Button */}
+      <div className="mt-12 text-center">
+        <Link
+          href={
+            activeCategory === 'Kemeja'
+              ? '/collections/all-shirt'
+              : activeCategory === 'Kaos'
+              ? '/collections/all-t-shirt'
+              : activeCategory === 'Jaket'
+              ? '/collections/flight-jacket'
+              : activeCategory === 'Celana'
+              ? '/collections/category-pants-chino-pants'
+              : activeCategory === 'Parfum'
+              ? '/collections/perfume'
+              : '/collections'
+          }
+          className="inline-flex items-center gap-2 px-8 py-3.5 bg-black hover:bg-[#ff1b2d] text-white text-xs font-bold uppercase tracking-wider rounded-full transition-all shadow-sm hover:shadow-md cursor-pointer"
+        >
+          <span>Lihat Semua {activeCategory !== 'Semua' ? `Koleksi ${activeCategory}` : 'Produk'}</span>
+          <span>→</span>
+        </Link>
       </div>
     </section>
   );
