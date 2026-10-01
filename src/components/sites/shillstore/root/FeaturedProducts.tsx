@@ -9,7 +9,7 @@ export function FeaturedProducts() {
   const { addToCart } = useCart();
   const [activeCategory, setActiveCategory] = useState('Semua');
 
-  const categories = ['Semua', 'Jaket', 'Kaos', 'Celana', 'Parfum'];
+  const categories = ['Semua', 'Kemeja', 'Kaos', 'Jaket', 'Celana', 'Parfum'];
 
   const filteredProducts =
     activeCategory === 'Semua'

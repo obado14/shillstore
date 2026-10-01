@@ -48,7 +48,7 @@ function CollectionContent({ handle }: { handle: string }) {
     if (h.includes('shirt') || h.includes('kemeja')) return c === 'kemeja' || t.includes('shirt');
     if (h.includes('chino') || h.includes('pants') || h.includes('celana') || h.includes('bawahan')) return c === 'celana';
     if (h.includes('jacket') || h.includes('jaket') || h.includes('parka')) return c === 'jaket';
-    if (h.includes('atasan')) return c === 'kaos' || c === 'jaket';
+    if (h.includes('atasan')) return c === 'kaos' || c === 'jaket' || c === 'kemeja';
     if (h.includes('accessories') || h.includes('aksesoris')) return c === 'aksesoris';
     if (h.includes('perfume') || h.includes('parfum')) return c === 'parfum';
     return true;

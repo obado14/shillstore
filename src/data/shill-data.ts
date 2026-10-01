@@ -932,6 +932,242 @@ export const productsData: Product[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     colors: ['Army Green'],
     isNew: true
+  },
+
+  // Oxford Shirt Lengan Pendek (3 Variants) - Rp159.000
+  {
+    id: 'shill-shirt-oxford-short-white',
+    title: 'Shill Oxford Shirt Lengan Pendek White',
+    category: 'Kemeja',
+    price: 159000,
+    formattedPrice: 'Rp 159.000',
+    compareAtPrice: 249000,
+    formattedCompareAtPrice: 'Rp 249.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-shirt-oxford-short-white.jpg'
+    ],
+    link: '/products/shill-oxford-shirt-lengan-pendek-white',
+    rating: 5.0,
+    reviewCount: 168,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['White'],
+    isNew: true
+  },
+  {
+    id: 'shill-shirt-oxford-short-navy',
+    title: 'Shill Oxford Shirt Lengan Pendek Navy',
+    category: 'Kemeja',
+    price: 159000,
+    formattedPrice: 'Rp 159.000',
+    compareAtPrice: 249000,
+    formattedCompareAtPrice: 'Rp 249.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-shirt-oxford-short-navy.jpg'
+    ],
+    link: '/products/shill-oxford-shirt-lengan-pendek-navy',
+    rating: 4.9,
+    reviewCount: 142,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Navy'],
+    isNew: true
+  },
+  {
+    id: 'shill-shirt-oxford-short-blue',
+    title: 'Shill Oxford Shirt Lengan Pendek Light Blue',
+    category: 'Kemeja',
+    price: 159000,
+    formattedPrice: 'Rp 159.000',
+    compareAtPrice: 249000,
+    formattedCompareAtPrice: 'Rp 249.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-shirt-oxford-short-blue.jpg'
+    ],
+    link: '/products/shill-oxford-shirt-lengan-pendek-light-blue',
+    rating: 5.0,
+    reviewCount: 156,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Light Blue'],
+    isNew: true
+  },
+
+  // Oxford Shirt Lengan Panjang (3 Variants) - Rp189.000
+  {
+    id: 'shill-shirt-oxford-long-white',
+    title: 'Shill Oxford Shirt Lengan Panjang White',
+    category: 'Kemeja',
+    price: 189000,
+    formattedPrice: 'Rp 189.000',
+    compareAtPrice: 289000,
+    formattedCompareAtPrice: 'Rp 289.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-shirt-oxford-long-white.jpg'
+    ],
+    link: '/products/shill-oxford-shirt-lengan-panjang-white',
+    rating: 5.0,
+    reviewCount: 195,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['White'],
+    isNew: true
+  },
+  {
+    id: 'shill-shirt-oxford-long-blue',
+    title: 'Shill Oxford Shirt Lengan Panjang Light Blue',
+    category: 'Kemeja',
+    price: 189000,
+    formattedPrice: 'Rp 189.000',
+    compareAtPrice: 289000,
+    formattedCompareAtPrice: 'Rp 289.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-shirt-oxford-long-blue.jpg'
+    ],
+    link: '/products/shill-oxford-shirt-lengan-panjang-light-blue',
+    rating: 4.9,
+    reviewCount: 178,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Light Blue'],
+    isNew: true
+  },
+  {
+    id: 'shill-shirt-oxford-long-navy',
+    title: 'Shill Oxford Shirt Lengan Panjang Navy',
+    category: 'Kemeja',
+    price: 189000,
+    formattedPrice: 'Rp 189.000',
+    compareAtPrice: 289000,
+    formattedCompareAtPrice: 'Rp 289.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-shirt-oxford-long-navy.jpg'
+    ],
+    link: '/products/shill-oxford-shirt-lengan-panjang-navy',
+    rating: 5.0,
+    reviewCount: 184,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Navy'],
+    isNew: true
+  },
+
+  // Kemeja Lengan Pendek Rayon (3 Variants) - Rp139.000
+  {
+    id: 'shill-shirt-rayon-beige',
+    title: 'Shill Kemeja Lengan Pendek Rayon Cream Beige',
+    category: 'Kemeja',
+    price: 139000,
+    formattedPrice: 'Rp 139.000',
+    compareAtPrice: 219000,
+    formattedCompareAtPrice: 'Rp 219.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-shirt-rayon-beige.jpg'
+    ],
+    link: '/products/shill-kemeja-lengan-pendek-rayon-cream-beige',
+    rating: 5.0,
+    reviewCount: 172,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Cream Beige'],
+    isNew: true
+  },
+  {
+    id: 'shill-shirt-rayon-navy',
+    title: 'Shill Kemeja Lengan Pendek Rayon Navy',
+    category: 'Kemeja',
+    price: 139000,
+    formattedPrice: 'Rp 139.000',
+    compareAtPrice: 219000,
+    formattedCompareAtPrice: 'Rp 219.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-shirt-rayon-navy.jpg'
+    ],
+    link: '/products/shill-kemeja-lengan-pendek-rayon-navy',
+    rating: 4.9,
+    reviewCount: 148,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Navy'],
+    isNew: true
+  },
+  {
+    id: 'shill-shirt-rayon-sage',
+    title: 'Shill Kemeja Lengan Pendek Rayon Sage Green',
+    category: 'Kemeja',
+    price: 139000,
+    formattedPrice: 'Rp 139.000',
+    compareAtPrice: 219000,
+    formattedCompareAtPrice: 'Rp 219.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-shirt-rayon-sage.jpg'
+    ],
+    link: '/products/shill-kemeja-lengan-pendek-rayon-sage-green',
+    rating: 5.0,
+    reviewCount: 164,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Sage Green'],
+    isNew: true
+  },
+
+  // Flannel Shirt Lengan Panjang (3 Variants) - Rp169.000
+  {
+    id: 'shill-shirt-flannel-blackgrey',
+    title: 'Shill Flannel Shirt Lengan Panjang Black Grey',
+    category: 'Kemeja',
+    price: 169000,
+    formattedPrice: 'Rp 169.000',
+    compareAtPrice: 259000,
+    formattedCompareAtPrice: 'Rp 259.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-shirt-flannel-blackgrey.jpg'
+    ],
+    link: '/products/shill-flannel-shirt-lengan-panjang-black-grey',
+    rating: 5.0,
+    reviewCount: 189,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Black Grey'],
+    isNew: true
+  },
+  {
+    id: 'shill-shirt-flannel-brownnavy',
+    title: 'Shill Flannel Shirt Lengan Panjang Brown Navy',
+    category: 'Kemeja',
+    price: 169000,
+    formattedPrice: 'Rp 169.000',
+    compareAtPrice: 259000,
+    formattedCompareAtPrice: 'Rp 259.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-shirt-flannel-brownnavy.jpg'
+    ],
+    link: '/products/shill-flannel-shirt-lengan-panjang-brown-navy',
+    rating: 4.9,
+    reviewCount: 158,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Brown Navy'],
+    isNew: true
+  },
+  {
+    id: 'shill-shirt-flannel-greenblack',
+    title: 'Shill Flannel Shirt Lengan Panjang Dark Green',
+    category: 'Kemeja',
+    price: 169000,
+    formattedPrice: 'Rp 169.000',
+    compareAtPrice: 259000,
+    formattedCompareAtPrice: 'Rp 259.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-shirt-flannel-greenblack.jpg'
+    ],
+    link: '/products/shill-flannel-shirt-lengan-panjang-dark-green',
+    rating: 5.0,
+    reviewCount: 176,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Dark Green'],
+    isNew: true
   }
 ];
 

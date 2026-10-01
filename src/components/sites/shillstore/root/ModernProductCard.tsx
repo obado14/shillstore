@@ -30,6 +30,11 @@ export function getProductAccentColor(product: Product): string {
   if (product.id.includes('jogger')) return '#1e293b';
   if (product.id.includes('short')) return '#0f766e';
 
+  // Shirt Models
+  if (product.id.includes('oxford')) return '#0284c7';
+  if (product.id.includes('rayon')) return '#0d9488';
+  if (product.id.includes('flannel')) return '#b45309';
+
   const cat = product.category.toLowerCase();
   if (cat.includes('parfum')) return '#c34a36';
   if (cat.includes('kaos')) return '#ff1b2d';
@@ -66,6 +71,9 @@ export function getProductDescription(product: Product): string {
     return 'Material 100% katun combed premium dengan fitting relaxed unisex yang adem dan nyaman.';
   }
   if (product.category === 'Kemeja') {
+    if (product.id.includes('oxford')) return 'Kemeja Oxford berkarakter rapi & versatile dengan katun oxford berkualitas yang kuat, tahan lama, dan sejuk untuk semua aktivitas.';
+    if (product.id.includes('rayon')) return 'Kemeja lengan pendek berbahan rayon premium yang lembut, adem, berjatuh santai, serta sirkulasi udara baik membuat tetap segar.';
+    if (product.id.includes('flannel')) return 'Flannel shirt lengan panjang berbahan flanel katun premium yang lembut, hangat, nyaman, dan beraksen motif kotak-kotak trendi.';
     return 'Kemeja kasual berbahan breathable dengan potongan rapi cocok untuk hangout maupun kerja.';
   }
   if (product.category === 'Celana') {
@@ -97,6 +105,9 @@ export function getProductTags(product: Product): string[] {
     return ['Katun Combed', 'Unisex', 'Streetwear'];
   }
   if (product.category === 'Kemeja') {
+    if (product.id.includes('oxford')) return ['Bahan Oxford', 'Tetap Sejuk', 'Versatile'];
+    if (product.id.includes('rayon')) return ['Bahan Rayon', 'Lembut & Adem', 'Relaxed Fit'];
+    if (product.id.includes('flannel')) return ['Flanel Premium', 'Hangat & Nyaman', 'Tartan Pattern'];
     return ['Rayon Premium', 'Regular Fit', 'Casual'];
   }
   if (product.category === 'Celana') {
