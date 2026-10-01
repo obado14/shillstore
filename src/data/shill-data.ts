@@ -258,21 +258,6 @@ export const productsData: Product[] = [
     isNew: true
   },
   {
-    id: 'shill-p-3',
-    title: 'Shill Short Shirt Rayon Jazlyn Black Unisex',
-    category: 'Kemeja',
-    price: 145000,
-    formattedPrice: 'Rp 145.000',
-    compareAtPrice: 280000,
-    formattedCompareAtPrice: 'Rp 280.000',
-    discountBadge: 'Sale',
-    images: ['https://shillstore.co.id/cdn/shop/files/SHORT-SHIRT-JAZLYN-BLACK-100.jpg?v=1750320410&width=600'],
-    link: '/products/shill-short-shirt-rayon-jazlyn-black',
-    rating: 4.8,
-    reviewCount: 420,
-    isNew: true
-  },
-  {
     id: 'shill-p-4',
     title: 'Shill Chino Pants Light Grey Unisex',
     category: 'Celana',
@@ -301,48 +286,6 @@ export const productsData: Product[] = [
     rating: 4.8,
     reviewCount: 512,
     isNew: true
-  },
-  {
-    id: 'shill-p-6',
-    title: 'Shill Short Shirt Pocket Danvin Teracotta - Kemeja Lengan Pendek Rayon Unisex',
-    category: 'Kemeja',
-    price: 145000,
-    formattedPrice: 'Rp 145.000',
-    compareAtPrice: 280000,
-    formattedCompareAtPrice: 'Rp 280.000',
-    discountBadge: 'Sale',
-    images: ['/sites/shillstore/root/images/prod-short-shirt-danvin-teracotta.jpg'],
-    link: '/products/shill-short-shirt-pocket-danvin-teracotta-kemeja-lengan-pendek-rayon-unisex',
-    rating: 4.9,
-    reviewCount: 910
-  },
-  {
-    id: 'shill-p-7',
-    title: 'Shill Short Shirt Pocket Daeio Olive - Kemeja Lengan Pendek Rayon Unisex',
-    category: 'Kemeja',
-    price: 145000,
-    formattedPrice: 'Rp 145.000',
-    compareAtPrice: 280000,
-    formattedCompareAtPrice: 'Rp 280.000',
-    discountBadge: 'Sale',
-    images: ['/sites/shillstore/root/images/prod-short-shirt-daeio-olive.jpg'],
-    link: '/products/shill-short-shirt-pocket-daeio-olive-kemeja-lengan-pendek-rayon-unisex',
-    rating: 4.8,
-    reviewCount: 890
-  },
-  {
-    id: 'shill-p-8',
-    title: 'Shill Short Shirt Pocket Dalwyn Brown - Kemeja Lengan Pendek Rayon Unisex',
-    category: 'Kemeja',
-    price: 145000,
-    formattedPrice: 'Rp 145.000',
-    compareAtPrice: 280000,
-    formattedCompareAtPrice: 'Rp 280.000',
-    discountBadge: 'Sale',
-    images: ['/sites/shillstore/root/images/prod-short-shirt-dalwyn-brown.jpg'],
-    link: '/products/shill-short-shirt-pocket-dalwyn-brown-kemeja-lengan-pendek-rayon-unisex',
-    rating: 4.7,
-    reviewCount: 654
   },
   {
     id: 'shill-p-9',

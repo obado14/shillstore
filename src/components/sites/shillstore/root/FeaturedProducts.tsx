@@ -9,12 +9,20 @@ export function FeaturedProducts() {
   const { addToCart } = useCart();
   const [activeCategory, setActiveCategory] = useState('Semua');
 
-  const categories = ['Semua', 'Parfum', 'Chino Pants', 'Short Shirt', 'Relax Chino'];
+  const categories = ['Semua', 'Parfum', 'Chino Pants', 'Relax Chino', 'Kaos'];
 
   const filteredProducts =
     activeCategory === 'Semua'
       ? productsData
-      : productsData.filter((p) => p.category === activeCategory);
+      : productsData.filter((p) => {
+          if (activeCategory === 'Chino Pants') {
+            return p.category === 'Celana' && !p.title.toLowerCase().includes('relax');
+          }
+          if (activeCategory === 'Relax Chino') {
+            return p.title.toLowerCase().includes('relax');
+          }
+          return p.category === activeCategory;
+        });
 
   return (
     <section className="py-10 md:py-16 page-width">

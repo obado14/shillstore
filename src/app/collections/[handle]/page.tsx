@@ -112,13 +112,31 @@ function CollectionContent({ handle }: { handle: string }) {
           </div>
 
           {/* Product Grid */}
-          <div className="scope product-cards">
-            <div className="_card-list">
-              {sortedProducts.map((product) => (
-                <ModernProductCard key={product.id} product={product} onAddToCart={addToCart} />
-              ))}
+          {sortedProducts.length === 0 ? (
+            <div className="py-20 text-center bg-gray-50 rounded-2xl border border-gray-100 p-8 my-6">
+              <svg className="w-12 h-12 mx-auto text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+              </svg>
+              <h3 className="text-base font-bold text-gray-900 mb-1">Belum Ada Produk Tersedia</h3>
+              <p className="text-xs text-gray-500 max-w-sm mx-auto mb-5">
+                Produk untuk koleksi ini sedang diperbarui atau belum tersedia saat ini.
+              </p>
+              <Link
+                href="/collections/all-t-shirt"
+                className="inline-block px-5 py-2.5 bg-black hover:bg-[#ff1b2d] text-white text-xs font-bold uppercase tracking-wider rounded-full transition-colors"
+              >
+                Lihat Koleksi Lainnya
+              </Link>
             </div>
-          </div>
+          ) : (
+            <div className="scope product-cards">
+              <div className="_card-list">
+                {sortedProducts.map((product) => (
+                  <ModernProductCard key={product.id} product={product} onAddToCart={addToCart} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </main>
 
