@@ -77,7 +77,7 @@ export function Footer() {
 
           {/* Brand Info & Stores */}
           <div className="col-span-2 md:col-span-1 flex flex-col gap-5">
-            <div className="relative w-32 md:w-36 h-9 md:h-10">
+            <div className="relative w-44 md:w-56 h-9 md:h-11">
               <Image
                 src="/logo-white.png"
                 alt="Shill"

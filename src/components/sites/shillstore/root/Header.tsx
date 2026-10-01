@@ -95,7 +95,7 @@ export function Header() {
 
             {/* Brand Logo */}
             <div className="flex items-center">
-              <Link href="/" className="relative block w-32 md:w-40 h-9 md:h-12">
+              <Link href="/" className="relative block w-44 sm:w-52 md:w-60 h-9 sm:h-10 md:h-12">
                 <Image
                   src="/logo.png"
                   alt="Shill Official Store"
@@ -224,7 +224,7 @@ export function Header() {
           <div className="fixed inset-y-0 left-0 max-w-full flex">
             <div className="w-screen max-w-xs bg-white shadow-2xl flex flex-col">
               <div className="flex items-center justify-between p-5 border-b border-gray-100">
-                <div className="relative w-32 h-9">
+                <div className="relative w-48 h-10">
                   <Image
                     src="/logo.png"
                     alt="Shill"
