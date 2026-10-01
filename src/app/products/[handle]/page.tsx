@@ -67,6 +67,39 @@ const perfumeProfiles: Record<string, PerfumeDetail> = {
     middle: 'Marine, Lavender',
     base: 'Cedarwood, Amber',
   },
+  'shillstore-legacy': {
+    name: 'Shillstore Legacy',
+    tagline: 'menghadirkan kehangatan aroma rempah dan kayu yang kaya, berkarakter karismatik dan memikat (Rich, Warm, Charismatic).',
+    type: 'Eau De Parfum (EDP)',
+    volume: '100 ML',
+    longevity: '8 - 12 Jam (Long Lasting)',
+    character: 'Rich, Warm Spicy & Charismatic',
+    top: 'Cardamom, Cinnamon',
+    middle: 'Tonka Bean, Cedarwood',
+    base: 'Amber, Vanilla',
+  },
+  'shillstore-velo': {
+    name: 'Shillstore Vélo',
+    tagline: 'menampilkan harmoni aroma segar modern yang minimalis, versatile, dan cocok untuk segala suasana (Minimal, Modern, Versatile).',
+    type: 'Eau De Parfum (EDP)',
+    volume: '100 ML',
+    longevity: '8 - 12 Jam (Long Lasting)',
+    character: 'Minimal, Modern & Versatile',
+    top: 'Bergamot, Green Notes',
+    middle: 'Orris, Violet',
+    base: 'Musk, Sandalwood',
+  },
+  'shillstore-velvet': {
+    name: 'Shillstore Velvet',
+    tagline: 'memberikan pesona keharuman sensual yang mewah, elegan, dan tak terlupakan (Sensual, Luxury, Unforgettable).',
+    type: 'Eau De Parfum (EDP)',
+    volume: '100 ML',
+    longevity: '8 - 12 Jam (Long Lasting)',
+    character: 'Sensual, Luxury, Fruity Floral & Unforgettable',
+    top: 'Raspberry, Saffron',
+    middle: 'Rose, Jasmine',
+    base: 'Patchouli, Amber',
+  },
 };
 
 function ProductDetailContent({ handle }: { handle: string }) {
@@ -100,6 +133,12 @@ function ProductDetailContent({ handle }: { handle: string }) {
       ? perfumeProfiles['shillstore-bloom']
       : (product.id === 'shill-perfume-ocean' || handle.includes('ocean'))
       ? perfumeProfiles['shillstore-ocean']
+      : (product.id === 'shill-perfume-legacy' || handle.includes('legacy'))
+      ? perfumeProfiles['shillstore-legacy']
+      : (product.id === 'shill-perfume-velo' || handle.includes('velo'))
+      ? perfumeProfiles['shillstore-velo']
+      : (product.id === 'shill-perfume-velvet' || handle.includes('velvet'))
+      ? perfumeProfiles['shillstore-velvet']
       : perfumeProfiles['shillstore-noir'];
 
   const sizes = product.sizes || (isPerfume ? ['100ml'] : ['S', 'M', 'L', 'XL', 'XXL']);
@@ -138,6 +177,12 @@ function ProductDetailContent({ handle }: { handle: string }) {
                     ? 'bg-[#fcf5f3]'
                     : handle.includes('ocean')
                     ? 'bg-[#eef7fc]'
+                    : handle.includes('legacy')
+                    ? 'bg-[#26130b]'
+                    : handle.includes('velo')
+                    ? 'bg-[#383a3d]'
+                    : handle.includes('velvet')
+                    ? 'bg-[#2d0a12]'
                     : isPerfume
                     ? 'bg-[#121212]'
                     : 'bg-gray-50'
