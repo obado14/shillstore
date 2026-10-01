@@ -45,7 +45,7 @@ export function Header() {
   return (
     <>
       {/* Top Announcement Bar */}
-      <div className="bg-[#121212] text-white py-2 text-center text-[12px] font-medium tracking-wide overflow-hidden relative">
+      <div className="bg-[#121212] text-white py-1.5 sm:py-2 text-center text-[11px] sm:text-[12px] font-medium tracking-wide overflow-hidden relative">
         <div className="page-width flex items-center justify-between">
           <div className="hidden md:flex items-center gap-2 text-gray-400 text-xs">
             <IndonesiaFlag className="w-4 h-3 inline-block rounded-xs" />
@@ -79,12 +79,12 @@ export function Header() {
         }`}
       >
         <div className="page-width">
-          <div className="flex items-center justify-between h-16 md:h-20">
+          <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
             {/* Mobile Menu Trigger */}
             <div className="flex items-center lg:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="p-2 -ml-2 text-gray-900 hover:text-black focus:outline-none"
+                className="p-1.5 sm:p-2 -ml-1 sm:-ml-2 text-gray-900 hover:text-black focus:outline-none"
                 aria-label="Buka Menu"
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -95,7 +95,7 @@ export function Header() {
 
             {/* Brand Logo */}
             <div className="flex items-center">
-              <Link href="/" className="relative block w-44 sm:w-52 md:w-60 h-9 sm:h-10 md:h-12">
+              <Link href="/" className="relative block w-32 sm:w-44 md:w-52 lg:w-60 h-8 sm:h-9 md:h-10 lg:h-12">
                 <Image
                   src="/logo.png"
                   alt="Shill Official Store"
@@ -149,10 +149,10 @@ export function Header() {
             </nav>
 
             {/* Header Right Actions */}
-            <div className="flex items-center gap-3 md:gap-5">
+            <div className="flex items-center gap-1.5 sm:gap-3 md:gap-5">
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 text-gray-700 hover:text-black transition-colors"
+                className="p-1.5 sm:p-2 text-gray-700 hover:text-black transition-colors"
                 aria-label="Cari"
               >
                 <SearchIcon className="w-5 h-5 md:w-6 md:h-6" />
@@ -168,7 +168,7 @@ export function Header() {
 
               <button
                 onClick={() => setIsCartOpen(true)}
-                className="relative p-2 text-gray-700 hover:text-black transition-colors"
+                className="relative p-1.5 sm:p-2 text-gray-700 hover:text-black transition-colors"
                 aria-label="Keranjang Belanja"
               >
                 <CartIcon className="w-5 h-5 md:w-6 md:h-6" />

@@ -51,16 +51,16 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-[#121212] text-gray-400 text-xs border-t border-white/10 pt-16 pb-12">
+    <footer className="bg-[#121212] text-gray-400 text-xs border-t border-white/10 pt-10 sm:pt-16 pb-8 sm:pb-12">
       <div className="page-width">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12 pb-12 border-b border-white/10">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8 lg:gap-12 pb-8 sm:pb-12 border-b border-white/10">
           {/* Menu Columns */}
           {footerSections.map((sec) => (
-            <div key={sec.title} className="flex flex-col gap-4">
-              <h3 className="text-white text-sm font-bold uppercase tracking-wider">
+            <div key={sec.title} className="flex flex-col gap-3 sm:gap-4">
+              <h3 className="text-white text-xs sm:text-sm font-bold uppercase tracking-wider">
                 {sec.title}
               </h3>
-              <ul className="space-y-2.5">
+              <ul className="space-y-2 sm:space-y-2.5 text-[11px] sm:text-xs">
                 {sec.links.map((link) => (
                   <li key={link.label}>
                     <Link
@@ -76,8 +76,8 @@ export function Footer() {
           ))}
 
           {/* Brand Info & Stores */}
-          <div className="col-span-2 md:col-span-1 flex flex-col gap-5">
-            <div className="relative w-44 md:w-56 h-9 md:h-11">
+          <div className="col-span-2 md:col-span-1 flex flex-col gap-4 sm:gap-5">
+            <div className="relative w-36 sm:w-44 md:w-56 h-8 sm:h-9 md:h-11">
               <Image
                 src="/logo-white.png"
                 alt="Shill"

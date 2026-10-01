@@ -267,3 +267,71 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
+
+/* Mobile Responsive Optimization (< 640px) */
+@media (max-width: 639px) {
+  .scope.product-cards ._card-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .scope.product-cards ._card {
+    --_row-gap: 0.35rem;
+    --_padding: 8px;
+    --_radius: 16px;
+    --_category-radius: 9px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto 1fr;
+    padding: var(--_padding);
+    border-radius: var(--_radius);
+    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  }
+
+  .scope.product-cards ._thumbnail-stack {
+    margin-bottom: 0.15rem;
+  }
+
+  .scope.product-cards ._category {
+    font-size: 0.56rem;
+    min-height: calc(var(--_category-radius) * 1.8);
+    padding: 0.18rem 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .scope.product-cards ._heading {
+    grid-column: 1 / -1;
+    font-size: 0.74rem;
+    line-height: 1.25;
+    min-height: 1.85rem;
+  }
+
+  .scope.product-cards ._price {
+    grid-column: 1 / -1;
+    place-self: start;
+    padding: 0.22rem 0.55rem;
+    font-size: 0.72rem;
+    box-shadow: none;
+  }
+
+  /* Hide lengthy descriptions and tags on mobile cards to keep cards uniform and clean */
+  .scope.product-cards ._description,
+  .scope.product-cards ._tag-list {
+    display: none;
+  }
+
+  .scope.product-cards ._button {
+    margin-top: 0.2rem;
+  }
+
+  .scope.purchase-button {
+    padding: 0.45rem 0.5rem;
+    font-size: 0.66rem;
+    gap: 0.35rem;
+    letter-spacing: 0.02em;
+  }
+
+  .scope.purchase-button::before {
+    width: 0.85em;
+    height: 0.85em;
+  }
+}

@@ -29,25 +29,25 @@ export function FeaturedProducts() {
       : productsData.filter((p) => p.category === activeCategory);
 
   return (
-    <section className="py-10 md:py-16 page-width">
+    <section className="py-8 md:py-16 page-width">
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 md:mb-8">
         <div>
           <span className="text-xs uppercase font-bold tracking-widest text-[#ff1b2d] block mb-1">
             Produk Pilihan
           </span>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 uppercase tracking-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900 uppercase tracking-tight">
             Koleksi Terbaru & Terlaris
           </h2>
         </div>
 
         {/* Category Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-2 md:pb-0 -mx-3.5 px-3.5 sm:mx-0 sm:px-0 scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 rounded-full text-xs font-bold tracking-wide transition-all whitespace-nowrap cursor-pointer ${
+              className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold tracking-wide transition-all whitespace-nowrap cursor-pointer ${
                 activeCategory === cat
                   ? 'bg-black text-white shadow-xs'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black'
@@ -69,7 +69,7 @@ export function FeaturedProducts() {
       </div>
 
       {/* View Full Collection Button */}
-      <div className="mt-12 text-center">
+      <div className="mt-8 sm:mt-12 text-center">
         <Link
           href={
             activeCategory === 'Kemeja'
@@ -84,7 +84,7 @@ export function FeaturedProducts() {
               ? '/collections/perfume'
               : '/collections'
           }
-          className="inline-flex items-center gap-2 px-8 py-3.5 bg-black hover:bg-[#ff1b2d] text-white text-xs font-bold uppercase tracking-wider rounded-full transition-all shadow-sm hover:shadow-md cursor-pointer"
+          className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-black hover:bg-[#ff1b2d] text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider rounded-full transition-all shadow-sm hover:shadow-md cursor-pointer"
         >
           <span>Lihat Semua {activeCategory !== 'Semua' ? `Koleksi ${activeCategory}` : 'Produk'}</span>
           <span>→</span>

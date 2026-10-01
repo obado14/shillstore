@@ -10,19 +10,19 @@ export function CollageBanner() {
     <section className="py-4">
       <div className="page-width flex flex-col md:flex-row gap-4">
         {/* Card 1: Kenapa harus beli di Website Shill */}
-        <div className="relative flex-1 rounded-[12px] overflow-hidden group min-h-[320px] md:min-h-[360px] bg-gray-100">
+        <div className="relative flex-1 rounded-xl overflow-hidden group min-h-[220px] sm:min-h-[280px] md:min-h-[360px] bg-gray-100">
           <Image
             src={collageItems[0].image}
             alt={collageItems[0].title}
             fill
             className="object-cover object-left group-hover:scale-105 transition-transform duration-500"
           />
-          <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10">
+          <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col justify-between z-10">
             <div>
-              <h3 className="text-xl md:text-2xl font-bold text-black mb-2 leading-tight">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-black mb-1.5 sm:mb-2 leading-tight">
                 {collageItems[0].title}
               </h3>
-              <div className="space-y-1 text-sm font-medium text-gray-800">
+              <div className="space-y-0.5 sm:space-y-1 text-xs sm:text-sm font-medium text-gray-800">
                 {collageItems[0].points?.map((pt, i) => (
                   <p key={i}>{pt}</p>
                 ))}
@@ -30,7 +30,7 @@ export function CollageBanner() {
             </div>
             <Link
               href={collageItems[0].link}
-              className="px-6 py-2 rounded-lg bg-black text-white text-xs font-semibold w-fit hover:bg-gray-800 transition-colors shadow-sm"
+              className="px-4 sm:px-6 py-2 rounded-lg bg-black text-white text-xs font-semibold w-fit hover:bg-gray-800 transition-colors shadow-sm"
             >
               {collageItems[0].buttonText}
             </Link>
@@ -38,18 +38,18 @@ export function CollageBanner() {
         </div>
 
         {/* Card 2: New Arrival - Oxford Shirt */}
-        <div className="relative flex-1 rounded-[12px] overflow-hidden group min-h-[320px] md:min-h-[360px] bg-black">
+        <div className="relative flex-1 rounded-xl overflow-hidden group min-h-[200px] sm:min-h-[280px] md:min-h-[360px] bg-black">
           <Image
             src={collageItems[1].image}
             alt={collageItems[1].title}
             fill
             className="object-cover object-center group-hover:scale-105 transition-transform duration-500 opacity-90"
           />
-          <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-center items-center text-center text-white z-10">
-            <span className="text-xs uppercase tracking-widest text-gray-200 mb-1">
+          <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col justify-center items-center text-center text-white z-10">
+            <span className="text-[11px] sm:text-xs uppercase tracking-widest text-gray-200 mb-1">
               {collageItems[1].subtitle}
             </span>
-            <h3 className="text-3xl md:text-5xl font-extrabold tracking-tight font-koulen uppercase">
+            <h3 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight font-koulen uppercase">
               {collageItems[1].title}
             </h3>
           </div>

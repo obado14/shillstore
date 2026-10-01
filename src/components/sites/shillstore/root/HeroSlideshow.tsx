@@ -9,6 +9,8 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@/components/sites/shillstore
 export function HeroSlideshow() {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
 
   const nextSlide = useCallback(() => {
     setCurrentIdx((prev) => (prev + 1) % bannerSlides.length);
@@ -24,11 +26,36 @@ export function HeroSlideshow() {
     return () => clearInterval(interval);
   }, [isPaused, nextSlide]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return;
+    const distance = touchStartX - touchEndX;
+    const isLeftSwipe = distance > 45;
+    const isRightSwipe = distance < -45;
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+    setTouchStartX(null);
+    setTouchEndX(null);
+  };
+
   return (
     <section
       className="relative w-full overflow-hidden bg-black select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Slides Container */}
       <div
@@ -37,7 +64,10 @@ export function HeroSlideshow() {
       >
         {bannerSlides.map((slide, idx) => (
           <div key={slide.id} className="w-full shrink-0 relative">
-            <Link href={slide.link} className="block relative w-full aspect-16/9 md:aspect-21/9 lg:aspect-3/1">
+            <Link
+              href={slide.link}
+              className="block relative w-full aspect-square sm:aspect-16/9 md:aspect-21/9 lg:aspect-3/1"
+            >
               {/* Desktop banner */}
               <div className="hidden md:block absolute inset-0">
                 <Image
@@ -67,30 +97,30 @@ export function HeroSlideshow() {
       {/* Prev / Next Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 rounded-full bg-white/70 hover:bg-white text-black shadow-md flex items-center justify-center transition-all z-10 hover:scale-105"
+        className="absolute left-2 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-full bg-white/70 hover:bg-white text-black shadow-md flex items-center justify-center transition-all z-10 hover:scale-105"
         aria-label="Slide Sebelumnya"
       >
-        <ChevronLeftIcon className="w-5 h-5 md:w-6 md:h-6" />
+        <ChevronLeftIcon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
       </button>
 
       <button
         onClick={nextSlide}
-        className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 rounded-full bg-white/70 hover:bg-white text-black shadow-md flex items-center justify-center transition-all z-10 hover:scale-105"
+        className="absolute right-2 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-full bg-white/70 hover:bg-white text-black shadow-md flex items-center justify-center transition-all z-10 hover:scale-105"
         aria-label="Slide Berikutnya"
       >
-        <ChevronRightIcon className="w-5 h-5 md:w-6 md:h-6" />
+        <ChevronRightIcon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
       </button>
 
       {/* Pagination Dots */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
+      <div className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 sm:gap-2 z-10">
         {bannerSlides.map((slide, index) => (
           <button
             key={slide.id}
             onClick={() => setCurrentIdx(index)}
             className={`transition-all duration-300 rounded-full ${
               currentIdx === index
-                ? 'w-7 h-2 bg-white'
-                : 'w-2 h-2 bg-white/50 hover:bg-white/80'
+                ? 'w-5 sm:w-7 h-1.5 sm:h-2 bg-white'
+                : 'w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/50 hover:bg-white/80'
             }`}
             aria-label={`Ke slide ${index + 1}`}
           />
