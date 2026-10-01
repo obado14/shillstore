@@ -227,6 +227,253 @@ export const productsData: Product[] = [
     colors: ['Ruby Red'],
     isNew: true
   },
+  // Windbreaker Jackets (3 Variants) - Rp349.000
+  {
+    id: 'shill-jacket-windbreaker-stealth-black',
+    title: 'Shill Windbreaker Jacket Stealth Black',
+    category: 'Jaket',
+    price: 349000,
+    formattedPrice: 'Rp 349.000',
+    compareAtPrice: 499000,
+    formattedCompareAtPrice: 'Rp 499.000',
+    discountBadge: 'Coming Soon',
+    images: [
+      '/sites/shillstore/root/images/coming-soon-windbreaker.svg',
+      '/sites/shillstore/root/images/coming-soon-windbreaker-hover.svg'
+    ],
+    link: '/products/shill-windbreaker-jacket-stealth-black',
+    rating: 5.0,
+    reviewCount: 88,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Stealth Black'],
+    isNew: true
+  },
+  {
+    id: 'shill-jacket-windbreaker-emerald-forest',
+    title: 'Shill Windbreaker Jacket Emerald Forest',
+    category: 'Jaket',
+    price: 349000,
+    formattedPrice: 'Rp 349.000',
+    compareAtPrice: 499000,
+    formattedCompareAtPrice: 'Rp 499.000',
+    discountBadge: 'Coming Soon',
+    images: [
+      '/sites/shillstore/root/images/coming-soon-windbreaker.svg',
+      '/sites/shillstore/root/images/coming-soon-windbreaker-hover.svg'
+    ],
+    link: '/products/shill-windbreaker-jacket-emerald-forest',
+    rating: 4.9,
+    reviewCount: 76,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Emerald Forest'],
+    isNew: true
+  },
+  {
+    id: 'shill-jacket-windbreaker-arctic-white',
+    title: 'Shill Windbreaker Jacket Arctic White',
+    category: 'Jaket',
+    price: 349000,
+    formattedPrice: 'Rp 349.000',
+    compareAtPrice: 499000,
+    formattedCompareAtPrice: 'Rp 499.000',
+    discountBadge: 'Coming Soon',
+    images: [
+      '/sites/shillstore/root/images/coming-soon-windbreaker.svg',
+      '/sites/shillstore/root/images/coming-soon-windbreaker-hover.svg'
+    ],
+    link: '/products/shill-windbreaker-jacket-arctic-white',
+    rating: 4.9,
+    reviewCount: 92,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Arctic White'],
+    isNew: true
+  },
+
+  // Coach Jackets (3 Variants) - Rp299.000
+  {
+    id: 'shill-jacket-coach-classic-black',
+    title: 'Shill Coach Jacket Classic Black',
+    category: 'Jaket',
+    price: 299000,
+    formattedPrice: 'Rp 299.000',
+    compareAtPrice: 450000,
+    formattedCompareAtPrice: 'Rp 450.000',
+    discountBadge: 'Coming Soon',
+    images: [
+      '/sites/shillstore/root/images/coming-soon-coach.svg',
+      '/sites/shillstore/root/images/coming-soon-coach-hover.svg'
+    ],
+    link: '/products/shill-coach-jacket-classic-black',
+    rating: 4.9,
+    reviewCount: 110,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Classic Black'],
+    isNew: true
+  },
+  {
+    id: 'shill-jacket-coach-streetwear-navy',
+    title: 'Shill Coach Jacket Streetwear Navy',
+    category: 'Jaket',
+    price: 299000,
+    formattedPrice: 'Rp 299.000',
+    compareAtPrice: 450000,
+    formattedCompareAtPrice: 'Rp 450.000',
+    discountBadge: 'Coming Soon',
+    images: [
+      '/sites/shillstore/root/images/coming-soon-coach.svg',
+      '/sites/shillstore/root/images/coming-soon-coach-hover.svg'
+    ],
+    link: '/products/shill-coach-jacket-streetwear-navy',
+    rating: 5.0,
+    reviewCount: 94,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Streetwear Navy'],
+    isNew: true
+  },
+  {
+    id: 'shill-jacket-coach-olive-drab',
+    title: 'Shill Coach Jacket Olive Drab',
+    category: 'Jaket',
+    price: 299000,
+    formattedPrice: 'Rp 299.000',
+    compareAtPrice: 450000,
+    formattedCompareAtPrice: 'Rp 450.000',
+    discountBadge: 'Coming Soon',
+    images: [
+      '/sites/shillstore/root/images/coming-soon-coach.svg',
+      '/sites/shillstore/root/images/coming-soon-coach-hover.svg'
+    ],
+    link: '/products/shill-coach-jacket-olive-drab',
+    rating: 4.8,
+    reviewCount: 82,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Olive Drab'],
+    isNew: true
+  },
+
+  // Parka Jackets (3 Variants) - Rp499.000
+  {
+    id: 'shill-jacket-parka-tactical-khaki',
+    title: 'Shill Parka Jacket Tactical Khaki',
+    category: 'Jaket',
+    price: 499000,
+    formattedPrice: 'Rp 499.000',
+    compareAtPrice: 699000,
+    formattedCompareAtPrice: 'Rp 699.000',
+    discountBadge: 'Coming Soon',
+    images: [
+      '/sites/shillstore/root/images/coming-soon-parka.svg',
+      '/sites/shillstore/root/images/coming-soon-parka-hover.svg'
+    ],
+    link: '/products/shill-parka-jacket-tactical-khaki',
+    rating: 5.0,
+    reviewCount: 130,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Tactical Khaki'],
+    isNew: true
+  },
+  {
+    id: 'shill-jacket-parka-urban-charcoal',
+    title: 'Shill Parka Jacket Urban Charcoal',
+    category: 'Jaket',
+    price: 499000,
+    formattedPrice: 'Rp 499.000',
+    compareAtPrice: 699000,
+    formattedCompareAtPrice: 'Rp 699.000',
+    discountBadge: 'Coming Soon',
+    images: [
+      '/sites/shillstore/root/images/coming-soon-parka.svg',
+      '/sites/shillstore/root/images/coming-soon-parka-hover.svg'
+    ],
+    link: '/products/shill-parka-jacket-urban-charcoal',
+    rating: 4.9,
+    reviewCount: 118,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Urban Charcoal'],
+    isNew: true
+  },
+  {
+    id: 'shill-jacket-parka-deep-forest',
+    title: 'Shill Parka Jacket Deep Forest',
+    category: 'Jaket',
+    price: 499000,
+    formattedPrice: 'Rp 499.000',
+    compareAtPrice: 699000,
+    formattedCompareAtPrice: 'Rp 699.000',
+    discountBadge: 'Coming Soon',
+    images: [
+      '/sites/shillstore/root/images/coming-soon-parka.svg',
+      '/sites/shillstore/root/images/coming-soon-parka-hover.svg'
+    ],
+    link: '/products/shill-parka-jacket-deep-forest',
+    rating: 5.0,
+    reviewCount: 105,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Deep Forest'],
+    isNew: true
+  },
+
+  // Varsity Jackets (3 Variants) - Rp499.000
+  {
+    id: 'shill-jacket-varsity-heritage-maroon',
+    title: 'Shill Varsity Jacket Heritage Maroon',
+    category: 'Jaket',
+    price: 499000,
+    formattedPrice: 'Rp 499.000',
+    compareAtPrice: 749000,
+    formattedCompareAtPrice: 'Rp 749.000',
+    discountBadge: 'Coming Soon',
+    images: [
+      '/sites/shillstore/root/images/coming-soon-varsity.svg',
+      '/sites/shillstore/root/images/coming-soon-varsity-hover.svg'
+    ],
+    link: '/products/shill-varsity-jacket-heritage-maroon',
+    rating: 5.0,
+    reviewCount: 145,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Heritage Maroon'],
+    isNew: true
+  },
+  {
+    id: 'shill-jacket-varsity-midnight-black',
+    title: 'Shill Varsity Jacket Midnight Black',
+    category: 'Jaket',
+    price: 499000,
+    formattedPrice: 'Rp 499.000',
+    compareAtPrice: 749000,
+    formattedCompareAtPrice: 'Rp 749.000',
+    discountBadge: 'Coming Soon',
+    images: [
+      '/sites/shillstore/root/images/coming-soon-varsity.svg',
+      '/sites/shillstore/root/images/coming-soon-varsity-hover.svg'
+    ],
+    link: '/products/shill-varsity-jacket-midnight-black',
+    rating: 5.0,
+    reviewCount: 160,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Midnight Black'],
+    isNew: true
+  },
+  {
+    id: 'shill-jacket-varsity-royal-green',
+    title: 'Shill Varsity Jacket Royal Green',
+    category: 'Jaket',
+    price: 499000,
+    formattedPrice: 'Rp 499.000',
+    compareAtPrice: 749000,
+    formattedCompareAtPrice: 'Rp 749.000',
+    discountBadge: 'Coming Soon',
+    images: [
+      '/sites/shillstore/root/images/coming-soon-varsity.svg',
+      '/sites/shillstore/root/images/coming-soon-varsity-hover.svg'
+    ],
+    link: '/products/shill-varsity-jacket-royal-green',
+    rating: 4.9,
+    reviewCount: 122,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Royal Green'],
+    isNew: true
+  },
   {
     id: 'shill-p-1',
     title: 'Shill T-Shirt Oversize Antelope Black Unisex',

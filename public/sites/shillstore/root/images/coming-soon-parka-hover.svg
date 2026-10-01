@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <radialGradient id="bgGlowParkaHover" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#16a34a" stop-opacity="0.4" />
+      <stop offset="50%" stop-color="#14532d" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#040a06" stop-opacity="1" />
+    </radialGradient>
+    <filter id="greenNeonGlow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="800" fill="url(#bgGlowParkaHover)" />
+
+  <!-- Outer Neon Border -->
+  <rect x="40" y="40" width="720" height="720" rx="36" fill="none" stroke="#4ade80" stroke-width="2.5" filter="url(#greenNeonGlow)" stroke-opacity="0.8" />
+
+  <!-- Central Card Container -->
+  <rect x="130" y="180" width="540" height="440" rx="28" fill="#142117" stroke="#4ade80" stroke-width="2" filter="drop-shadow(0 25px 35px rgba(22,163,74,0.35))" />
+
+  <!-- Top Badge -->
+  <g transform="translate(400, 228)">
+    <rect x="-120" y="-16" width="240" height="32" rx="16" fill="#4ade80" />
+    <text x="0" y="5" font-family="'Montserrat', sans-serif" font-size="11" font-weight="900" fill="#052e16" text-anchor="middle" letter-spacing="3">EXCLUSIVE PREVIEW</text>
+  </g>
+
+  <!-- Stylized Parka Jacket Wireframe Icon (Illuminated) -->
+  <g transform="translate(400, 325) scale(1.2)" filter="url(#greenNeonGlow)">
+    <path d="M-26,-46 C-30,-72 30,-72 26,-46 C16,-40 -16,-40 -26,-46 Z" fill="#16a34a" fill-opacity="0.35" stroke="#4ade80" stroke-width="3" stroke-linejoin="round" />
+    <path d="M-26,-46 L-56,-25 L-74,32 L-50,38 L-44,-5 L-44,52 L-10,52 L0,46 L10,52 L44,52 L44,-5 L50,38 L74,32 L56,-25 L26,-46" fill="none" stroke="#ffffff" stroke-width="3" stroke-linejoin="round" />
+    <line x1="0" y1="-40" x2="0" y2="46" stroke="#4ade80" stroke-width="2.5" />
+    <rect x="-36" y="16" width="22" height="24" rx="3" fill="#16a34a" fill-opacity="0.3" stroke="#4ade80" stroke-width="2" />
+    <rect x="14" y="16" width="22" height="24" rx="3" fill="#16a34a" fill-opacity="0.3" stroke="#4ade80" stroke-width="2" />
+  </g>
+
+  <!-- Coming Soon Headline -->
+  <text x="400" y="445" font-family="'Montserrat', 'Arial Black', sans-serif" font-size="44" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="4">COMING SOON</text>
+
+  <!-- Price & Status -->
+  <text x="400" y="490" font-family="'Montserrat', sans-serif" font-size="24" font-weight="900" fill="#4ade80" text-anchor="middle">Rp 499.000</text>
+  <text x="400" y="525" font-family="'Montserrat', sans-serif" font-size="13" font-weight="700" fill="#cbd5e1" text-anchor="middle" letter-spacing="2">PARKA JACKET SERIES</text>
+
+  <!-- Pre-order button mockup -->
+  <g transform="translate(400, 570)">
+    <rect x="-105" y="-18" width="210" height="36" rx="18" fill="#4ade80" filter="url(#greenNeonGlow)" />
+    <text x="0" y="5" font-family="'Montserrat', sans-serif" font-size="11" font-weight="900" fill="#052e16" text-anchor="middle" letter-spacing="2">SIAPKAN WISHLIST</text>
+  </g>
+</svg>

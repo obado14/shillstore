@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <radialGradient id="bgGlowParka" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#15803d" stop-opacity="0.25" />
+      <stop offset="60%" stop-color="#0f1912" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#070c08" stop-opacity="1" />
+    </radialGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80" />
+      <stop offset="100%" stop-color="#16a34a" />
+    </linearGradient>
+    <linearGradient id="cardGradParka" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#192a1e" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#0f1c13" stop-opacity="0.95" />
+    </linearGradient>
+    <pattern id="gridParka" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#22c55e" stroke-width="0.75" stroke-opacity="0.08" />
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="800" fill="url(#bgGlowParka)" />
+  <rect width="800" height="800" fill="url(#gridParka)" />
+
+  <!-- Streetwear Watermark Accent -->
+  <text x="50%" y="140" font-family="'Montserrat', 'Impact', sans-serif" font-size="76" font-weight="900" fill="#22c55e" fill-opacity="0.06" text-anchor="middle" letter-spacing="16">PARKA JACKET</text>
+  <text x="50%" y="710" font-family="'Montserrat', 'Impact', sans-serif" font-size="64" font-weight="900" fill="#ffffff" fill-opacity="0.04" text-anchor="middle" letter-spacing="20">SHILL STORE</text>
+
+  <!-- Outer Tech Frame -->
+  <rect x="50" y="50" width="700" height="700" rx="32" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-opacity="0.2" stroke-dasharray="12 8" />
+  <circle cx="50" cy="50" r="4" fill="#22c55e" fill-opacity="0.6" />
+  <circle cx="750" cy="50" r="4" fill="#22c55e" fill-opacity="0.6" />
+  <circle cx="50" cy="750" r="4" fill="#22c55e" fill-opacity="0.6" />
+  <circle cx="750" cy="750" r="4" fill="#22c55e" fill-opacity="0.6" />
+
+  <!-- Central Card Container -->
+  <rect x="140" y="190" width="520" height="420" rx="24" fill="url(#cardGradParka)" stroke="#22c55e" stroke-width="1.5" stroke-opacity="0.3" filter="drop-shadow(0 20px 30px rgba(0,0,0,0.6))" />
+
+  <!-- Top Badge -->
+  <g transform="translate(400, 235)">
+    <rect x="-110" y="-16" width="220" height="32" rx="16" fill="#15803d" fill-opacity="0.25" stroke="#4ade80" stroke-width="1" />
+    <text x="0" y="5" font-family="'Montserrat', sans-serif" font-size="11" font-weight="800" fill="#4ade80" text-anchor="middle" letter-spacing="3">SHILL • TACTICAL</text>
+  </g>
+
+  <!-- Stylized Parka Jacket Wireframe Icon (Heavy hood, long cut, cargo pockets) -->
+  <g transform="translate(400, 330) scale(1.15)">
+    <!-- Oversized Parka Hood with Fur/Lining outline -->
+    <path d="M-26,-46 C-30,-72 30,-72 26,-46 C16,-40 -16,-40 -26,-46 Z" fill="#15803d" fill-opacity="0.25" stroke="#4ade80" stroke-width="2.5" stroke-linejoin="round" />
+    <!-- Drawstring Cords -->
+    <path d="M-8,-40 L-8,-20 M8,-40 L8,-20" stroke="#4ade80" stroke-width="2" />
+    <!-- Shoulders & Body (Longer Fishtail cut) -->
+    <path d="M-26,-46 L-56,-25 L-74,32 L-50,38 L-44,-5 L-44,52 L-10,52 L0,46 L10,52 L44,52 L44,-5 L50,38 L74,32 L56,-25 L26,-46" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round" />
+    <!-- Center Flap / Zip -->
+    <line x1="0" y1="-40" x2="0" y2="46" stroke="#4ade80" stroke-width="2" />
+    <!-- Big Cargo Pockets with flaps -->
+    <rect x="-36" y="16" width="22" height="24" rx="3" fill="none" stroke="#4ade80" stroke-width="1.8" />
+    <rect x="14" y="16" width="22" height="24" rx="3" fill="none" stroke="#4ade80" stroke-width="1.8" />
+  </g>
+
+  <!-- Coming Soon Headline -->
+  <text x="400" y="445" font-family="'Montserrat', 'Arial Black', sans-serif" font-size="44" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="4">COMING SOON</text>
+
+  <!-- Model Title -->
+  <text x="400" y="485" font-family="'Montserrat', sans-serif" font-size="16" font-weight="800" fill="url(#greenGrad)" text-anchor="middle" letter-spacing="6">PARKA JACKET</text>
+
+  <!-- Subtitle Specs -->
+  <text x="400" y="525" font-family="'Montserrat', sans-serif" font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle" letter-spacing="2">HEAVYWEIGHT CANVAS • MULTI-POCKET • WARM</text>
+
+  <!-- Bottom Release Pill -->
+  <g transform="translate(400, 565)">
+    <rect x="-90" y="-14" width="180" height="28" rx="14" fill="#15803d" />
+    <text x="0" y="4" font-family="'Montserrat', sans-serif" font-size="10" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="2">DROP SOON • 2026</text>
+  </g>
+</svg>

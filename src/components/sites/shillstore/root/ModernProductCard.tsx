@@ -12,6 +12,12 @@ export function getProductAccentColor(product: Product): string {
   if (product.id.includes('velo')) return '#4e8397';
   if (product.id.includes('velvet')) return '#9b1d36';
 
+  // Jacket Models
+  if (product.id.includes('windbreaker')) return '#0284c7';
+  if (product.id.includes('coach')) return '#d97706';
+  if (product.id.includes('parka')) return '#15803d';
+  if (product.id.includes('varsity')) return '#b91c1c';
+
   const cat = product.category.toLowerCase();
   if (cat.includes('parfum')) return '#c34a36';
   if (cat.includes('kaos')) return '#ff1b2d';
@@ -33,6 +39,13 @@ export function getProductDescription(product: Product): string {
     if (product.id.includes('velvet')) return 'Pesona keharuman sensual yang mewah, manis raspberry, dan tak terlupakan.';
     return 'Wewangian eksklusif dengan ketahanan tahan lama menemani aktivitas harianmu.';
   }
+  if (product.category === 'Jaket') {
+    if (product.id.includes('windbreaker')) return 'Jaket tahan angin & air (water-resistant) berbahan taslan mikro ringan dengan tudung ergonomis.';
+    if (product.id.includes('coach')) return 'Coach jacket streetwear bergaya kasual dengan kancing snap button dan inner furing adem.';
+    if (product.id.includes('parka')) return 'Parka jacket tangguh berdesain tactical dengan banyak saku fungsional dan material kanvas katun tebal.';
+    if (product.id.includes('varsity')) return 'Varsity jacket gaya retro berkarakter kuat dengan bordir chenille eksklusif dan lengan kombinasi.';
+    return 'Outerwear stylish berdaya tahan tinggi, menjaga tubuh tetap hangat dan trendi.';
+  }
   if (product.category === 'Kaos') {
     return 'Material 100% katun combed premium dengan fitting relaxed unisex yang adem dan nyaman.';
   }
@@ -42,15 +55,19 @@ export function getProductDescription(product: Product): string {
   if (product.category === 'Celana') {
     return 'Celana flexi-fit dengan material twill premium elastis untuk kenyamanan gerak maksimal.';
   }
-  if (product.category === 'Jaket') {
-    return 'Outerwear stylish berdaya tahan tinggi, menjaga tubuh tetap hangat dan trendi.';
-  }
   return 'Koleksi busana kasual eksklusif persembahan Shill Store dengan standar kualitas terbaik.';
 }
 
 export function getProductTags(product: Product): string[] {
   if (product.category === 'Parfum') {
     return ['100 ML', 'EDP', 'Best Seller'];
+  }
+  if (product.category === 'Jaket') {
+    if (product.id.includes('windbreaker')) return ['Water Resistant', 'Windproof', 'Taslan'];
+    if (product.id.includes('coach')) return ['Streetwear', 'Snap Button', 'Casual'];
+    if (product.id.includes('parka')) return ['Heavyweight', 'Tactical Multi-Pocket', 'Warm'];
+    if (product.id.includes('varsity')) return ['Collegiate Retro', 'Chenille Patch', 'Warm Fleece'];
+    return ['Outerwear', 'Unisex', 'Streetwear'];
   }
   if (product.category === 'Kaos') {
     return ['Katun Combed', 'Unisex', 'Streetwear'];
