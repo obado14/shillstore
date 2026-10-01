@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { CloseIcon } from '@/components/sites/shillstore/shared/icons';
 
@@ -118,9 +119,20 @@ export function CartDrawer() {
               <p className="text-[11px] text-gray-500">
                 Pajak dan biaya pengiriman dihitung saat checkout.
               </p>
-              <button className="w-full py-3.5 bg-black hover:bg-red-600 text-white font-bold text-sm tracking-wider uppercase rounded-lg transition-colors shadow-md">
+              <Link
+                href="/checkout"
+                onClick={() => setIsCartOpen(false)}
+                className="block text-center w-full py-3.5 bg-black hover:bg-red-600 text-white font-bold text-sm tracking-wider uppercase rounded-lg transition-colors shadow-md cursor-pointer"
+              >
                 Lanjut ke Checkout
-              </button>
+              </Link>
+              <Link
+                href="/cart"
+                onClick={() => setIsCartOpen(false)}
+                className="block text-center w-full py-2 bg-white hover:bg-gray-100 text-gray-700 font-bold text-xs tracking-wider uppercase rounded-lg border border-gray-200 transition-colors cursor-pointer"
+              >
+                Lihat Keranjang Lengkap
+              </Link>
             </div>
           )}
         </div>

@@ -3,6 +3,7 @@
 import React, { useState, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
@@ -103,7 +104,8 @@ const perfumeProfiles: Record<string, PerfumeDetail> = {
 };
 
 function ProductDetailContent({ handle }: { handle: string }) {
-  const { addToCart } = useCart();
+  const router = useRouter();
+  const { addToCart, setIsCartOpen } = useCart();
 
   // Find product by matching handle in link or title
   const product: Product = productsData.find(
@@ -308,6 +310,8 @@ function ProductDetailContent({ handle }: { handle: string }) {
                   <button
                     onClick={() => {
                       addToCart(product, quantity);
+                      setIsCartOpen(false);
+                      router.push('/checkout');
                     }}
                     className="flex-1 py-4 bg-[#ff1b2d] hover:bg-[#e70011] text-white text-sm font-bold uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer"
                   >

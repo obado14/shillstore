@@ -166,9 +166,12 @@ function CartPageContent() {
                 <span className="text-xl text-red-600">Rp {finalTotal.toLocaleString('id-ID')}</span>
               </div>
 
-              <button className="w-full py-4 bg-black hover:bg-red-600 text-white text-sm font-bold uppercase tracking-wider rounded-xl transition-colors shadow-lg cursor-pointer">
+              <Link
+                href="/checkout"
+                className="block text-center w-full py-4 bg-black hover:bg-red-600 text-white text-sm font-bold uppercase tracking-wider rounded-xl transition-colors shadow-lg cursor-pointer"
+              >
                 Lanjut ke Pembayaran (Checkout)
-              </button>
+              </Link>
             </div>
           </div>
         )}
