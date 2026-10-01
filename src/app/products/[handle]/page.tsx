@@ -174,7 +174,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
             {/* Gallery Left */}
             <div className="flex flex-col gap-4">
               <div
-                className={`relative aspect-square md:aspect-3/4 w-full rounded-2xl overflow-hidden border border-gray-100 shadow-xs ${
+                className={`relative aspect-square w-full rounded-2xl overflow-hidden border border-gray-100 shadow-xs ${
                   handle.includes('bloom')
                     ? 'bg-[#fcf5f3]'
                     : handle.includes('ocean')
@@ -447,7 +447,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
                   href={p.link}
                   className="group flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 p-3 hover:shadow-lg transition-all"
                 >
-                  <div className="relative aspect-3/4 w-full rounded-lg overflow-hidden bg-gray-50 mb-3">
+                  <div className="relative aspect-square w-full rounded-lg overflow-hidden bg-gray-50 mb-3">
                     <Image
                       src={p.images[0]}
                       alt={p.title}

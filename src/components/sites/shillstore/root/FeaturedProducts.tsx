@@ -70,7 +70,7 @@ function ProductCard({
     <div className="group flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300">
       {/* Product Image */}
       <div
-        className={`relative aspect-3/4 w-full overflow-hidden ${
+        className={`relative aspect-square w-full overflow-hidden ${
           product.id === 'shill-perfume-bloom'
             ? 'bg-[#fcf5f3]'
             : product.id === 'shill-perfume-ocean'
@@ -98,7 +98,7 @@ function ProductCard({
             src={product.images[0]}
             alt={product.title}
             fill
-            className={product.category === 'Parfum' ? 'object-contain group-hover:scale-105 transition-transform duration-500' : 'object-cover group-hover:scale-105 transition-transform duration-500'}
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </Link>
 
