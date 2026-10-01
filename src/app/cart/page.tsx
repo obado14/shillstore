@@ -50,7 +50,7 @@ function CartPageContent() {
               Yuk jelajahi koleksi terbaru Shill dan temukan outfit favoritmu sekarang.
             </p>
             <Link
-              href="/collections/all-product"
+              href="/collections"
               className="px-8 py-3.5 bg-black hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors shadow-md inline-block"
             >
               Belanja Sekarang

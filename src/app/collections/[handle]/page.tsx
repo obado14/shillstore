@@ -3,6 +3,7 @@
 import React, { useState, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { CartProvider, useCart } from '@/context/CartContext';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
@@ -26,6 +27,10 @@ export default function CollectionPage({
 }
 
 function CollectionContent({ handle }: { handle: string }) {
+  if (handle === 'all-product') {
+    notFound();
+  }
+
   const { addToCart } = useCart();
   const [sortBy, setSortBy] = useState('featured');
 
@@ -40,7 +45,7 @@ function CollectionContent({ handle }: { handle: string }) {
 
   // Filter products by collection handle keyword
   const filteredProducts = productsData.filter((p) => {
-    if (handle === 'all' || handle === 'all-product') return true;
+    if (handle === 'all') return true;
     const h = handle.toLowerCase();
     const t = p.title.toLowerCase();
     const c = p.category.toLowerCase();

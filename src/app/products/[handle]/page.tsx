@@ -69,7 +69,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
               Beranda
             </Link>
             <span>/</span>
-            <Link href="/collections/all-product" className="hover:text-black transition-colors">
+            <Link href="/collections" className="hover:text-black transition-colors">
               Produk
             </Link>
             <span>/</span>

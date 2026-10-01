@@ -16,7 +16,7 @@ export const bannerSlides: BannerSlide[] = [
     subtitle: 'New Arrival',
     desktopImage: '/sites/shillstore/root/images/hero-cargo-desktop.jpg',
     mobileImage: '/sites/shillstore/root/images/hero-cargo-mobile.jpg',
-    link: '/collections/all-product',
+    link: '/collections/category-pants-chino-pants',
     buttonText: 'Belanja Sekarang'
   },
   {
@@ -379,7 +379,6 @@ export const blogStoriesData: BlogStory[] = [
 
 // Collections metadata
 export const collectionsList = [
-  { handle: 'all-product', title: 'Semua Produk', description: 'Jelajahi seluruh koleksi pakaian kasual pria dan wanita dari Shill.' },
   { handle: 'all-t-shirt', title: 'Kaos / T-Shirt', description: 'Pilihan kaos grafis, oversized, polos, dan washed t-shirt berbahan katun premium.' },
   { handle: 'all-shirt', title: 'Kemeja Pria & Wanita', description: 'Koleksi kemeja lengan pendek rayon, oxford shirt, dan flannel trendi.' },
   { handle: 'flight-jacket', title: 'Jaket & Outerwear', description: 'Parka jacket, coach jacket, varsity, dan windbreaker untuk petualangan harianmu.' },
@@ -444,11 +443,6 @@ export const faqList = [
 
 // Navigation menu structure
 export const navCategories = [
-  {
-    title: 'Semua Produk',
-    href: '/collections/all-product',
-    badge: null
-  },
   {
     title: 'Kaos',
     href: '/collections/all-t-shirt',

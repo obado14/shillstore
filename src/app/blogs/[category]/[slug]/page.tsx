@@ -99,7 +99,7 @@ function BlogPostContent({ category, slug }: { category: string; slug: string })
               ← Kembali ke Daftar Artikel
             </Link>
             <Link
-              href="/collections/all-product"
+              href="/collections"
               className="px-6 py-2.5 bg-black hover:bg-red-600 text-white text-xs font-bold uppercase rounded-lg transition-colors"
             >
               Lihat Koleksi

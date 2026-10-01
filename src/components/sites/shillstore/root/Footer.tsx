@@ -40,8 +40,8 @@ export function Footer() {
     {
       title: 'PRODUK',
       links: [
-        { label: 'Sale', href: '/collections/all-product' },
-        { label: 'Koleksi Baru', href: '/collections/all-product' },
+        { label: 'Sale', href: '/collections/all-t-shirt' },
+        { label: 'Koleksi Baru', href: '/collections' },
         { label: 'Kaos', href: '/collections/all-t-shirt' },
         { label: 'Kemeja', href: '/collections/all-shirt' },
         { label: 'Celana', href: '/collections/category-pants-chino-pants' },
