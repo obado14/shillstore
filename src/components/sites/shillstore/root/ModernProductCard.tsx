@@ -24,6 +24,12 @@ export function getProductAccentColor(product: Product): string {
   if (product.id.includes('washed')) return '#57534e';
   if (product.id.includes('graphic')) return '#b45309';
 
+  // Pants Models
+  if (product.id.includes('chino')) return '#3d5a80';
+  if (product.id.includes('cargo')) return '#43523d';
+  if (product.id.includes('jogger')) return '#1e293b';
+  if (product.id.includes('short')) return '#0f766e';
+
   const cat = product.category.toLowerCase();
   if (cat.includes('parfum')) return '#c34a36';
   if (cat.includes('kaos')) return '#ff1b2d';
@@ -63,6 +69,10 @@ export function getProductDescription(product: Product): string {
     return 'Kemeja kasual berbahan breathable dengan potongan rapi cocok untuk hangout maupun kerja.';
   }
   if (product.category === 'Celana') {
+    if (product.id.includes('chino')) return 'Celana Chino berteknologi flexi-fit dengan slim fit stretch fabric yang elastis, breathable, dan fleksibel untuk segala aktivitas.';
+    if (product.id.includes('cargo')) return 'Cargo pants utilitarian bermaterial premium cotton twill tebal, comfort fit, multi-pocket fungsional, dan durable stitching kuat.';
+    if (product.id.includes('jogger')) return 'Jogger pants kasual berbahan cotton twill dengan flexi-fit waistband elastis bertali, elastic cuff, breathable & lightweight.';
+    if (product.id.includes('short')) return 'Short pants kasual berteknologi flexi-fit dengan quick dry fabric yang cepat kering, elastis, ringan, dan leluasa bergerak.';
     return 'Celana flexi-fit dengan material twill premium elastis untuk kenyamanan gerak maksimal.';
   }
   return 'Koleksi busana kasual eksklusif persembahan Shill Store dengan standar kualitas terbaik.';
@@ -90,6 +100,10 @@ export function getProductTags(product: Product): string[] {
     return ['Rayon Premium', 'Regular Fit', 'Casual'];
   }
   if (product.category === 'Celana') {
+    if (product.id.includes('chino')) return ['Flexi-Fit', 'Stretch Fabric', 'Slim Fit'];
+    if (product.id.includes('cargo')) return ['Cotton Twill', 'Cargo Pockets', 'Durable Stitching'];
+    if (product.id.includes('jogger')) return ['Flexi-Fit Waist', 'Elastic Cuff', 'Breathable'];
+    if (product.id.includes('short')) return ['Flexi-Fit', 'Quick Dry', 'Lightweight'];
     return ['Flexi-Fit', 'Twill Stretch', 'Daily'];
   }
   return ['Shill Original', 'Unisex', 'Trending'];

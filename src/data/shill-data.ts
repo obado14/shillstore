@@ -696,6 +696,242 @@ export const productsData: Product[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     colors: ['Black'],
     isNew: true
+  },
+
+  // Chino Pants (3 Variants) - Rp159.000
+  {
+    id: 'shill-pants-chino-black',
+    title: 'Shill Chino Pants Flexi-Fit Black',
+    category: 'Celana',
+    price: 159000,
+    formattedPrice: 'Rp 159.000',
+    compareAtPrice: 259000,
+    formattedCompareAtPrice: 'Rp 259.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-pants-chino-black.jpg'
+    ],
+    link: '/products/shill-chino-pants-flexi-fit-black',
+    rating: 5.0,
+    reviewCount: 168,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Black'],
+    isNew: true
+  },
+  {
+    id: 'shill-pants-chino-navy',
+    title: 'Shill Chino Pants Flexi-Fit Navy',
+    category: 'Celana',
+    price: 159000,
+    formattedPrice: 'Rp 159.000',
+    compareAtPrice: 259000,
+    formattedCompareAtPrice: 'Rp 259.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-pants-chino-navy.jpg'
+    ],
+    link: '/products/shill-chino-pants-flexi-fit-navy',
+    rating: 4.9,
+    reviewCount: 145,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Navy'],
+    isNew: true
+  },
+  {
+    id: 'shill-pants-chino-beige',
+    title: 'Shill Chino Pants Flexi-Fit Beige',
+    category: 'Celana',
+    price: 159000,
+    formattedPrice: 'Rp 159.000',
+    compareAtPrice: 259000,
+    formattedCompareAtPrice: 'Rp 259.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-pants-chino-beige.jpg'
+    ],
+    link: '/products/shill-chino-pants-flexi-fit-beige',
+    rating: 5.0,
+    reviewCount: 152,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Beige'],
+    isNew: true
+  },
+
+  // Cargo Pants (3 Variants) - Rp159.000
+  {
+    id: 'shill-pants-cargo-black',
+    title: 'Shill Cargo Pants Cotton Twill Black',
+    category: 'Celana',
+    price: 159000,
+    formattedPrice: 'Rp 159.000',
+    compareAtPrice: 259000,
+    formattedCompareAtPrice: 'Rp 259.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-pants-cargo-black.jpg'
+    ],
+    link: '/products/shill-cargo-pants-cotton-twill-black',
+    rating: 5.0,
+    reviewCount: 184,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Black'],
+    isNew: true
+  },
+  {
+    id: 'shill-pants-cargo-olive',
+    title: 'Shill Cargo Pants Cotton Twill Olive Green',
+    category: 'Celana',
+    price: 159000,
+    formattedPrice: 'Rp 159.000',
+    compareAtPrice: 259000,
+    formattedCompareAtPrice: 'Rp 259.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-pants-cargo-olive.jpg'
+    ],
+    link: '/products/shill-cargo-pants-cotton-twill-olive-green',
+    rating: 4.9,
+    reviewCount: 160,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Olive Green'],
+    isNew: true
+  },
+  {
+    id: 'shill-pants-cargo-khaki',
+    title: 'Shill Cargo Pants Cotton Twill Khaki',
+    category: 'Celana',
+    price: 159000,
+    formattedPrice: 'Rp 159.000',
+    compareAtPrice: 259000,
+    formattedCompareAtPrice: 'Rp 259.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-pants-cargo-khaki.jpg'
+    ],
+    link: '/products/shill-cargo-pants-cotton-twill-khaki',
+    rating: 5.0,
+    reviewCount: 172,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Khaki'],
+    isNew: true
+  },
+
+  // Jogger Pants (3 Variants) - Rp249.000
+  {
+    id: 'shill-pants-jogger-black',
+    title: 'Shill Jogger Pants Flexi-Fit Black',
+    category: 'Celana',
+    price: 249000,
+    formattedPrice: 'Rp 249.000',
+    compareAtPrice: 349000,
+    formattedCompareAtPrice: 'Rp 349.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-pants-jogger-black.jpg'
+    ],
+    link: '/products/shill-jogger-pants-flexi-fit-black',
+    rating: 5.0,
+    reviewCount: 136,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Black'],
+    isNew: true
+  },
+  {
+    id: 'shill-pants-jogger-darkgrey',
+    title: 'Shill Jogger Pants Flexi-Fit Dark Grey',
+    category: 'Celana',
+    price: 249000,
+    formattedPrice: 'Rp 249.000',
+    compareAtPrice: 349000,
+    formattedCompareAtPrice: 'Rp 349.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-pants-jogger-darkgrey.jpg'
+    ],
+    link: '/products/shill-jogger-pants-flexi-fit-dark-grey',
+    rating: 4.9,
+    reviewCount: 118,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Dark Grey'],
+    isNew: true
+  },
+  {
+    id: 'shill-pants-jogger-beige',
+    title: 'Shill Jogger Pants Flexi-Fit Beige',
+    category: 'Celana',
+    price: 249000,
+    formattedPrice: 'Rp 249.000',
+    compareAtPrice: 349000,
+    formattedCompareAtPrice: 'Rp 349.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-pants-jogger-beige.jpg'
+    ],
+    link: '/products/shill-jogger-pants-flexi-fit-beige',
+    rating: 5.0,
+    reviewCount: 125,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Beige'],
+    isNew: true
+  },
+
+  // Short Pants (3 Variants) - Rp179.000
+  {
+    id: 'shill-pants-short-black',
+    title: 'Shill Short Pants Flexi-Fit Black',
+    category: 'Celana',
+    price: 179000,
+    formattedPrice: 'Rp 179.000',
+    compareAtPrice: 279000,
+    formattedCompareAtPrice: 'Rp 279.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-pants-short-black.jpg'
+    ],
+    link: '/products/shill-short-pants-flexi-fit-black',
+    rating: 5.0,
+    reviewCount: 147,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Black'],
+    isNew: true
+  },
+  {
+    id: 'shill-pants-short-navy',
+    title: 'Shill Short Pants Flexi-Fit Navy',
+    category: 'Celana',
+    price: 179000,
+    formattedPrice: 'Rp 179.000',
+    compareAtPrice: 279000,
+    formattedCompareAtPrice: 'Rp 279.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-pants-short-navy.jpg'
+    ],
+    link: '/products/shill-short-pants-flexi-fit-navy',
+    rating: 4.9,
+    reviewCount: 132,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Navy'],
+    isNew: true
+  },
+  {
+    id: 'shill-pants-short-army',
+    title: 'Shill Short Pants Flexi-Fit Army Green',
+    category: 'Celana',
+    price: 179000,
+    formattedPrice: 'Rp 179.000',
+    compareAtPrice: 279000,
+    formattedCompareAtPrice: 'Rp 279.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-pants-short-army.jpg'
+    ],
+    link: '/products/shill-short-pants-flexi-fit-army-green',
+    rating: 5.0,
+    reviewCount: 155,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Army Green'],
+    isNew: true
   }
 ];
 
