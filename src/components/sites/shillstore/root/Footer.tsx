@@ -77,12 +77,12 @@ export function Footer() {
 
           {/* Brand Info & Stores */}
           <div className="col-span-2 md:col-span-1 flex flex-col gap-5">
-            <div className="relative w-28 h-8">
+            <div className="relative w-32 md:w-36 h-9 md:h-10">
               <Image
-                src="/sites/shillstore/root/images/logo-shill-white.png"
+                src="/logo-white.png"
                 alt="Shill"
                 fill
-                className="object-contain"
+                className="object-contain object-left"
               />
             </div>
 

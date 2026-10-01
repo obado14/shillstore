@@ -95,13 +95,13 @@ export function Header() {
 
             {/* Brand Logo */}
             <div className="flex items-center">
-              <Link href="/" className="relative block w-28 md:w-36 h-8 md:h-10">
+              <Link href="/" className="relative block w-32 md:w-40 h-9 md:h-12">
                 <Image
-                  src="/sites/shillstore/root/images/logo-shill-black.png"
+                  src="/logo.png"
                   alt="Shill Official Store"
                   fill
                   priority
-                  className="object-contain"
+                  className="object-contain object-left"
                 />
               </Link>
             </div>
@@ -224,12 +224,12 @@ export function Header() {
           <div className="fixed inset-y-0 left-0 max-w-full flex">
             <div className="w-screen max-w-xs bg-white shadow-2xl flex flex-col">
               <div className="flex items-center justify-between p-5 border-b border-gray-100">
-                <div className="relative w-28 h-8">
+                <div className="relative w-32 h-9">
                   <Image
-                    src="/sites/shillstore/root/images/logo-shill-black.png"
+                    src="/logo.png"
                     alt="Shill"
                     fill
-                    className="object-contain"
+                    className="object-contain object-left"
                   />
                 </div>
                 <button

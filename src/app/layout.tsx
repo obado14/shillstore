@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   title: "Shill Official Store – SHILL",
   description: "Shill, Everywhere You Go. Renew your clothes right now with our cool and stylish collections.",
   icons: {
-    icon: "/sites/shillstore/root/images/favicon-shill.png",
+    icon: "/favicon.png",
   },
 };
 
