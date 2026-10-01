@@ -102,6 +102,72 @@ const perfumeProfiles: Record<string, PerfumeDetail> = {
     middle: 'Rose, Jasmine',
     base: 'Patchouli, Amber',
   },
+  'shillstore-force': {
+    name: 'Shillstore Force',
+    tagline: 'hadir dengan aroma bold dan maskulin yang memancarkan kekuatan, ketegasan, dan kepercayaan diri tanpa batas (Stronger. Bolder. You).',
+    type: 'Eau De Parfum (EDP)',
+    volume: '100 ML',
+    longevity: '8 - 12 Jam (Long Lasting)',
+    character: 'Citrus Spicy, Aromatic Lavender & Bold Woody',
+    top: 'Bergamot, Lemon, Black Pepper',
+    middle: 'Lavender, Geranium, Sage',
+    base: 'Cedarwood, Vetiver, Amber',
+  },
+  'shillstore-elysium': {
+    name: 'Shillstore Elysium',
+    tagline: 'membawa kesegaran laut lepas yang membangkitkan suasana hati ceria dan penuh energi positif (Fresh Vibes. Higher Days).',
+    type: 'Eau De Parfum (EDP)',
+    volume: '100 ML',
+    longevity: '8 - 12 Jam (Long Lasting)',
+    character: 'Fresh Aquatic, Marine & Uplifting Citrus',
+    top: 'Bergamot, Mandarin, Sea Notes',
+    middle: 'Jasmine, Rosemary, Violet',
+    base: 'Musk, Ambergris, Cedarwood',
+  },
+  'shillstore-nocturn': {
+    name: 'Shillstore Nocturn',
+    tagline: 'menghadirkan daya tarik malam yang misterius, karismatik, dan berkarakter tegas (Darkness Brings Character).',
+    type: 'Eau De Parfum (EDP)',
+    volume: '100 ML',
+    longevity: '8 - 12 Jam (Long Lasting)',
+    character: 'Dark Leather, Warm Spicy & Mysterious Woody',
+    top: 'Cardamom, Black Pepper, Bergamot',
+    middle: 'Leather, Iris, Violet',
+    base: 'Sandalwood, Tonka Bean, Amber',
+  },
+  'shillstore-savage': {
+    name: 'Shillstore Savage',
+    tagline: 'memadukan aroma fruity liar dan woody hangat yang autentik, berani, dan bebas (Untamed. Wild. Real).',
+    type: 'Eau De Parfum (EDP)',
+    volume: '100 ML',
+    longevity: '8 - 12 Jam (Long Lasting)',
+    character: 'Wild Fruity, Earthy Patchouli & Amber Woody',
+    top: 'Grapefruit, Pineapple, Black Currant',
+    middle: 'Rose, Patchouli, Jasmine',
+    base: 'Oakmoss, Amber, Musk',
+  },
+  'shillstore-zenith': {
+    name: 'Shillstore Zenith',
+    tagline: 'menampilkan wewangian bersih yang halus, elegan, dan meninggalkan kesan mendalam yang memikat (Simple Scent. Lasting Impression).',
+    type: 'Eau De Parfum (EDP)',
+    volume: '100 ML',
+    longevity: '8 - 12 Jam (Long Lasting)',
+    character: 'Crisp Fruity Floral, Clean & Sophisticated Vanilla',
+    top: 'Bergamot, Apple, Pear',
+    middle: 'Lavender, White Flowers, Nutmeg',
+    base: 'Vanilla, Cedarwood, Musk',
+  },
+  'shillstore-ember': {
+    name: 'Shillstore Ember',
+    tagline: 'memancarkan kehangatan bourbon dan rempah cinnamon manis yang mendalam dan mempesona (Warmer Soul. Deeper You).',
+    type: 'Eau De Parfum (EDP)',
+    volume: '100 ML',
+    longevity: '8 - 12 Jam (Long Lasting)',
+    character: 'Warm Bourbon, Sweet Cinnamon & Rich Amber Vanilla',
+    top: 'Cinnamon, Nutmeg, Orange',
+    middle: 'Bourbon, Tonka Bean, Lavender',
+    base: 'Vanilla, Amber, Sandalwood',
+  },
 };
 
 function ProductDetailContent({ handle }: { handle: string }) {
@@ -131,18 +197,10 @@ function ProductDetailContent({ handle }: { handle: string }) {
   };
 
   const isPerfume = product.category === 'Parfum';
-  const perfumeInfo =
-    (product.id === 'shill-perfume-bloom' || handle.includes('bloom'))
-      ? perfumeProfiles['shillstore-bloom']
-      : (product.id === 'shill-perfume-ocean' || handle.includes('ocean'))
-      ? perfumeProfiles['shillstore-ocean']
-      : (product.id === 'shill-perfume-legacy' || handle.includes('legacy'))
-      ? perfumeProfiles['shillstore-legacy']
-      : (product.id === 'shill-perfume-velo' || handle.includes('velo'))
-      ? perfumeProfiles['shillstore-velo']
-      : (product.id === 'shill-perfume-velvet' || handle.includes('velvet'))
-      ? perfumeProfiles['shillstore-velvet']
-      : perfumeProfiles['shillstore-noir'];
+  const foundPerfumeKey = Object.keys(perfumeProfiles).find(
+    (key) => product.id.includes(key.replace('shillstore-', '')) || handle.includes(key.replace('shillstore-', ''))
+  );
+  const perfumeInfo = foundPerfumeKey ? perfumeProfiles[foundPerfumeKey] : perfumeProfiles['shillstore-noir'];
 
   const sizes = product.sizes || (isPerfume ? ['100ml'] : ['S', 'M', 'L', 'XL', 'XXL']);
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
@@ -178,11 +236,13 @@ function ProductDetailContent({ handle }: { handle: string }) {
                 className={`relative aspect-square w-full rounded-2xl overflow-hidden border border-gray-100 shadow-xs ${
                   handle.includes('bloom')
                     ? 'bg-[#fcf5f3]'
-                    : handle.includes('ocean')
+                    : handle.includes('ocean') || handle.includes('elysium')
                     ? 'bg-[#eef7fc]'
-                    : handle.includes('legacy')
+                    : handle.includes('legacy') || handle.includes('savage')
                     ? 'bg-[#26130b]'
-                    : handle.includes('velo')
+                    : handle.includes('ember')
+                    ? 'bg-[#2a1205]'
+                    : handle.includes('velo') || handle.includes('zenith')
                     ? 'bg-[#383a3d]'
                     : handle.includes('velvet')
                     ? 'bg-[#2d0a12]'

@@ -11,6 +11,12 @@ export function getProductAccentColor(product: Product): string {
   if (product.id.includes('legacy')) return '#8c4b26';
   if (product.id.includes('velo')) return '#4e8397';
   if (product.id.includes('velvet')) return '#9b1d36';
+  if (product.id.includes('force')) return '#18181b';
+  if (product.id.includes('elysium')) return '#0284c7';
+  if (product.id.includes('nocturn')) return '#27272a';
+  if (product.id.includes('savage')) return '#92400e';
+  if (product.id.includes('zenith')) return '#52525b';
+  if (product.id.includes('ember')) return '#b45309';
 
   // Jacket Models
   if (product.id.includes('windbreaker')) return '#0284c7';
@@ -58,6 +64,12 @@ export function getProductDescription(product: Product): string {
     if (product.id.includes('legacy')) return 'Kehangatan rempah cardamom dan kayu cedarwood berkarakter karismatik.';
     if (product.id.includes('velo')) return 'Harmoni aroma segar modern yang minimalis, versatile, dan cocok segala suasana.';
     if (product.id.includes('velvet')) return 'Pesona keharuman sensual yang mewah, manis raspberry, dan tak terlupakan.';
+    if (product.id.includes('force')) return 'Aroma maskulin bold dengan citrus bergamot, lavender aromatik, dan kehangatan cedarwood amber (Stronger. Bolder. You).';
+    if (product.id.includes('elysium')) return 'Sensasi kesegaran laut akuatik dengan mandarin dan ambergris membangkitkan energi positif (Fresh Vibes. Higher Days).';
+    if (product.id.includes('nocturn')) return 'Daya pikat malam misterius perpaduan dark leather, cardamom spicy, iris, dan tonka bean (Darkness Brings Character).';
+    if (product.id.includes('savage')) return 'Karakter liar autentik dari perpaduan grapefruit, black currant, rose, patchouli, dan oakmoss (Untamed. Wild. Real).';
+    if (product.id.includes('zenith')) return 'Wewangian bersih elegan dengan sentuhan apel segar, white flowers, dan manisnya vanilla cedarwood (Simple Scent. Lasting Impression).';
+    if (product.id.includes('ember')) return 'Kehangatan mendalam perpaduan cinnamon, nutmeg, bourbon yang kaya, dan vanilla sandalwood (Warmer Soul. Deeper You).';
     return 'Wewangian eksklusif dengan ketahanan tahan lama menemani aktivitas harianmu.';
   }
   if (product.category === 'Jaket') {
@@ -92,6 +104,12 @@ export function getProductDescription(product: Product): string {
 
 export function getProductTags(product: Product): string[] {
   if (product.category === 'Parfum') {
+    if (product.id.includes('force')) return ['100 ML', 'EDP', 'Bold Woody'];
+    if (product.id.includes('elysium')) return ['100 ML', 'EDP', 'Fresh Aquatic'];
+    if (product.id.includes('nocturn')) return ['100 ML', 'EDP', 'Dark Leather'];
+    if (product.id.includes('savage')) return ['100 ML', 'EDP', 'Wild Woody'];
+    if (product.id.includes('zenith')) return ['100 ML', 'EDP', 'Clean Minimal'];
+    if (product.id.includes('ember')) return ['100 ML', 'EDP', 'Warm Bourbon'];
     return ['100 ML', 'EDP', 'Best Seller'];
   }
   if (product.category === 'Jaket') {
