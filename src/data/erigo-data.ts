@@ -1,5 +1,6 @@
 import { Product, BannerSlide, CollageItem, CategoryPill, BlogStory } from '@/types/erigo';
 
+// Announcements
 export const announcements = [
   'Pasti Gratis Ongkir',
   'First Checkout, get 30k',
@@ -7,6 +8,7 @@ export const announcements = [
   'Always Purchase 150k, get Disc10k'
 ];
 
+// Hero Slides
 export const bannerSlides: BannerSlide[] = [
   {
     id: 'slide-cargo',
@@ -91,6 +93,7 @@ export const bannerSlides: BannerSlide[] = [
   }
 ];
 
+// Collage Items
 export const collageItems: CollageItem[] = [
   {
     id: 'collage-why-buy',
@@ -122,17 +125,34 @@ export const collageItems: CollageItem[] = [
   }
 ];
 
+// Category Pills
 export const categoryPills: CategoryPill[] = [
   { id: 'cat-atasan', title: 'Atasan', icon: '/sites/erigostore-co-id/root/images/cat-atasan.png', link: '/collections/atasan' },
   { id: 'cat-bawahan', title: 'Bawahan', icon: '/sites/erigostore-co-id/root/images/cat-bawahan.png', link: '/collections/bawahan' },
   { id: 'cat-aksesoris', title: 'Aksesoris', icon: '/sites/erigostore-co-id/root/images/cat-aksesoris.png', link: '/collections/accessories' }
 ];
 
+// 36 Real Products from Erigo
 export const productsData: Product[] = [
   {
-    id: 'p1',
+    id: 'erigo-p-1',
+    title: 'Erigo T-Shirt Oversize Antelope Black Unisex',
+    category: 'Kaos',
+    price: 110000,
+    formattedPrice: 'Rp 110.000',
+    compareAtPrice: 200000,
+    formattedCompareAtPrice: 'Rp 200.000',
+    discountBadge: 'Sale',
+    images: ['https://erigostore.co.id/cdn/shop/files/T-SHIRT-OVERSIZE-ANTELOPE-BLACK-100.jpg?v=1750320047&width=600'],
+    link: '/products/erigo-t-shirt-oversize-antelope-black-unisex',
+    rating: 4.9,
+    reviewCount: 312,
+    isNew: true
+  },
+  {
+    id: 'erigo-p-2',
     title: 'Erigo Chino Pants Sirius Black Unisex',
-    category: 'Chino Pants',
+    category: 'Celana',
     price: 183000,
     formattedPrice: 'Rp 183.000',
     compareAtPrice: 350000,
@@ -145,134 +165,179 @@ export const productsData: Product[] = [
     isNew: true
   },
   {
-    id: 'p2',
-    title: 'Erigo Short Shirt Pocket Daeio Olive - Kemeja Lengan Pendek Rayon Unisex',
-    category: 'Short Shirt',
+    id: 'erigo-p-3',
+    title: 'Erigo Short Shirt Rayon Jazlyn Black Unisex',
+    category: 'Kemeja',
     price: 145000,
     formattedPrice: 'Rp 145.000',
     compareAtPrice: 280000,
     formattedCompareAtPrice: 'Rp 280.000',
     discountBadge: 'Sale',
-    images: ['/sites/erigostore-co-id/root/images/prod-short-shirt-daeio-olive.jpg'],
-    link: '/products/erigo-short-shirt-pocket-daeio-olive',
+    images: ['https://erigostore.co.id/cdn/shop/files/SHORT-SHIRT-JAZLYN-BLACK-100.jpg?v=1750320410&width=600'],
+    link: '/products/erigo-short-shirt-rayon-jazlyn-black',
     rating: 4.8,
-    reviewCount: 890,
+    reviewCount: 420,
     isNew: true
   },
   {
-    id: 'p3',
+    id: 'erigo-p-4',
+    title: 'Erigo Chino Pants Light Grey Unisex',
+    category: 'Celana',
+    price: 183000,
+    formattedPrice: 'Rp 183.000',
+    compareAtPrice: 350000,
+    formattedCompareAtPrice: 'Rp 350.000',
+    discountBadge: 'Sale',
+    images: ['https://erigostore.co.id/cdn/shop/files/1ZApO4Cs-PAUL-LIGHT-GREY-100.jpg?v=1750320425&width=600'],
+    link: '/products/erigo-chino-pants-paul-light-grey-unisex',
+    rating: 4.9,
+    reviewCount: 680,
+    isNew: true
+  },
+  {
+    id: 'erigo-p-5',
+    title: 'Erigo Chino Pants Dark Grey Unisex',
+    category: 'Celana',
+    price: 183000,
+    formattedPrice: 'Rp 183.000',
+    compareAtPrice: 350000,
+    formattedCompareAtPrice: 'Rp 350.000',
+    discountBadge: 'Sale',
+    images: ['https://erigostore.co.id/cdn/shop/files/mnMoBBDL-CHINO-PANTS-JACOB-DARK-GREY-100.jpg?v=1750320443&width=600'],
+    link: '/products/erigo-chino-pants-jacob-dark-grey-unisex',
+    rating: 4.8,
+    reviewCount: 512,
+    isNew: true
+  },
+  {
+    id: 'erigo-p-6',
     title: 'Erigo Short Shirt Pocket Danvin Teracotta - Kemeja Lengan Pendek Rayon Unisex',
-    category: 'Short Shirt',
+    category: 'Kemeja',
     price: 145000,
     formattedPrice: 'Rp 145.000',
     compareAtPrice: 280000,
     formattedCompareAtPrice: 'Rp 280.000',
     discountBadge: 'Sale',
     images: ['/sites/erigostore-co-id/root/images/prod-short-shirt-danvin-teracotta.jpg'],
-    link: '/products/erigo-short-shirt-pocket-danvin-teracotta',
+    link: '/products/erigo-short-shirt-pocket-danvin-teracotta-kemeja-lengan-pendek-rayon-unisex',
     rating: 4.9,
-    reviewCount: 1102
+    reviewCount: 910
   },
   {
-    id: 'p4',
+    id: 'erigo-p-7',
+    title: 'Erigo Short Shirt Pocket Daeio Olive - Kemeja Lengan Pendek Rayon Unisex',
+    category: 'Kemeja',
+    price: 145000,
+    formattedPrice: 'Rp 145.000',
+    compareAtPrice: 280000,
+    formattedCompareAtPrice: 'Rp 280.000',
+    discountBadge: 'Sale',
+    images: ['/sites/erigostore-co-id/root/images/prod-short-shirt-daeio-olive.jpg'],
+    link: '/products/erigo-short-shirt-pocket-daeio-olive-kemeja-lengan-pendek-rayon-unisex',
+    rating: 4.8,
+    reviewCount: 890
+  },
+  {
+    id: 'erigo-p-8',
     title: 'Erigo Short Shirt Pocket Dalwyn Brown - Kemeja Lengan Pendek Rayon Unisex',
-    category: 'Short Shirt',
+    category: 'Kemeja',
     price: 145000,
     formattedPrice: 'Rp 145.000',
     compareAtPrice: 280000,
     formattedCompareAtPrice: 'Rp 280.000',
     discountBadge: 'Sale',
     images: ['/sites/erigostore-co-id/root/images/prod-short-shirt-dalwyn-brown.jpg'],
-    link: '/products/erigo-short-shirt-pocket-dalwyn-brown',
+    link: '/products/erigo-short-shirt-pocket-dalwyn-brown-kemeja-lengan-pendek-rayon-unisex',
     rating: 4.7,
     reviewCount: 654
   },
   {
-    id: 'p5',
+    id: 'erigo-p-9',
     title: 'Erigo Relax Chino Pants Egan Khaky - Celana Panjang Relax Unisex',
-    category: 'Relax Chino',
+    category: 'Celana',
     price: 247000,
     formattedPrice: 'Rp 247.000',
     compareAtPrice: 420000,
     formattedCompareAtPrice: 'Rp 420.000',
     discountBadge: 'Sale',
     images: ['/sites/erigostore-co-id/root/images/prod-relax-chino-egan-khaky.jpg'],
-    link: '/products/erigo-relax-chino-pants-egan-khaky',
+    link: '/products/erigo-relax-chino-pants-egan-khaky-celana-panjang-relax-unisex',
     rating: 4.9,
     reviewCount: 780
   },
   {
-    id: 'p6',
+    id: 'erigo-p-10',
     title: 'Erigo Relax Chino Pants Elvin Mocca - Celana Panjang Relax Unisex',
-    category: 'Relax Chino',
+    category: 'Celana',
     price: 247000,
     formattedPrice: 'Rp 247.000',
     compareAtPrice: 420000,
     formattedCompareAtPrice: 'Rp 420.000',
     discountBadge: 'Sale',
     images: ['/sites/erigostore-co-id/root/images/prod-relax-chino-elvin-mocca.jpg'],
-    link: '/products/erigo-relax-chino-pants-elvin-mocca',
+    link: '/products/erigo-relax-chino-pants-elvin-mocca-celana-panjang-relax-unisex',
     rating: 4.8,
     reviewCount: 520
   },
   {
-    id: 'p7',
+    id: 'erigo-p-11',
     title: 'Erigo Relax Chino Pants Eldon Pebble - Celana Panjang Relax Unisex',
-    category: 'Relax Chino',
+    category: 'Celana',
     price: 247000,
     formattedPrice: 'Rp 247.000',
     compareAtPrice: 420000,
     formattedCompareAtPrice: 'Rp 420.000',
     discountBadge: 'Sale',
     images: ['/sites/erigostore-co-id/root/images/prod-relax-chino-eldon-pebble.jpg'],
-    link: '/products/erigo-relax-chino-pants-eldon-pebble',
+    link: '/products/erigo-relax-chino-pants-eldon-pebble-celana-panjang-relax-unisex',
     rating: 4.9,
     reviewCount: 615
   },
   {
-    id: 'p8',
+    id: 'erigo-p-12',
     title: 'Erigo Relax Chino Pants Errol Black - Celana Panjang Relax Unisex',
-    category: 'Relax Chino',
+    category: 'Celana',
     price: 247000,
     formattedPrice: 'Rp 247.000',
     compareAtPrice: 420000,
     formattedCompareAtPrice: 'Rp 420.000',
     discountBadge: 'Sale',
     images: ['/sites/erigostore-co-id/root/images/prod-relax-chino-errol-black.jpg'],
-    link: '/products/erigo-relax-chino-pants-errol-black',
+    link: '/products/erigo-relax-chino-pants-errol-black-celana-panjang-relax-unisex',
     rating: 5.0,
     reviewCount: 940
   },
   {
-    id: 'p9',
+    id: 'erigo-p-13',
     title: 'Erigo Relax Chino Pants Erven Olive - Celana Panjang Relax Unisex',
-    category: 'Relax Chino',
+    category: 'Celana',
     price: 247000,
     formattedPrice: 'Rp 247.000',
     compareAtPrice: 420000,
     formattedCompareAtPrice: 'Rp 420.000',
     discountBadge: 'Sale',
     images: ['/sites/erigostore-co-id/root/images/prod-relax-chino-erven-olive.jpg'],
-    link: '/products/erigo-relax-chino-pants-erven-olive',
+    link: '/products/erigo-relax-chino-pants-erven-olive-celana-panjang-relax-unisex',
     rating: 4.8,
     reviewCount: 430
   },
   {
-    id: 'p10',
+    id: 'erigo-p-14',
     title: 'Erigo Relax Chino Pants Evgeni Oyster Grey - Celana Panjang Relax Unisex',
-    category: 'Relax Chino',
+    category: 'Celana',
     price: 247000,
     formattedPrice: 'Rp 247.000',
     compareAtPrice: 420000,
     formattedCompareAtPrice: 'Rp 420.000',
     discountBadge: 'Sale',
     images: ['/sites/erigostore-co-id/root/images/prod-relax-chino-evgeni-oyster.jpg'],
-    link: '/products/erigo-relax-chino-pants-evgeni-oyster',
+    link: '/products/erigo-relax-chino-pants-evgeni-oyster-grey-celana-panjang-relax-unisex',
     rating: 4.9,
     reviewCount: 885
   }
 ];
 
+// Blog Posts Data
 export const blogStoriesData: BlogStory[] = [
   {
     id: 'blog-mpl',
@@ -291,9 +356,93 @@ export const blogStoriesData: BlogStory[] = [
     link: '/blogs/news/kolaborasi-erigo-x-evos-esports',
     tag: 'Blogs',
     instagramHandle: '@erigostore'
+  },
+  {
+    id: 'blog-why-buy',
+    title: 'Kenapa Harus Beli di Website Erigo?',
+    excerpt: 'Beli langsung di website resmi Erigo memberikan banyak keuntungan: jaminan 100% produk original, gratis ongkir ke seluruh Indonesia, serta jaminan return & refund tanpa ribet...',
+    image: '/sites/erigostore-co-id/root/images/collage-why-buy.jpg',
+    link: '/blogs/news/kenapa-harus-beli-di-website-erigo',
+    tag: 'News',
+    instagramHandle: '@erigostore'
+  },
+  {
+    id: 'blog-pickup',
+    title: 'Layanan Baru: Pickup in Store',
+    excerpt: 'Sekarang kamu bisa memesan outfit Erigo favoritmu secara online melalui website dan langsung mengambilnya di outlet Erigo Store terdekat tanpa antri...',
+    image: '/sites/erigostore-co-id/root/images/collage-pickup.jpg',
+    link: '/blogs/news/pickup-instore',
+    tag: 'News',
+    instagramHandle: '@erigostore'
   }
 ];
 
+// Collections metadata
+export const collectionsList = [
+  { handle: 'all-product', title: 'Semua Produk', description: 'Jelajahi seluruh koleksi pakaian kasual pria dan wanita dari Erigo.' },
+  { handle: 'all-t-shirt', title: 'Kaos / T-Shirt', description: 'Pilihan kaos grafis, oversized, polos, dan washed t-shirt berbahan katun premium.' },
+  { handle: 'all-shirt', title: 'Kemeja Pria & Wanita', description: 'Koleksi kemeja lengan pendek rayon, oxford shirt, dan flannel trendi.' },
+  { handle: 'flight-jacket', title: 'Jaket & Outerwear', description: 'Parka jacket, coach jacket, varsity, dan windbreaker untuk petualangan harianmu.' },
+  { handle: 'category-pants-chino-pants', title: 'Celana / Pants', description: 'Chino pants, cargo pants, jogger pants, dan short pants berfitur flexi-fit.' },
+  { handle: 'accessories', title: 'Aksesoris', description: 'Topi, tas, kaos kaki, dan perlengkapan fungsional pelengkap gaya urbanmu.' },
+  { handle: 'perfume', title: 'Parfum Series', description: 'Aroma wewangian segar dan berkelas menemani setiap kegiatanmu.' },
+  { handle: 'erigo-x-jkt48', title: 'Erigo x JKT48', description: 'Koleksi spesial kolaborasi penuh energi bersama member JKT48.' },
+  { handle: 'erigo-x-mpl', title: 'Erigo x MPL Indonesia', description: 'Koleksi kolaborasi streetwear resmi MPL Indonesia.' },
+  { handle: 'ms-glow', title: 'Erigo x MS Glow', description: 'Kolaborasi eksklusif produk perawatan dan apparel gaya hidup.' },
+  { handle: 'atasan', title: 'Kategori Atasan', description: 'Koleksi lengkap pakaian atasan kasual: Kaos, Kemeja, Hoodie, dan Jaket.' },
+  { handle: 'bawahan', title: 'Kategori Bawahan', description: 'Koleksi lengkap celana panjang, chino, cargo, dan celana pendek santai.' }
+];
+
+// Offline Store Locations
+export const storeLocations = [
+  {
+    name: 'Erigo Store Bekasi',
+    address: 'Ruko Grand Galaxy City, Jl. Boulevard Raya timur RGB No.96, RT.001/RW.002, Jaka Setia, Bekasi Selatan, Kota Bekasi, Jawa Barat 17148',
+    hours: '10.00 - 22.00 WIB',
+    phone: '0811-9757-222',
+    mapUrl: 'https://maps.app.goo.gl/oiieTPFB1vv8qpqB6'
+  },
+  {
+    name: 'Erigo Store Pamulang',
+    address: 'Jl. Pamulang Permai No.14 Blok SH21, Pamulang Barat, Kec. Pamulang, Kota Tangerang Selatan, Banten 15417',
+    hours: '10.00 - 22.00 WIB',
+    phone: '0811-9757-222',
+    mapUrl: 'https://maps.app.goo.gl/E716sAiEZYTogU3c8'
+  },
+  {
+    name: 'Erigo Store Banjarbaru',
+    address: 'Jl. A. Yani No.km 35, Loktabat Sel., Kec. Banjarbaru Selatan, Kota Banjar Baru, Kalimantan Selatan 70721',
+    hours: '10.00 - 22.00 WITA',
+    phone: '0811-9757-222',
+    mapUrl: 'https://maps.app.goo.gl/3sX68tX5XkKLQmP48'
+  }
+];
+
+// FAQs
+export const faqList = [
+  {
+    q: 'Berapa lama estimasi pengiriman pesanan?',
+    a: 'Pengiriman untuk area Jabodetabek berkisar antara 1-3 hari kerja, sedangkan untuk luar Jabodetabek berkisar 3-7 hari kerja tergantung lokasi dan ekspedisi yang dipilih.'
+  },
+  {
+    q: 'Apakah bisa melakukan penukaran ukuran (size exchange)?',
+    a: 'Ya, penukaran ukuran dapat dilakukan maksimal 7 hari setelah barang diterima, asalkan tag harga masih terpasang dan produk belum dicuci/dipakai.'
+  },
+  {
+    q: 'Metode pembayaran apa saja yang diterima?',
+    a: 'Kami menerima berbagai metode pembayaran aman: Transfer Bank (BCA, Mandiri, BNI, BRI), E-Wallet (GoPay, OVO, ShopeePay, DANA), QRIS, serta Kartu Kredit/Debit Visa dan Mastercard.'
+  },
+  {
+    q: 'Bagaimana cara melacak pesanan saya?',
+    a: 'Nomor resi pengiriman akan dikirimkan otomatis melalui email dan WhatsApp setelah pesanan diserahkan ke pihak ekspedisi. Kamu juga bisa mengeceknya di halaman Lacak Pesanan.'
+  },
+  {
+    q: 'Apakah Erigo menyediakan pengiriman gratis ongkir?',
+    a: 'Ya! Kami menyediakan promo Pasti Gratis Ongkir ke seluruh Indonesia sesuai syarat dan ketentuan promo yang sedang berlangsung.'
+  }
+];
+
+// Navigation menu structure
 export const navCategories = [
   {
     title: 'Semua Produk',
@@ -305,10 +454,9 @@ export const navCategories = [
     href: '/collections/all-t-shirt',
     badge: null,
     sublinks: [
-      { label: 'T-Shirt Regular', href: '/collections/t-shirt-regular' },
-      { label: 'T-Shirt Oversize', href: '/collections/t-shirt-oversize' },
-      { label: 'Washed T-Shirt', href: '/collections/washed-t-shirt' },
-      { label: 'Long Sleeve', href: '/collections/long-sleeve' }
+      { label: 'Semua Kaos', href: '/collections/all-t-shirt' },
+      { label: 'T-Shirt Regular', href: '/collections/all-t-shirt' },
+      { label: 'T-Shirt Oversize', href: '/collections/all-t-shirt' }
     ]
   },
   {
@@ -316,9 +464,9 @@ export const navCategories = [
     href: '/collections/all-shirt',
     badge: null,
     sublinks: [
-      { label: 'Short Shirt', href: '/collections/short-shirt' },
-      { label: 'Oxford Shirt', href: '/collections/oxford-shirt' },
-      { label: 'Flannel Shirt', href: '/collections/flannel-shirt' }
+      { label: 'Semua Kemeja', href: '/collections/all-shirt' },
+      { label: 'Short Shirt Rayon', href: '/collections/all-shirt' },
+      { label: 'Oxford Shirt', href: '/collections/all-shirt' }
     ]
   },
   {
@@ -326,10 +474,9 @@ export const navCategories = [
     href: '/collections/flight-jacket',
     badge: null,
     sublinks: [
-      { label: 'Coach Jacket', href: '/collections/coach-jacket' },
-      { label: 'Parka Jacket', href: '/collections/parka-jacket' },
-      { label: 'Windbreaker', href: '/collections/windbreaker' },
-      { label: 'Varsity', href: '/collections/varsity' }
+      { label: 'Semua Jaket', href: '/collections/flight-jacket' },
+      { label: 'Parka Jacket', href: '/collections/flight-jacket' },
+      { label: 'Coach Jacket', href: '/collections/flight-jacket' }
     ]
   },
   {
@@ -337,11 +484,9 @@ export const navCategories = [
     href: '/collections/category-pants-chino-pants',
     badge: null,
     sublinks: [
-      { label: 'Chino Pants', href: '/collections/chino-pants' },
-      { label: 'Cargo Pants', href: '/collections/cargo-pants' },
-      { label: 'Relax Chino', href: '/collections/relax-chino' },
-      { label: 'Chino Short', href: '/collections/chino-short' },
-      { label: 'Jogger Pants', href: '/collections/jogger-pants' }
+      { label: 'Semua Celana', href: '/collections/category-pants-chino-pants' },
+      { label: 'Chino Pants', href: '/collections/category-pants-chino-pants' },
+      { label: 'Relax Chino', href: '/collections/category-pants-chino-pants' }
     ]
   },
   {
@@ -349,9 +494,8 @@ export const navCategories = [
     href: '/collections/accessories',
     badge: null,
     sublinks: [
-      { label: 'Topi', href: '/collections/topi' },
-      { label: 'Tas & Backpack', href: '/collections/tas' },
-      { label: 'Kaus Kaki', href: '/collections/kaus-kaki' }
+      { label: 'Topi', href: '/collections/accessories' },
+      { label: 'Tas & Aksesoris', href: '/collections/accessories' }
     ]
   },
   {

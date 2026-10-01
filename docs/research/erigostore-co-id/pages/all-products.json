@@ -1,0 +1,614 @@
+[
+  {
+    "id": "erigo-p-1",
+    "title": "Erigo T-Shirt Oversize Antelope Black Unisex",
+    "category": "Kemeja",
+    "price": 103000,
+    "formattedPrice": "Rp 103.000",
+    "compareAtPrice": 154500,
+    "formattedCompareAtPrice": "Rp 154.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/T-SHIRT-OVERSIZE-ANTELOPE-BLACK-100.jpg?v=1750320047&width=533"
+    ],
+    "link": "/products/erigo-t-shirt-oversize-antelope-black-unisex",
+    "rating": 5,
+    "reviewCount": 340,
+    "isNew": true
+  },
+  {
+    "id": "erigo-p-2",
+    "title": "Erigo Chino Pants Sirius Black Unisex",
+    "category": "Celana",
+    "price": 183000,
+    "formattedPrice": "Rp 183.000",
+    "compareAtPrice": 274500,
+    "formattedCompareAtPrice": "Rp 274.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/2B1NqcBy-CHINO-PANTS-SIRIUS-BLACK-100.jpg?v=1750320434&width=533"
+    ],
+    "link": "/products/erigo-chino-pants-sirius-black-unisex",
+    "rating": 5,
+    "reviewCount": 265,
+    "isNew": true
+  },
+  {
+    "id": "erigo-p-3",
+    "title": "Erigo Short Shirt Rayon Jazlyn Black Unisex",
+    "category": "Kemeja",
+    "price": 118000,
+    "formattedPrice": "Rp 118.000",
+    "compareAtPrice": 177000,
+    "formattedCompareAtPrice": "Rp 177.000",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/SHORT-SHIRT-JAZLYN-BLACK-100.jpg?v=1750320410&width=533"
+    ],
+    "link": "/products/erigo-short-shirt-rayon-jazlyn-black",
+    "rating": 4.8,
+    "reviewCount": 240,
+    "isNew": true
+  },
+  {
+    "id": "erigo-p-4",
+    "title": "Erigo Chino Pants Light Grey Unisex",
+    "category": "Celana",
+    "price": 183000,
+    "formattedPrice": "Rp 183.000",
+    "compareAtPrice": 274500,
+    "formattedCompareAtPrice": "Rp 274.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/1ZApO4Cs-PAUL-LIGHT-GREY-100.jpg?v=1750320425&width=533"
+    ],
+    "link": "/products/erigo-chino-pants-paul-light-grey-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 612,
+    "isNew": true
+  },
+  {
+    "id": "erigo-p-5",
+    "title": "Erigo Chino Pants Dark Grey Unisex",
+    "category": "Celana",
+    "price": 183000,
+    "formattedPrice": "Rp 183.000",
+    "compareAtPrice": 274500,
+    "formattedCompareAtPrice": "Rp 274.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/mnMoBBDL-CHINO-PANTS-JACOB-DARK-GREY-100.jpg?v=1750320443&width=533"
+    ],
+    "link": "/products/erigo-chino-pants-jacob-dark-grey-unisex",
+    "rating": 5,
+    "reviewCount": 913,
+    "isNew": true
+  },
+  {
+    "id": "erigo-p-6",
+    "title": "Erigo Short Shirt Pocket Danvin Teracotta - Kemeja Lengan Pendek Rayon Unisex",
+    "category": "Kemeja",
+    "price": 145000,
+    "formattedPrice": "Rp 145.000",
+    "compareAtPrice": 217500,
+    "formattedCompareAtPrice": "Rp 217.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/id-11134201-7rasb-m5dzvdwf96ww66.jpg?v=1750318822&width=533"
+    ],
+    "link": "/products/erigo-short-shirt-pocket-danvin-teracotta-kemeja-lengan-pendek-rayon-unisex",
+    "rating": 4.8,
+    "reviewCount": 145,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-7",
+    "title": "Erigo Chino Pants Alexa Navy Unisex",
+    "category": "Celana",
+    "price": 183000,
+    "formattedPrice": "Rp 183.000",
+    "compareAtPrice": 274500,
+    "formattedCompareAtPrice": "Rp 274.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/n5siMDHY-CHINO-PANTS-ALEXA-NAVY-100.jpg?v=1750320421&width=533"
+    ],
+    "link": "/products/erigo-chino-pants-alexa-navy-unisex",
+    "rating": 4.8,
+    "reviewCount": 372,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-8",
+    "title": "Erigo Short Shirt Othieno Army Unisex",
+    "category": "Kemeja",
+    "price": 118000,
+    "formattedPrice": "Rp 118.000",
+    "compareAtPrice": 177000,
+    "formattedCompareAtPrice": "Rp 177.000",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/COVER_SHORT-SHIRT-OTHIENO-ARMY.jpg?v=1750320389&width=533"
+    ],
+    "link": "/products/erigo-short-shirt-othieno-army-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 467,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-9",
+    "title": "Erigo T-Shirt Basic Meghan Black Unisex",
+    "category": "Kemeja",
+    "price": 103000,
+    "formattedPrice": "Rp 103.000",
+    "compareAtPrice": 154500,
+    "formattedCompareAtPrice": "Rp 154.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/T-SHIRT-BASIC-MEGHAN-BLACK-100.jpg?v=1750319659&width=533"
+    ],
+    "link": "/products/erigo-t-shirt-basic-meghan-black-unisex",
+    "rating": 5,
+    "reviewCount": 656,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-10",
+    "title": "Erigo Chino Pants Caprio Brown Unisex",
+    "category": "Celana",
+    "price": 183000,
+    "formattedPrice": "Rp 183.000",
+    "compareAtPrice": 274500,
+    "formattedCompareAtPrice": "Rp 274.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/fzbCujOo-CHINO-PANTS-CAPRIO-BROWN-100.jpg?v=1750320429&width=533"
+    ],
+    "link": "/products/erigo-chino-pants-caprio-brown-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 209,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-11",
+    "title": "Erigo Short Shirt Pocket Dalwyn Brown - Kemeja Lengan Pendek Rayon Unisex",
+    "category": "Kemeja",
+    "price": 145000,
+    "formattedPrice": "Rp 145.000",
+    "compareAtPrice": 217500,
+    "formattedCompareAtPrice": "Rp 217.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/id-11134201-7rase-m5dzvdqlhod941.jpg?v=1750318823&width=533"
+    ],
+    "link": "/products/erigo-short-shirt-pocket-dalwyn-brown-kemeja-lengan-pendek-rayon-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 360,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-12",
+    "title": "Erigo Short Shirt Cochise Light Brown Unisex",
+    "category": "Kemeja",
+    "price": 118000,
+    "formattedPrice": "Rp 118.000",
+    "compareAtPrice": 177000,
+    "formattedCompareAtPrice": "Rp 177.000",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/COVER_SHORT-SHIRT-COCHISE-LIGHT-BROWN.jpg?v=1750320412&width=533"
+    ],
+    "link": "/products/erigo-short-shirt-cochise-light-brown-unisex",
+    "rating": 5,
+    "reviewCount": 289,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-13",
+    "title": "Erigo Chino Pants Beryl Emerald Unisex",
+    "category": "Celana",
+    "price": 183000,
+    "formattedPrice": "Rp 183.000",
+    "compareAtPrice": 274500,
+    "formattedCompareAtPrice": "Rp 274.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/i5h4LA2U-CHINO-PANTS-BERYL-EMERALD-100.jpg?v=1750320455&width=533"
+    ],
+    "link": "/products/erigo-chino-pants-beryl-emerald-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 324,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-14",
+    "title": "Erigo X M6 T-Shirt Oversize Sacred Claude White Unisex",
+    "category": "Kemeja",
+    "price": 204000,
+    "formattedPrice": "Rp 204.000",
+    "compareAtPrice": 306000,
+    "formattedCompareAtPrice": "Rp 306.000",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/T-SHIRT-M6-WHITE-15.jpg?v=1750318997&width=533"
+    ],
+    "link": "/products/erigo-x-m6-t-shirt-oversize-sacred-claude-white-unisex",
+    "rating": 5,
+    "reviewCount": 189,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-15",
+    "title": "Erigo Chino Pants Zander Light Brown Unisex",
+    "category": "Celana",
+    "price": 183000,
+    "formattedPrice": "Rp 183.000",
+    "compareAtPrice": 274500,
+    "formattedCompareAtPrice": "Rp 274.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/ql45dQf5-BEST-SELLER-NEW-FRAME_CHINO-PANTS-ZENO-LIGHT-BROWN-56.jpg?v=1752570173&width=533"
+    ],
+    "link": "/products/erigo-chino-pants-zeno-light-brown-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 742,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-16",
+    "title": "Erigo T-Shirt Oversize Fresne Andora Unisex",
+    "category": "Kemeja",
+    "price": 103000,
+    "formattedPrice": "Rp 103.000",
+    "compareAtPrice": 154500,
+    "formattedCompareAtPrice": "Rp 154.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/COVER_T-Shirt-Fresne-Andora.jpg?v=1750320015&width=533"
+    ],
+    "link": "/products/erigo-t-shirt-oversize-fresne-andora-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 677,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-17",
+    "title": "Erigo Short Shirt Rayon Lavrenti White Unisex",
+    "category": "Kemeja",
+    "price": 118000,
+    "formattedPrice": "Rp 118.000",
+    "compareAtPrice": 177000,
+    "formattedCompareAtPrice": "Rp 177.000",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/SHORT-SHIRT-LAVRENTI-WHITE-100.jpg?v=1750320401&width=533"
+    ],
+    "link": "/products/erigo-short-shirt-rayon-lavrenti-white",
+    "rating": 5,
+    "reviewCount": 529,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-18",
+    "title": "Erigo Jogger Pants Noa Light Grey Unisex",
+    "category": "Celana",
+    "price": 166000,
+    "formattedPrice": "Rp 166.000",
+    "compareAtPrice": 249000,
+    "formattedCompareAtPrice": "Rp 249.000",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/COVER_JOGGER-PANTS-NOA-LIGHT-GREY.jpg?v=1750320380&width=533"
+    ],
+    "link": "/products/erigo-jogger-pants-noa-light-grey",
+    "rating": 4.8999999999999995,
+    "reviewCount": 232,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-19",
+    "title": "Erigo T-Shirt Yachiko Black Unisex",
+    "category": "Kemeja",
+    "price": 91000,
+    "formattedPrice": "Rp 91.000",
+    "compareAtPrice": 136500,
+    "formattedCompareAtPrice": "Rp 136.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/id-11134201-7r98r-lx9mknr9ykz0b7.jpg?v=1750319455&width=533"
+    ],
+    "link": "/products/erigo-t-shirt-yachiko-black-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 150,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-20",
+    "title": "Erigo Short Shirt Delwyn Dark Brown Unisex",
+    "category": "Kemeja",
+    "price": 118000,
+    "formattedPrice": "Rp 118.000",
+    "compareAtPrice": 177000,
+    "formattedCompareAtPrice": "Rp 177.000",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/SHORT-SHIRT-DELWYN-DARK-BROWN_1.jpg?v=1750320381&width=533"
+    ],
+    "link": "/products/erigo-short-shirt-delwyn-dark-brown-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 849,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-21",
+    "title": "Erigo Chino Pants Ata Olive Unisex",
+    "category": "Celana",
+    "price": 183000,
+    "formattedPrice": "Rp 183.000",
+    "compareAtPrice": 274500,
+    "formattedCompareAtPrice": "Rp 274.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/JhX1EAj7-CHINO-PANTS-ATA-OLIVE-100.jpg?v=1750320461&width=533"
+    ],
+    "link": "/products/erigo-chino-pants-ata-olive-unisex",
+    "rating": 5,
+    "reviewCount": 736,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-22",
+    "title": "Erigo T-Shirt Yohn Olive Unisex",
+    "category": "Kemeja",
+    "price": 91000,
+    "formattedPrice": "Rp 91.000",
+    "compareAtPrice": 136500,
+    "formattedCompareAtPrice": "Rp 136.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/id-11134201-7r98p-lrfoptq81rrjb6.jpg?v=1750319281&width=533"
+    ],
+    "link": "/products/erigo-t-shirt-yohn-olive-unisex",
+    "rating": 5,
+    "reviewCount": 845,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-23",
+    "title": "Erigo Koko Long Sleeve Bordir Abbas White",
+    "category": "Lainnya",
+    "price": 159000,
+    "formattedPrice": "Rp 159.000",
+    "compareAtPrice": 238500,
+    "formattedCompareAtPrice": "Rp 238.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/ERIGO2255.jpg?v=1750319900&width=533"
+    ],
+    "link": "/products/erigo-koko-long-sleeve-bordir-abbas-white",
+    "rating": 4.8,
+    "reviewCount": 464,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-24",
+    "title": "Erigo Chino Pants Mika Grey Unisex",
+    "category": "Celana",
+    "price": 183000,
+    "formattedPrice": "Rp 183.000",
+    "compareAtPrice": 274500,
+    "formattedCompareAtPrice": "Rp 274.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/xNOicmiS-CHINO-PANTS-MIKA-GREY-100.jpg?v=1750320416&width=533"
+    ],
+    "link": "/products/erigo-chino-pants-mika-grey-unisex",
+    "rating": 5,
+    "reviewCount": 428,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-25",
+    "title": "Erigo Short Shirt Gribson Navy Unisex",
+    "category": "Kemeja",
+    "price": 118000,
+    "formattedPrice": "Rp 118.000",
+    "compareAtPrice": 177000,
+    "formattedCompareAtPrice": "Rp 177.000",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/SHORT-SHIRT-GRIBSON-NAVY-100.jpg?v=1750320405&width=533"
+    ],
+    "link": "/products/erigo-short-shirt-gribson-navy-unisex",
+    "rating": 5,
+    "reviewCount": 227,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-26",
+    "title": "Erigo X M6 T-Shirt Oversize Sacred Claude Black Unisex",
+    "category": "Kemeja",
+    "price": 204000,
+    "formattedPrice": "Rp 204.000",
+    "compareAtPrice": 306000,
+    "formattedCompareAtPrice": "Rp 306.000",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/T-SHIRT-M6-BLACK-13.jpg?v=1750318998&width=533"
+    ],
+    "link": "/products/erigo-x-m6-t-shirt-oversize-sacred-claude-black-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 915,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-27",
+    "title": "Erigo Chino Pants Gael Camel Unisex",
+    "category": "Celana",
+    "price": 183000,
+    "formattedPrice": "Rp 183.000",
+    "compareAtPrice": 274500,
+    "formattedCompareAtPrice": "Rp 274.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/id-11134207-7rasa-m2hze4xadso247.jpg?v=1750319000&width=533"
+    ],
+    "link": "/products/erigo-chino-pants-gael-camel-unisex",
+    "rating": 5,
+    "reviewCount": 179,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-28",
+    "title": "Erigo X MPL Jersey Jungler Black Unisex",
+    "category": "Lainnya",
+    "price": 220000,
+    "formattedPrice": "Rp 220.000",
+    "compareAtPrice": 330000,
+    "formattedCompareAtPrice": "Rp 330.000",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/id-11134207-7r98y-lykjo7qmgywd5e.jpg?v=1750320471&width=533"
+    ],
+    "link": "/products/erigo-x-mpl-jersey-jungler-black",
+    "rating": 5,
+    "reviewCount": 446,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-29",
+    "title": "Erigo Relax Chino Pants Errol Black - Celana Panjang Relax Unisex",
+    "category": "Celana",
+    "price": 247000,
+    "formattedPrice": "Rp 247.000",
+    "compareAtPrice": 370500,
+    "formattedCompareAtPrice": "Rp 370.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/COVER_RELAX-CHINO-PANTS-ERROL-BLACK-07.jpg?v=1750318842&width=533"
+    ],
+    "link": "/products/erigo-relax-chino-pants-errol-black-celana-panjang-relax-unisex",
+    "rating": 4.8,
+    "reviewCount": 159,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-30",
+    "title": "Erigo T-Shirt Akash Black Unisex",
+    "category": "Kemeja",
+    "price": 91000,
+    "formattedPrice": "Rp 91.000",
+    "compareAtPrice": 136500,
+    "formattedCompareAtPrice": "Rp 136.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/id-11134201-7rasm-m0s99vc0sada88.jpg?v=1750319226&width=533"
+    ],
+    "link": "/products/erigo-t-shirt-akash-black-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 903,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-31",
+    "title": "Erigo Relax Chino Pants Elvin Mocca - Celana Panjang Relax Unisex",
+    "category": "Celana",
+    "price": 247000,
+    "formattedPrice": "Rp 247.000",
+    "compareAtPrice": 370500,
+    "formattedCompareAtPrice": "Rp 370.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/COVER_RELAX-CHINO-PANTS-ELVIN-MOCCA-11.jpg?v=1750318834&width=533"
+    ],
+    "link": "/products/erigo-relax-chino-pants-elvin-mocca-celana-panjang-relax-unisex",
+    "rating": 5,
+    "reviewCount": 539,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-32",
+    "title": "Erigo Short Shirt Aera Khaki Unisex",
+    "category": "Kemeja",
+    "price": 118000,
+    "formattedPrice": "Rp 118.000",
+    "compareAtPrice": 177000,
+    "formattedCompareAtPrice": "Rp 177.000",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/SHORT-SHIRT-AERA-KHAKI-100.jpg?v=1750320393&width=533"
+    ],
+    "link": "/products/erigo-short-shirt-aera-khaki-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 721,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-33",
+    "title": "Erigo T-shirt Oversize Marsha Final Dance Khaki - Kaos Oversize Unisex",
+    "category": "Kemeja",
+    "price": 119000,
+    "formattedPrice": "Rp 119.000",
+    "compareAtPrice": 178500,
+    "formattedCompareAtPrice": "Rp 178.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/New-Marsha-Front.jpg?v=1750318899&width=533"
+    ],
+    "link": "/products/erigo-t-shirt-oversize-jkt48-marsha-final-dance-khaki-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 914,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-34",
+    "title": "Erigo T-shirt Oversize Christy Final Dance Army - Kaos Oversize Unisex",
+    "category": "Kemeja",
+    "price": 119000,
+    "formattedPrice": "Rp 119.000",
+    "compareAtPrice": 178500,
+    "formattedCompareAtPrice": "Rp 178.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/New-Christy-Front.jpg?v=1750318898&width=533"
+    ],
+    "link": "/products/erigo-t-shirt-oversize-jkt48-christy-final-dance-army-unisex",
+    "rating": 4.8999999999999995,
+    "reviewCount": 372,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-35",
+    "title": "Erigo Hoodie Colson Navy",
+    "category": "Lainnya",
+    "price": 238000,
+    "formattedPrice": "Rp 238.000",
+    "compareAtPrice": 357000,
+    "formattedCompareAtPrice": "Rp 357.000",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/id-11134201-7r98s-lwqsx2bvxu6y6a.jpg?v=1750319441&width=533"
+    ],
+    "link": "/products/erigo-hoodie-colson-navy-unisex",
+    "rating": 5,
+    "reviewCount": 473,
+    "isNew": false
+  },
+  {
+    "id": "erigo-p-36",
+    "title": "Erigo Chino Pants James Army Unisex",
+    "category": "Celana",
+    "price": 183000,
+    "formattedPrice": "Rp 183.000",
+    "compareAtPrice": 274500,
+    "formattedCompareAtPrice": "Rp 274.500",
+    "discountBadge": "Sale",
+    "images": [
+      "https://erigostore.co.id/cdn/shop/files/VAiDqLdj-CHINO-PANTS-JAMES-ARMY-100.jpg?v=1750320449&width=533"
+    ],
+    "link": "/products/erigo-chino-pants-james-army-unisex",
+    "rating": 5,
+    "reviewCount": 518,
+    "isNew": false
+  }
+]
