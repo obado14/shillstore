@@ -21,6 +21,54 @@ export default function ProductDetailPage({
   return <ProductDetailContent handle={handle} />;
 }
 
+interface PerfumeDetail {
+  name: string;
+  tagline: string;
+  type: string;
+  volume: string;
+  longevity: string;
+  character: string;
+  top: string;
+  middle: string;
+  base: string;
+}
+
+const perfumeProfiles: Record<string, PerfumeDetail> = {
+  'shillstore-noir': {
+    name: 'Shillstore Noir',
+    tagline: 'dirancang untuk pria dan wanita yang mendambakan wewangian berkarakter bold, percaya diri, dan tak lekang oleh waktu (Bold, Confident, Timeless).',
+    type: 'Eau De Parfum (EDP)',
+    volume: '100 ML',
+    longevity: '8 - 12 Jam (Long Lasting)',
+    character: 'Warm Spicy, Woody, Citrus & Musky',
+    top: 'Bergamot, Black Pepper',
+    middle: 'Lavender, Cedarwood',
+    base: 'Amber, Musk',
+  },
+  'shillstore-bloom': {
+    name: 'Shillstore Bloom',
+    tagline: 'hadir dengan aroma floral menyegarkan yang memancarkan pesona keanggunan, kelembutan, dan nuansa ceria (Fresh, Floral, Elegant).',
+    type: 'Eau De Parfum (EDP)',
+    volume: '100 ML',
+    longevity: '8 - 12 Jam (Long Lasting)',
+    character: 'Fresh, Floral & Elegant',
+    top: 'Pear, Citrus',
+    middle: 'Peony, Jasmine',
+    base: 'Musk, Vanilla',
+  },
+  'shillstore-ocean': {
+    name: 'Shillstore Ocean',
+    tagline: 'membawa kesegaran deburan angin laut dan sentuhan citrus akuatik yang membangkitkan energi dan semangat sepanjang hari (Fresh, Aquatic, Energetic).',
+    type: 'Eau De Toilette (EDT)',
+    volume: '100 ML',
+    longevity: '6 - 8 Jam (Fresh Daily Scent)',
+    character: 'Fresh, Aquatic & Energetic',
+    top: 'Bergamot, Lemon',
+    middle: 'Marine, Lavender',
+    base: 'Cedarwood, Amber',
+  },
+};
+
 function ProductDetailContent({ handle }: { handle: string }) {
   const { addToCart } = useCart();
 
@@ -47,6 +95,13 @@ function ProductDetailContent({ handle }: { handle: string }) {
   };
 
   const isPerfume = product.category === 'Parfum';
+  const perfumeInfo =
+    (product.id === 'shill-perfume-bloom' || handle.includes('bloom'))
+      ? perfumeProfiles['shillstore-bloom']
+      : (product.id === 'shill-perfume-ocean' || handle.includes('ocean'))
+      ? perfumeProfiles['shillstore-ocean']
+      : perfumeProfiles['shillstore-noir'];
+
   const sizes = product.sizes || (isPerfume ? ['100ml'] : ['S', 'M', 'L', 'XL', 'XXL']);
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
   const [quantity, setQuantity] = useState(1);
@@ -77,7 +132,17 @@ function ProductDetailContent({ handle }: { handle: string }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
             {/* Gallery Left */}
             <div className="flex flex-col gap-4">
-              <div className={`relative aspect-square md:aspect-3/4 w-full rounded-2xl overflow-hidden border border-gray-100 shadow-xs ${isPerfume ? 'bg-[#121212]' : 'bg-gray-50'}`}>
+              <div
+                className={`relative aspect-square md:aspect-3/4 w-full rounded-2xl overflow-hidden border border-gray-100 shadow-xs ${
+                  handle.includes('bloom')
+                    ? 'bg-[#fcf5f3]'
+                    : handle.includes('ocean')
+                    ? 'bg-[#eef7fc]'
+                    : isPerfume
+                    ? 'bg-[#121212]'
+                    : 'bg-gray-50'
+                }`}
+              >
                 {product.discountBadge && (
                   <span className="absolute top-4 left-4 z-10 bg-[#ff1b2d] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
                     {product.discountBadge}
@@ -88,7 +153,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
                   alt={product.title}
                   fill
                   priority
-                  className={isPerfume ? 'object-contain' : 'object-cover'}
+                  className="object-cover"
                 />
               </div>
             </div>
@@ -247,13 +312,13 @@ function ProductDetailContent({ handle }: { handle: string }) {
                       {isPerfume ? (
                         <>
                           <p>
-                            <strong>Shillstore Noir Eau De Parfum 100ml</strong> dirancang untuk pria dan wanita yang mendambakan wewangian berkarakter bold, percaya diri, dan tak lekang oleh waktu (<em>Bold, Confident, Timeless</em>).
+                            <strong>{product.title}</strong> {perfumeInfo.tagline}
                           </p>
                           <ul className="list-disc pl-4 space-y-1">
-                            <li><strong>Konsentrasi:</strong> Eau De Parfum (EDP)</li>
-                            <li><strong>Ukuran:</strong> 100 ML</li>
-                            <li><strong>Ketahanan:</strong> 8 - 12 Jam (Long Lasting)</li>
-                            <li><strong>Karakter:</strong> Warm Spicy, Woody, Citrus & Musky</li>
+                            <li><strong>Konsentrasi:</strong> {perfumeInfo.type}</li>
+                            <li><strong>Ukuran:</strong> {perfumeInfo.volume}</li>
+                            <li><strong>Ketahanan:</strong> {perfumeInfo.longevity}</li>
+                            <li><strong>Karakter:</strong> {perfumeInfo.character}</li>
                           </ul>
                         </>
                       ) : (
@@ -279,15 +344,15 @@ function ProductDetailContent({ handle }: { handle: string }) {
                           <div className="space-y-2 bg-gray-50 p-4 rounded-xl border border-gray-200">
                             <div>
                               <span className="font-bold text-xs uppercase text-red-600 block">Top Notes:</span>
-                              <span className="text-gray-700">Bergamot, Black Pepper</span>
+                              <span className="text-gray-700">{perfumeInfo.top}</span>
                             </div>
                             <div>
                               <span className="font-bold text-xs uppercase text-red-600 block">Middle Notes:</span>
-                              <span className="text-gray-700">Lavender, Cedarwood</span>
+                              <span className="text-gray-700">{perfumeInfo.middle}</span>
                             </div>
                             <div>
                               <span className="font-bold text-xs uppercase text-red-600 block">Base Notes:</span>
-                              <span className="text-gray-700">Amber, Musk</span>
+                              <span className="text-gray-700">{perfumeInfo.base}</span>
                             </div>
                           </div>
                         </div>
