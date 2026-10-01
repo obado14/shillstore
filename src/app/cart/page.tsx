@@ -3,17 +3,13 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CartProvider, useCart } from '@/context/CartContext';
+import { useCart } from '@/context/CartContext';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
 
 export default function CartPage() {
-  return (
-    <CartProvider>
-      <CartPageContent />
-    </CartProvider>
-  );
+  return <CartPageContent />;
 }
 
 function CartPageContent() {

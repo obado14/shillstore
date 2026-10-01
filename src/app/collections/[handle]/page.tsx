@@ -4,7 +4,7 @@ import React, { useState, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { CartProvider, useCart } from '@/context/CartContext';
+import { useCart } from '@/context/CartContext';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
@@ -19,11 +19,7 @@ export default function CollectionPage({
 }) {
   const { handle } = use(params);
 
-  return (
-    <CartProvider>
-      <CollectionContent handle={handle} />
-    </CartProvider>
-  );
+  return <CollectionContent handle={handle} />;
 }
 
 function CollectionContent({ handle }: { handle: string }) {

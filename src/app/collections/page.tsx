@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { CartProvider } from '@/context/CartContext';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
@@ -11,8 +10,7 @@ import { collectionsList } from '@/data/shill-data';
 
 export default function CollectionsIndexPage() {
   return (
-    <CartProvider>
-      <div className="min-h-screen flex flex-col bg-white text-[#121212]">
+    <div className="min-h-screen flex flex-col bg-white text-[#121212]">
         <Header />
 
         <main className="flex-1 py-12 page-width">
@@ -54,6 +52,5 @@ export default function CollectionsIndexPage() {
         <CartDrawer />
         <SearchModal />
       </div>
-    </CartProvider>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Koulen } from "next/font/google";
+import { CartProvider } from "@/context/CartContext";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,7 +35,9 @@ export default function RootLayout({
       className={`${inter.variable} ${koulen.variable} font-sans h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col bg-white text-[#121212] selection:bg-[#ff1b2d] selection:text-white">
-        {children}
+        <CartProvider>
+          {children}
+        </CartProvider>
       </body>
     </html>
   );

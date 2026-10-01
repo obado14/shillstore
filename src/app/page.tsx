@@ -1,5 +1,4 @@
 import React from 'react';
-import { CartProvider } from '@/context/CartContext';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { HeroSlideshow } from '@/components/sites/shillstore/root/HeroSlideshow';
 import { CollageBanner } from '@/components/sites/shillstore/root/CollageBanner';
@@ -16,48 +15,46 @@ import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
 
 export default function Home() {
   return (
-    <CartProvider>
-      <div className="min-h-screen flex flex-col bg-white text-[#121212] overflow-x-hidden">
-        {/* Header & Sticky Nav */}
-        <Header />
+    <div className="min-h-screen flex flex-col bg-white text-[#121212] overflow-x-hidden">
+      {/* Header & Sticky Nav */}
+      <Header />
 
-        {/* Main Content Body */}
-        <main className="flex-1">
-          {/* Hero Slideshow Banner */}
-          <HeroSlideshow />
+      {/* Main Content Body */}
+      <main className="flex-1">
+        {/* Hero Slideshow Banner */}
+        <HeroSlideshow />
 
-          {/* Feature Collage Banners */}
-          <CollageBanner />
+        {/* Feature Collage Banners */}
+        <CollageBanner />
 
-          {/* Product Range / Category Filter Pills */}
-          <ProductRangePills />
+        {/* Product Range / Category Filter Pills */}
+        <ProductRangePills />
 
-          {/* Brand Narrative Rich Text */}
-          <BrandStoryRichText />
+        {/* Brand Narrative Rich Text */}
+        <BrandStoryRichText />
 
-          {/* Featured Collections & Best Sellers */}
-          <FeaturedProducts />
+        {/* Featured Collections & Best Sellers */}
+        <FeaturedProducts />
 
-          {/* Multi Banner Split (Perfume & Accessories) */}
-          <MultiBannerPromo />
+        {/* Multi Banner Split (Perfume & Accessories) */}
+        <MultiBannerPromo />
 
-          {/* Blog Stories (MPL & EVOS Collaborations) */}
-          <BlogStories />
+        {/* Blog Stories (MPL & EVOS Collaborations) */}
+        <BlogStories />
 
-          {/* Social Media Links Bar */}
-          <SocialMediaBanner />
+        {/* Social Media Links Bar */}
+        <SocialMediaBanner />
 
-          {/* Newsletter Subscription */}
-          <NewsletterSection />
-        </main>
+        {/* Newsletter Subscription */}
+        <NewsletterSection />
+      </main>
 
-        {/* Footer */}
-        <Footer />
+      {/* Footer */}
+      <Footer />
 
-        {/* Global Modals & Drawers */}
-        <CartDrawer />
-        <SearchModal />
-      </div>
-    </CartProvider>
+      {/* Global Modals & Drawers */}
+      <CartDrawer />
+      <SearchModal />
+    </div>
   );
 }

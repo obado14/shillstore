@@ -3,7 +3,6 @@
 import React, { use } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { CartProvider } from '@/context/CartContext';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
@@ -17,11 +16,7 @@ export default function StaticInfoPage({
 }) {
   const { handle } = use(params);
 
-  return (
-    <CartProvider>
-      <StaticInfoContent handle={handle} />
-    </CartProvider>
-  );
+  return <StaticInfoContent handle={handle} />;
 }
 
 function StaticInfoContent({ handle }: { handle: string }) {

@@ -3,7 +3,6 @@
 import React, { use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CartProvider } from '@/context/CartContext';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
@@ -17,11 +16,7 @@ export default function BlogPostPage({
 }) {
   const { category, slug } = use(params);
 
-  return (
-    <CartProvider>
-      <BlogPostContent category={category} slug={slug} />
-    </CartProvider>
-  );
+  return <BlogPostContent category={category} slug={slug} />;
 }
 
 function BlogPostContent({ category, slug }: { category: string; slug: string }) {

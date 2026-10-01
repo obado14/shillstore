@@ -3,7 +3,7 @@
 import React, { useState, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CartProvider, useCart } from '@/context/CartContext';
+import { useCart } from '@/context/CartContext';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
@@ -18,11 +18,7 @@ export default function ProductDetailPage({
 }) {
   const { handle } = use(params);
 
-  return (
-    <CartProvider>
-      <ProductDetailContent handle={handle} />
-    </CartProvider>
-  );
+  return <ProductDetailContent handle={handle} />;
 }
 
 function ProductDetailContent({ handle }: { handle: string }) {

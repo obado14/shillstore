@@ -1,6 +1,13 @@
 'use client';
 
-import React, { createContext, useContext, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useSyncExternalStore,
+  useCallback,
+  useMemo,
+} from 'react';
 import { Product } from '@/types/shill';
 
 export interface CartItem {
@@ -13,6 +20,7 @@ interface CartContextType {
   addToCart: (product: Product) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
+  clearCart: () => void;
   totalItems: number;
   totalPrice: number;
   isCartOpen: boolean;
@@ -23,55 +31,94 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+function subscribe(callback: () => void) {
+  if (typeof window === 'undefined') return () => {};
+  window.addEventListener('storage', callback);
+  window.addEventListener('cart-updated', callback);
+  return () => {
+    window.removeEventListener('storage', callback);
+    window.removeEventListener('cart-updated', callback);
+  };
+}
+
+function getSnapshot(): string {
+  if (typeof window === 'undefined') return '[]';
+  return localStorage.getItem('shill_cart') || '[]';
+}
+
+function getServerSnapshot(): string {
+  return '[]';
+}
+
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  // Initialize with 1 sample item so cart preview is immediately interactive
-  const [cart, setCart] = useState<CartItem[]>([
-    {
-      product: {
-        id: 'p1',
-        title: 'Shill Chino Pants Sirius Black Unisex',
-        category: 'Chino Pants',
-        price: 183000,
-        formattedPrice: 'Rp 183.000',
-        images: ['/sites/shillstore/root/images/prod-chino-sirius-black.jpg'],
-        link: '/products/shill-chino-pants-sirius-black-unisex',
-      },
-      quantity: 1,
-    },
-  ]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  const addToCart = (product: Product) => {
-    setCart((prev) => {
-      const existing = prev.find((item) => item.product.id === product.id);
+  const cartRaw = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const cart: CartItem[] = useMemo(() => {
+    try {
+      const parsed = JSON.parse(cartRaw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }, [cartRaw]);
+
+  const saveCart = useCallback((newCart: CartItem[]) => {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('shill_cart', JSON.stringify(newCart));
+        window.dispatchEvent(new Event('cart-updated'));
+      } catch {
+        // Ignore
+      }
+    }
+  }, []);
+
+  const addToCart = useCallback(
+    (product: Product) => {
+      const existing = cart.find((item) => item.product.id === product.id);
+      let updated: CartItem[];
       if (existing) {
-        return prev.map((item) =>
+        updated = cart.map((item) =>
           item.product.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
+      } else {
+        updated = [...cart, { product, quantity: 1 }];
       }
-      return [...prev, { product, quantity: 1 }];
-    });
-    setIsCartOpen(true);
-  };
+      saveCart(updated);
+      setIsCartOpen(true);
+    },
+    [cart, saveCart]
+  );
 
-  const removeFromCart = (productId: string) => {
-    setCart((prev) => prev.filter((item) => item.product.id !== productId));
-  };
+  const removeFromCart = useCallback(
+    (productId: string) => {
+      const updated = cart.filter((item) => item.product.id !== productId);
+      saveCart(updated);
+    },
+    [cart, saveCart]
+  );
 
-  const updateQuantity = (productId: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(productId);
-      return;
-    }
-    setCart((prev) =>
-      prev.map((item) =>
+  const updateQuantity = useCallback(
+    (productId: string, quantity: number) => {
+      if (quantity <= 0) {
+        removeFromCart(productId);
+        return;
+      }
+      const updated = cart.map((item) =>
         item.product.id === productId ? { ...item, quantity } : item
-      )
-    );
-  };
+      );
+      saveCart(updated);
+    },
+    [cart, removeFromCart, saveCart]
+  );
+
+  const clearCart = useCallback(() => {
+    saveCart([]);
+  }, [saveCart]);
 
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
   const totalPrice = cart.reduce(
@@ -86,6 +133,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         addToCart,
         removeFromCart,
         updateQuantity,
+        clearCart,
         totalItems,
         totalPrice,
         isCartOpen,
