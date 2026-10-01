@@ -12,7 +12,7 @@ export function MultiBannerPromo() {
           className="relative md:absolute md:inset-y-0 md:left-0 md:w-[55%] w-full min-h-[300px] p-8 md:p-16 flex flex-col justify-start z-10 bg-cover bg-center md:[clip-path:polygon(0_0,100%_0,75%_100%,0_100%)] shadow-2xl"
           style={{
             backgroundImage:
-              'url(/sites/erigostore-co-id/root/images/multi-perfume.png)',
+              'url(/sites/shillstore/root/images/multi-perfume.png)',
             backgroundRepeat: 'no-repeat',
           }}
         >
@@ -40,7 +40,7 @@ export function MultiBannerPromo() {
           className="relative flex-1 w-full min-h-[300px] p-8 md:p-16 flex flex-col justify-center items-end text-right bg-cover bg-right"
           style={{
             backgroundImage:
-              'url(/sites/erigostore-co-id/root/images/multi-accessories.png)',
+              'url(/sites/shillstore/root/images/multi-accessories.png)',
             backgroundRepeat: 'no-repeat',
           }}
         >

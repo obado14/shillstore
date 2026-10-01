@@ -4,12 +4,12 @@ import React, { useState, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CartProvider, useCart } from '@/context/CartContext';
-import { Header } from '@/components/sites/erigostore-co-id/root/Header';
-import { Footer } from '@/components/sites/erigostore-co-id/root/Footer';
-import { CartDrawer } from '@/components/sites/erigostore-co-id/root/CartDrawer';
-import { SearchModal } from '@/components/sites/erigostore-co-id/root/SearchModal';
-import { productsData } from '@/data/erigo-data';
-import { Product } from '@/types/erigo';
+import { Header } from '@/components/sites/shillstore/root/Header';
+import { Footer } from '@/components/sites/shillstore/root/Footer';
+import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
+import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
+import { productsData } from '@/data/shill-data';
+import { Product } from '@/types/shill';
 
 export default function ProductDetailPage({
   params,
@@ -46,7 +46,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
     compareAtPrice: 350000,
     formattedCompareAtPrice: 'Rp 350.000',
     discountBadge: 'Sale',
-    images: ['/sites/erigostore-co-id/root/images/prod-chino-sirius-black.jpg'],
+    images: ['/sites/shillstore/root/images/prod-chino-sirius-black.jpg'],
     link: `/products/${handle}`,
     rating: 4.9,
     reviewCount: 520,
@@ -245,7 +245,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
                   {activeTab === 'desc' && (
                     <div className="space-y-2">
                       <p>
-                        Didesain untuk kenyamanan maksimal dan penampilan kasual yang trendi, produk Erigo menggunakan material katun pilihan dengan sirkulasi udara yang baik. Cocok digunakan sehari-hari untuk aktivitas santai maupun hangout.
+                        Didesain untuk kenyamanan maksimal dan penampilan kasual yang trendi, produk Shill menggunakan material katun pilihan dengan sirkulasi udara yang baik. Cocok digunakan sehari-hari untuk aktivitas santai maupun hangout.
                       </p>
                       <ul className="list-disc pl-4 space-y-1">
                         <li>Bahan: 100% Katun Premium Combed / Twill Breathable</li>

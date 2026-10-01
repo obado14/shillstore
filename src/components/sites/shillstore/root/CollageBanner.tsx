@@ -3,13 +3,13 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { collageItems } from '@/data/erigo-data';
+import { collageItems } from '@/data/shill-data';
 
 export function CollageBanner() {
   return (
     <section className="py-4">
       <div className="page-width flex flex-col md:flex-row gap-4">
-        {/* Card 1: Kenapa harus beli di Website Erigo */}
+        {/* Card 1: Kenapa harus beli di Website Shill */}
         <div className="relative flex-1 rounded-[12px] overflow-hidden group min-h-[320px] md:min-h-[360px] bg-gray-100">
           <Image
             src={collageItems[0].image}

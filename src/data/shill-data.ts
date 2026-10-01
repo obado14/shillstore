@@ -1,4 +1,4 @@
-import { Product, BannerSlide, CollageItem, CategoryPill, BlogStory } from '@/types/erigo';
+import { Product, BannerSlide, CollageItem, CategoryPill, BlogStory } from '@/types/shill';
 
 // Announcements
 export const announcements = [
@@ -14,8 +14,8 @@ export const bannerSlides: BannerSlide[] = [
     id: 'slide-cargo',
     title: 'CARGO PANTS',
     subtitle: 'New Arrival',
-    desktopImage: '/sites/erigostore-co-id/root/images/hero-cargo-desktop.jpg',
-    mobileImage: '/sites/erigostore-co-id/root/images/hero-cargo-mobile.jpg',
+    desktopImage: '/sites/shillstore/root/images/hero-cargo-desktop.jpg',
+    mobileImage: '/sites/shillstore/root/images/hero-cargo-mobile.jpg',
     link: '/collections/all-product',
     buttonText: 'Belanja Sekarang'
   },
@@ -23,8 +23,8 @@ export const bannerSlides: BannerSlide[] = [
     id: 'slide-parka',
     title: 'PARKA JACKET',
     subtitle: 'New Arrival',
-    desktopImage: '/sites/erigostore-co-id/root/images/hero-parka-desktop.jpg',
-    mobileImage: '/sites/erigostore-co-id/root/images/hero-parka-mobile.jpg',
+    desktopImage: '/sites/shillstore/root/images/hero-parka-desktop.jpg',
+    mobileImage: '/sites/shillstore/root/images/hero-parka-mobile.jpg',
     link: '/collections/flight-jacket',
     buttonText: 'Lihat Koleksi'
   },
@@ -32,8 +32,8 @@ export const bannerSlides: BannerSlide[] = [
     id: 'slide-chino',
     title: 'CHINO PANTS FLEXI FIT',
     subtitle: 'New Arrival',
-    desktopImage: '/sites/erigostore-co-id/root/images/hero-chino-desktop.jpg',
-    mobileImage: '/sites/erigostore-co-id/root/images/hero-chino-desktop.jpg',
+    desktopImage: '/sites/shillstore/root/images/hero-chino-desktop.jpg',
+    mobileImage: '/sites/shillstore/root/images/hero-chino-desktop.jpg',
     link: '/collections/category-pants-chino-pants',
     buttonText: 'Beli Sekarang'
   },
@@ -41,8 +41,8 @@ export const bannerSlides: BannerSlide[] = [
     id: 'slide-chino-short',
     title: 'CHINO SHORT FLEXI FIT',
     subtitle: 'New Arrival',
-    desktopImage: '/sites/erigostore-co-id/root/images/hero-chino-short-desktop.jpg',
-    mobileImage: '/sites/erigostore-co-id/root/images/hero-chino-short-desktop.jpg',
+    desktopImage: '/sites/shillstore/root/images/hero-chino-short-desktop.jpg',
+    mobileImage: '/sites/shillstore/root/images/hero-chino-short-desktop.jpg',
     link: '/collections/category-pants-chino-pants',
     buttonText: 'Beli Sekarang'
   },
@@ -50,8 +50,8 @@ export const bannerSlides: BannerSlide[] = [
     id: 'slide-jogger',
     title: 'JOGGER PANTS FLEXI FIT',
     subtitle: 'New Arrival',
-    desktopImage: '/sites/erigostore-co-id/root/images/hero-jogger-desktop.jpg',
-    mobileImage: '/sites/erigostore-co-id/root/images/hero-jogger-desktop.jpg',
+    desktopImage: '/sites/shillstore/root/images/hero-jogger-desktop.jpg',
+    mobileImage: '/sites/shillstore/root/images/hero-jogger-desktop.jpg',
     link: '/collections/category-pants-chino-pants',
     buttonText: 'Beli Sekarang'
   },
@@ -59,8 +59,8 @@ export const bannerSlides: BannerSlide[] = [
     id: 'slide-oxford',
     title: 'OXFORD SHIRT',
     subtitle: 'Signature Style',
-    desktopImage: '/sites/erigostore-co-id/root/images/hero-oxford-desktop.jpg',
-    mobileImage: '/sites/erigostore-co-id/root/images/hero-oxford-desktop.jpg',
+    desktopImage: '/sites/shillstore/root/images/hero-oxford-desktop.jpg',
+    mobileImage: '/sites/shillstore/root/images/hero-oxford-desktop.jpg',
     link: '/collections/all-shirt',
     buttonText: 'Lihat Sekarang'
   },
@@ -68,8 +68,8 @@ export const bannerSlides: BannerSlide[] = [
     id: 'slide-contrast',
     title: 'T-SHIRT CONTRAST',
     subtitle: 'Everyday Casual',
-    desktopImage: '/sites/erigostore-co-id/root/images/hero-tshirt-contrast.jpg',
-    mobileImage: '/sites/erigostore-co-id/root/images/hero-tshirt-contrast.jpg',
+    desktopImage: '/sites/shillstore/root/images/hero-tshirt-contrast.jpg',
+    mobileImage: '/sites/shillstore/root/images/hero-tshirt-contrast.jpg',
     link: '/collections/all-t-shirt',
     buttonText: 'Beli Sekarang'
   },
@@ -77,18 +77,18 @@ export const bannerSlides: BannerSlide[] = [
     id: 'slide-relax-chino',
     title: 'RELAX CHINO PANTS',
     subtitle: 'Relaxed Fit',
-    desktopImage: '/sites/erigostore-co-id/root/images/hero-relax-chino.jpg',
-    mobileImage: '/sites/erigostore-co-id/root/images/hero-relax-chino.jpg',
+    desktopImage: '/sites/shillstore/root/images/hero-relax-chino.jpg',
+    mobileImage: '/sites/shillstore/root/images/hero-relax-chino.jpg',
     link: '/collections/category-pants-chino-pants',
     buttonText: 'Lihat Koleksi'
   },
   {
     id: 'slide-movease',
-    title: 'ERIGO MOVEASE',
+    title: 'SHILL MOVEASE',
     subtitle: 'Bergerak Bebas',
-    desktopImage: '/sites/erigostore-co-id/root/images/hero-movease.jpg',
-    mobileImage: '/sites/erigostore-co-id/root/images/hero-movease.jpg',
-    link: '/pages/bergerakbebas-movease-by-erigo',
+    desktopImage: '/sites/shillstore/root/images/hero-movease.jpg',
+    mobileImage: '/sites/shillstore/root/images/hero-movease.jpg',
+    link: '/pages/bergerakbebas-movease-by-shill',
     buttonText: 'Jelajahi'
   }
 ];
@@ -97,11 +97,11 @@ export const bannerSlides: BannerSlide[] = [
 export const collageItems: CollageItem[] = [
   {
     id: 'collage-why-buy',
-    title: 'Kenapa harus beli di Website Erigo',
+    title: 'Kenapa harus beli di Website Shill',
     subtitle: '',
     points: ['• Gratis Ongkir', '• Jaminan Return/Refund'],
-    image: '/sites/erigostore-co-id/root/images/collage-why-buy.jpg',
-    link: '/blogs/news/kenapa-harus-beli-di-website-erigo',
+    image: '/sites/shillstore/root/images/collage-why-buy.jpg',
+    link: '/blogs/news/kenapa-harus-beli-di-website-shill',
     buttonText: 'Selengkapnya',
     buttonStyle: 'primary'
   },
@@ -109,7 +109,7 @@ export const collageItems: CollageItem[] = [
     id: 'collage-oxford',
     title: 'Oxford Shirt',
     subtitle: 'New Arrival',
-    image: '/sites/erigostore-co-id/root/images/collage-oxford.jpg',
+    image: '/sites/shillstore/root/images/collage-oxford.jpg',
     link: '/collections/all-shirt',
     buttonText: '',
     buttonStyle: 'outline'
@@ -118,7 +118,7 @@ export const collageItems: CollageItem[] = [
     id: 'collage-pickup',
     title: 'PICKUP IN STORE',
     subtitle: '',
-    image: '/sites/erigostore-co-id/root/images/collage-pickup.jpg',
+    image: '/sites/shillstore/root/images/collage-pickup.jpg',
     link: '/blogs/news/pickup-instore',
     buttonText: 'PICKUP IN STORE',
     buttonStyle: 'yellow'
@@ -127,211 +127,211 @@ export const collageItems: CollageItem[] = [
 
 // Category Pills
 export const categoryPills: CategoryPill[] = [
-  { id: 'cat-atasan', title: 'Atasan', icon: '/sites/erigostore-co-id/root/images/cat-atasan.png', link: '/collections/atasan' },
-  { id: 'cat-bawahan', title: 'Bawahan', icon: '/sites/erigostore-co-id/root/images/cat-bawahan.png', link: '/collections/bawahan' },
-  { id: 'cat-aksesoris', title: 'Aksesoris', icon: '/sites/erigostore-co-id/root/images/cat-aksesoris.png', link: '/collections/accessories' }
+  { id: 'cat-atasan', title: 'Atasan', icon: '/sites/shillstore/root/images/cat-atasan.png', link: '/collections/atasan' },
+  { id: 'cat-bawahan', title: 'Bawahan', icon: '/sites/shillstore/root/images/cat-bawahan.png', link: '/collections/bawahan' },
+  { id: 'cat-aksesoris', title: 'Aksesoris', icon: '/sites/shillstore/root/images/cat-aksesoris.png', link: '/collections/accessories' }
 ];
 
-// 36 Real Products from Erigo
+// 36 Real Products from Shill
 export const productsData: Product[] = [
   {
-    id: 'erigo-p-1',
-    title: 'Erigo T-Shirt Oversize Antelope Black Unisex',
+    id: 'shill-p-1',
+    title: 'Shill T-Shirt Oversize Antelope Black Unisex',
     category: 'Kaos',
     price: 110000,
     formattedPrice: 'Rp 110.000',
     compareAtPrice: 200000,
     formattedCompareAtPrice: 'Rp 200.000',
     discountBadge: 'Sale',
-    images: ['https://erigostore.co.id/cdn/shop/files/T-SHIRT-OVERSIZE-ANTELOPE-BLACK-100.jpg?v=1750320047&width=600'],
-    link: '/products/erigo-t-shirt-oversize-antelope-black-unisex',
+    images: ['https://shillstore.co.id/cdn/shop/files/T-SHIRT-OVERSIZE-ANTELOPE-BLACK-100.jpg?v=1750320047&width=600'],
+    link: '/products/shill-t-shirt-oversize-antelope-black-unisex',
     rating: 4.9,
     reviewCount: 312,
     isNew: true
   },
   {
-    id: 'erigo-p-2',
-    title: 'Erigo Chino Pants Sirius Black Unisex',
+    id: 'shill-p-2',
+    title: 'Shill Chino Pants Sirius Black Unisex',
     category: 'Celana',
     price: 183000,
     formattedPrice: 'Rp 183.000',
     compareAtPrice: 350000,
     formattedCompareAtPrice: 'Rp 350.000',
     discountBadge: 'Sale',
-    images: ['/sites/erigostore-co-id/root/images/prod-chino-sirius-black.jpg'],
-    link: '/products/erigo-chino-pants-sirius-black-unisex',
+    images: ['/sites/shillstore/root/images/prod-chino-sirius-black.jpg'],
+    link: '/products/shill-chino-pants-sirius-black-unisex',
     rating: 4.9,
     reviewCount: 1420,
     isNew: true
   },
   {
-    id: 'erigo-p-3',
-    title: 'Erigo Short Shirt Rayon Jazlyn Black Unisex',
+    id: 'shill-p-3',
+    title: 'Shill Short Shirt Rayon Jazlyn Black Unisex',
     category: 'Kemeja',
     price: 145000,
     formattedPrice: 'Rp 145.000',
     compareAtPrice: 280000,
     formattedCompareAtPrice: 'Rp 280.000',
     discountBadge: 'Sale',
-    images: ['https://erigostore.co.id/cdn/shop/files/SHORT-SHIRT-JAZLYN-BLACK-100.jpg?v=1750320410&width=600'],
-    link: '/products/erigo-short-shirt-rayon-jazlyn-black',
+    images: ['https://shillstore.co.id/cdn/shop/files/SHORT-SHIRT-JAZLYN-BLACK-100.jpg?v=1750320410&width=600'],
+    link: '/products/shill-short-shirt-rayon-jazlyn-black',
     rating: 4.8,
     reviewCount: 420,
     isNew: true
   },
   {
-    id: 'erigo-p-4',
-    title: 'Erigo Chino Pants Light Grey Unisex',
+    id: 'shill-p-4',
+    title: 'Shill Chino Pants Light Grey Unisex',
     category: 'Celana',
     price: 183000,
     formattedPrice: 'Rp 183.000',
     compareAtPrice: 350000,
     formattedCompareAtPrice: 'Rp 350.000',
     discountBadge: 'Sale',
-    images: ['https://erigostore.co.id/cdn/shop/files/1ZApO4Cs-PAUL-LIGHT-GREY-100.jpg?v=1750320425&width=600'],
-    link: '/products/erigo-chino-pants-paul-light-grey-unisex',
+    images: ['https://shillstore.co.id/cdn/shop/files/1ZApO4Cs-PAUL-LIGHT-GREY-100.jpg?v=1750320425&width=600'],
+    link: '/products/shill-chino-pants-paul-light-grey-unisex',
     rating: 4.9,
     reviewCount: 680,
     isNew: true
   },
   {
-    id: 'erigo-p-5',
-    title: 'Erigo Chino Pants Dark Grey Unisex',
+    id: 'shill-p-5',
+    title: 'Shill Chino Pants Dark Grey Unisex',
     category: 'Celana',
     price: 183000,
     formattedPrice: 'Rp 183.000',
     compareAtPrice: 350000,
     formattedCompareAtPrice: 'Rp 350.000',
     discountBadge: 'Sale',
-    images: ['https://erigostore.co.id/cdn/shop/files/mnMoBBDL-CHINO-PANTS-JACOB-DARK-GREY-100.jpg?v=1750320443&width=600'],
-    link: '/products/erigo-chino-pants-jacob-dark-grey-unisex',
+    images: ['https://shillstore.co.id/cdn/shop/files/mnMoBBDL-CHINO-PANTS-JACOB-DARK-GREY-100.jpg?v=1750320443&width=600'],
+    link: '/products/shill-chino-pants-jacob-dark-grey-unisex',
     rating: 4.8,
     reviewCount: 512,
     isNew: true
   },
   {
-    id: 'erigo-p-6',
-    title: 'Erigo Short Shirt Pocket Danvin Teracotta - Kemeja Lengan Pendek Rayon Unisex',
+    id: 'shill-p-6',
+    title: 'Shill Short Shirt Pocket Danvin Teracotta - Kemeja Lengan Pendek Rayon Unisex',
     category: 'Kemeja',
     price: 145000,
     formattedPrice: 'Rp 145.000',
     compareAtPrice: 280000,
     formattedCompareAtPrice: 'Rp 280.000',
     discountBadge: 'Sale',
-    images: ['/sites/erigostore-co-id/root/images/prod-short-shirt-danvin-teracotta.jpg'],
-    link: '/products/erigo-short-shirt-pocket-danvin-teracotta-kemeja-lengan-pendek-rayon-unisex',
+    images: ['/sites/shillstore/root/images/prod-short-shirt-danvin-teracotta.jpg'],
+    link: '/products/shill-short-shirt-pocket-danvin-teracotta-kemeja-lengan-pendek-rayon-unisex',
     rating: 4.9,
     reviewCount: 910
   },
   {
-    id: 'erigo-p-7',
-    title: 'Erigo Short Shirt Pocket Daeio Olive - Kemeja Lengan Pendek Rayon Unisex',
+    id: 'shill-p-7',
+    title: 'Shill Short Shirt Pocket Daeio Olive - Kemeja Lengan Pendek Rayon Unisex',
     category: 'Kemeja',
     price: 145000,
     formattedPrice: 'Rp 145.000',
     compareAtPrice: 280000,
     formattedCompareAtPrice: 'Rp 280.000',
     discountBadge: 'Sale',
-    images: ['/sites/erigostore-co-id/root/images/prod-short-shirt-daeio-olive.jpg'],
-    link: '/products/erigo-short-shirt-pocket-daeio-olive-kemeja-lengan-pendek-rayon-unisex',
+    images: ['/sites/shillstore/root/images/prod-short-shirt-daeio-olive.jpg'],
+    link: '/products/shill-short-shirt-pocket-daeio-olive-kemeja-lengan-pendek-rayon-unisex',
     rating: 4.8,
     reviewCount: 890
   },
   {
-    id: 'erigo-p-8',
-    title: 'Erigo Short Shirt Pocket Dalwyn Brown - Kemeja Lengan Pendek Rayon Unisex',
+    id: 'shill-p-8',
+    title: 'Shill Short Shirt Pocket Dalwyn Brown - Kemeja Lengan Pendek Rayon Unisex',
     category: 'Kemeja',
     price: 145000,
     formattedPrice: 'Rp 145.000',
     compareAtPrice: 280000,
     formattedCompareAtPrice: 'Rp 280.000',
     discountBadge: 'Sale',
-    images: ['/sites/erigostore-co-id/root/images/prod-short-shirt-dalwyn-brown.jpg'],
-    link: '/products/erigo-short-shirt-pocket-dalwyn-brown-kemeja-lengan-pendek-rayon-unisex',
+    images: ['/sites/shillstore/root/images/prod-short-shirt-dalwyn-brown.jpg'],
+    link: '/products/shill-short-shirt-pocket-dalwyn-brown-kemeja-lengan-pendek-rayon-unisex',
     rating: 4.7,
     reviewCount: 654
   },
   {
-    id: 'erigo-p-9',
-    title: 'Erigo Relax Chino Pants Egan Khaky - Celana Panjang Relax Unisex',
+    id: 'shill-p-9',
+    title: 'Shill Relax Chino Pants Egan Khaky - Celana Panjang Relax Unisex',
     category: 'Celana',
     price: 247000,
     formattedPrice: 'Rp 247.000',
     compareAtPrice: 420000,
     formattedCompareAtPrice: 'Rp 420.000',
     discountBadge: 'Sale',
-    images: ['/sites/erigostore-co-id/root/images/prod-relax-chino-egan-khaky.jpg'],
-    link: '/products/erigo-relax-chino-pants-egan-khaky-celana-panjang-relax-unisex',
+    images: ['/sites/shillstore/root/images/prod-relax-chino-egan-khaky.jpg'],
+    link: '/products/shill-relax-chino-pants-egan-khaky-celana-panjang-relax-unisex',
     rating: 4.9,
     reviewCount: 780
   },
   {
-    id: 'erigo-p-10',
-    title: 'Erigo Relax Chino Pants Elvin Mocca - Celana Panjang Relax Unisex',
+    id: 'shill-p-10',
+    title: 'Shill Relax Chino Pants Elvin Mocca - Celana Panjang Relax Unisex',
     category: 'Celana',
     price: 247000,
     formattedPrice: 'Rp 247.000',
     compareAtPrice: 420000,
     formattedCompareAtPrice: 'Rp 420.000',
     discountBadge: 'Sale',
-    images: ['/sites/erigostore-co-id/root/images/prod-relax-chino-elvin-mocca.jpg'],
-    link: '/products/erigo-relax-chino-pants-elvin-mocca-celana-panjang-relax-unisex',
+    images: ['/sites/shillstore/root/images/prod-relax-chino-elvin-mocca.jpg'],
+    link: '/products/shill-relax-chino-pants-elvin-mocca-celana-panjang-relax-unisex',
     rating: 4.8,
     reviewCount: 520
   },
   {
-    id: 'erigo-p-11',
-    title: 'Erigo Relax Chino Pants Eldon Pebble - Celana Panjang Relax Unisex',
+    id: 'shill-p-11',
+    title: 'Shill Relax Chino Pants Eldon Pebble - Celana Panjang Relax Unisex',
     category: 'Celana',
     price: 247000,
     formattedPrice: 'Rp 247.000',
     compareAtPrice: 420000,
     formattedCompareAtPrice: 'Rp 420.000',
     discountBadge: 'Sale',
-    images: ['/sites/erigostore-co-id/root/images/prod-relax-chino-eldon-pebble.jpg'],
-    link: '/products/erigo-relax-chino-pants-eldon-pebble-celana-panjang-relax-unisex',
+    images: ['/sites/shillstore/root/images/prod-relax-chino-eldon-pebble.jpg'],
+    link: '/products/shill-relax-chino-pants-eldon-pebble-celana-panjang-relax-unisex',
     rating: 4.9,
     reviewCount: 615
   },
   {
-    id: 'erigo-p-12',
-    title: 'Erigo Relax Chino Pants Errol Black - Celana Panjang Relax Unisex',
+    id: 'shill-p-12',
+    title: 'Shill Relax Chino Pants Errol Black - Celana Panjang Relax Unisex',
     category: 'Celana',
     price: 247000,
     formattedPrice: 'Rp 247.000',
     compareAtPrice: 420000,
     formattedCompareAtPrice: 'Rp 420.000',
     discountBadge: 'Sale',
-    images: ['/sites/erigostore-co-id/root/images/prod-relax-chino-errol-black.jpg'],
-    link: '/products/erigo-relax-chino-pants-errol-black-celana-panjang-relax-unisex',
+    images: ['/sites/shillstore/root/images/prod-relax-chino-errol-black.jpg'],
+    link: '/products/shill-relax-chino-pants-errol-black-celana-panjang-relax-unisex',
     rating: 5.0,
     reviewCount: 940
   },
   {
-    id: 'erigo-p-13',
-    title: 'Erigo Relax Chino Pants Erven Olive - Celana Panjang Relax Unisex',
+    id: 'shill-p-13',
+    title: 'Shill Relax Chino Pants Erven Olive - Celana Panjang Relax Unisex',
     category: 'Celana',
     price: 247000,
     formattedPrice: 'Rp 247.000',
     compareAtPrice: 420000,
     formattedCompareAtPrice: 'Rp 420.000',
     discountBadge: 'Sale',
-    images: ['/sites/erigostore-co-id/root/images/prod-relax-chino-erven-olive.jpg'],
-    link: '/products/erigo-relax-chino-pants-erven-olive-celana-panjang-relax-unisex',
+    images: ['/sites/shillstore/root/images/prod-relax-chino-erven-olive.jpg'],
+    link: '/products/shill-relax-chino-pants-erven-olive-celana-panjang-relax-unisex',
     rating: 4.8,
     reviewCount: 430
   },
   {
-    id: 'erigo-p-14',
-    title: 'Erigo Relax Chino Pants Evgeni Oyster Grey - Celana Panjang Relax Unisex',
+    id: 'shill-p-14',
+    title: 'Shill Relax Chino Pants Evgeni Oyster Grey - Celana Panjang Relax Unisex',
     category: 'Celana',
     price: 247000,
     formattedPrice: 'Rp 247.000',
     compareAtPrice: 420000,
     formattedCompareAtPrice: 'Rp 420.000',
     discountBadge: 'Sale',
-    images: ['/sites/erigostore-co-id/root/images/prod-relax-chino-evgeni-oyster.jpg'],
-    link: '/products/erigo-relax-chino-pants-evgeni-oyster-grey-celana-panjang-relax-unisex',
+    images: ['/sites/shillstore/root/images/prod-relax-chino-evgeni-oyster.jpg'],
+    link: '/products/shill-relax-chino-pants-evgeni-oyster-grey-celana-panjang-relax-unisex',
     rating: 4.9,
     reviewCount: 885
   }
@@ -341,54 +341,54 @@ export const productsData: Product[] = [
 export const blogStoriesData: BlogStory[] = [
   {
     id: 'blog-mpl',
-    title: 'Kolaborasi Erigo x MPL Indonesia',
+    title: 'Kolaborasi Shill x MPL Indonesia',
     excerpt: 'Ditengah hiruk pikuk persaingan dunia fashion maupun game, akhirnya tercipta kolaborasi yang mempertemukan ambisi besar dan kreativitas, menyatukan misi untuk melahirkan sesuatu yang akan menjadi perbincangan hangat...',
-    image: '/sites/erigostore-co-id/root/images/blog-mpl.png',
-    link: '/blogs/blogs/kolaborasi-erigo-x-mpl-indonesia',
+    image: '/sites/shillstore/root/images/blog-mpl.png',
+    link: '/blogs/blogs/kolaborasi-shill-x-mpl-indonesia',
     tag: 'Blogs',
-    instagramHandle: '@erigostore'
+    instagramHandle: '@shillstore'
   },
   {
     id: 'blog-evos',
-    title: 'Kolaborasi Erigo x EVOS esports',
-    excerpt: 'Langkah berani Erigo dalam mendukung ekosistem esports tanah air terwujud melalui kerja sama spesial dengan salah satu tim terbesar di Asia Tenggara, EVOS esports...',
-    image: '/sites/erigostore-co-id/root/images/blog-evos.jpg',
-    link: '/blogs/news/kolaborasi-erigo-x-evos-esports',
+    title: 'Kolaborasi Shill x EVOS esports',
+    excerpt: 'Langkah berani Shill dalam mendukung ekosistem esports tanah air terwujud melalui kerja sama spesial dengan salah satu tim terbesar di Asia Tenggara, EVOS esports...',
+    image: '/sites/shillstore/root/images/blog-evos.jpg',
+    link: '/blogs/news/kolaborasi-shill-x-evos-esports',
     tag: 'Blogs',
-    instagramHandle: '@erigostore'
+    instagramHandle: '@shillstore'
   },
   {
     id: 'blog-why-buy',
-    title: 'Kenapa Harus Beli di Website Erigo?',
-    excerpt: 'Beli langsung di website resmi Erigo memberikan banyak keuntungan: jaminan 100% produk original, gratis ongkir ke seluruh Indonesia, serta jaminan return & refund tanpa ribet...',
-    image: '/sites/erigostore-co-id/root/images/collage-why-buy.jpg',
-    link: '/blogs/news/kenapa-harus-beli-di-website-erigo',
+    title: 'Kenapa Harus Beli di Website Shill?',
+    excerpt: 'Beli langsung di website resmi Shill memberikan banyak keuntungan: jaminan 100% produk original, gratis ongkir ke seluruh Indonesia, serta jaminan return & refund tanpa ribet...',
+    image: '/sites/shillstore/root/images/collage-why-buy.jpg',
+    link: '/blogs/news/kenapa-harus-beli-di-website-shill',
     tag: 'News',
-    instagramHandle: '@erigostore'
+    instagramHandle: '@shillstore'
   },
   {
     id: 'blog-pickup',
     title: 'Layanan Baru: Pickup in Store',
-    excerpt: 'Sekarang kamu bisa memesan outfit Erigo favoritmu secara online melalui website dan langsung mengambilnya di outlet Erigo Store terdekat tanpa antri...',
-    image: '/sites/erigostore-co-id/root/images/collage-pickup.jpg',
+    excerpt: 'Sekarang kamu bisa memesan outfit Shill favoritmu secara online melalui website dan langsung mengambilnya di outlet Shill Store terdekat tanpa antri...',
+    image: '/sites/shillstore/root/images/collage-pickup.jpg',
     link: '/blogs/news/pickup-instore',
     tag: 'News',
-    instagramHandle: '@erigostore'
+    instagramHandle: '@shillstore'
   }
 ];
 
 // Collections metadata
 export const collectionsList = [
-  { handle: 'all-product', title: 'Semua Produk', description: 'Jelajahi seluruh koleksi pakaian kasual pria dan wanita dari Erigo.' },
+  { handle: 'all-product', title: 'Semua Produk', description: 'Jelajahi seluruh koleksi pakaian kasual pria dan wanita dari Shill.' },
   { handle: 'all-t-shirt', title: 'Kaos / T-Shirt', description: 'Pilihan kaos grafis, oversized, polos, dan washed t-shirt berbahan katun premium.' },
   { handle: 'all-shirt', title: 'Kemeja Pria & Wanita', description: 'Koleksi kemeja lengan pendek rayon, oxford shirt, dan flannel trendi.' },
   { handle: 'flight-jacket', title: 'Jaket & Outerwear', description: 'Parka jacket, coach jacket, varsity, dan windbreaker untuk petualangan harianmu.' },
   { handle: 'category-pants-chino-pants', title: 'Celana / Pants', description: 'Chino pants, cargo pants, jogger pants, dan short pants berfitur flexi-fit.' },
   { handle: 'accessories', title: 'Aksesoris', description: 'Topi, tas, kaos kaki, dan perlengkapan fungsional pelengkap gaya urbanmu.' },
   { handle: 'perfume', title: 'Parfum Series', description: 'Aroma wewangian segar dan berkelas menemani setiap kegiatanmu.' },
-  { handle: 'erigo-x-jkt48', title: 'Erigo x JKT48', description: 'Koleksi spesial kolaborasi penuh energi bersama member JKT48.' },
-  { handle: 'erigo-x-mpl', title: 'Erigo x MPL Indonesia', description: 'Koleksi kolaborasi streetwear resmi MPL Indonesia.' },
-  { handle: 'ms-glow', title: 'Erigo x MS Glow', description: 'Kolaborasi eksklusif produk perawatan dan apparel gaya hidup.' },
+  { handle: 'shill-x-jkt48', title: 'Shill x JKT48', description: 'Koleksi spesial kolaborasi penuh energi bersama member JKT48.' },
+  { handle: 'shill-x-mpl', title: 'Shill x MPL Indonesia', description: 'Koleksi kolaborasi streetwear resmi MPL Indonesia.' },
+  { handle: 'ms-glow', title: 'Shill x MS Glow', description: 'Kolaborasi eksklusif produk perawatan dan apparel gaya hidup.' },
   { handle: 'atasan', title: 'Kategori Atasan', description: 'Koleksi lengkap pakaian atasan kasual: Kaos, Kemeja, Hoodie, dan Jaket.' },
   { handle: 'bawahan', title: 'Kategori Bawahan', description: 'Koleksi lengkap celana panjang, chino, cargo, dan celana pendek santai.' }
 ];
@@ -396,21 +396,21 @@ export const collectionsList = [
 // Offline Store Locations
 export const storeLocations = [
   {
-    name: 'Erigo Store Bekasi',
+    name: 'Shill Store Bekasi',
     address: 'Ruko Grand Galaxy City, Jl. Boulevard Raya timur RGB No.96, RT.001/RW.002, Jaka Setia, Bekasi Selatan, Kota Bekasi, Jawa Barat 17148',
     hours: '10.00 - 22.00 WIB',
     phone: '0811-9757-222',
     mapUrl: 'https://maps.app.goo.gl/oiieTPFB1vv8qpqB6'
   },
   {
-    name: 'Erigo Store Pamulang',
+    name: 'Shill Store Pamulang',
     address: 'Jl. Pamulang Permai No.14 Blok SH21, Pamulang Barat, Kec. Pamulang, Kota Tangerang Selatan, Banten 15417',
     hours: '10.00 - 22.00 WIB',
     phone: '0811-9757-222',
     mapUrl: 'https://maps.app.goo.gl/E716sAiEZYTogU3c8'
   },
   {
-    name: 'Erigo Store Banjarbaru',
+    name: 'Shill Store Banjarbaru',
     address: 'Jl. A. Yani No.km 35, Loktabat Sel., Kec. Banjarbaru Selatan, Kota Banjar Baru, Kalimantan Selatan 70721',
     hours: '10.00 - 22.00 WITA',
     phone: '0811-9757-222',
@@ -437,7 +437,7 @@ export const faqList = [
     a: 'Nomor resi pengiriman akan dikirimkan otomatis melalui email dan WhatsApp setelah pesanan diserahkan ke pihak ekspedisi. Kamu juga bisa mengeceknya di halaman Lacak Pesanan.'
   },
   {
-    q: 'Apakah Erigo menyediakan pengiriman gratis ongkir?',
+    q: 'Apakah Shill menyediakan pengiriman gratis ongkir?',
     a: 'Ya! Kami menyediakan promo Pasti Gratis Ongkir ke seluruh Indonesia sesuai syarat dan ketentuan promo yang sedang berlangsung.'
   }
 ];
@@ -505,7 +505,7 @@ export const navCategories = [
   },
   {
     title: 'MOVEASE',
-    href: '/pages/bergerakbebas-movease-by-erigo',
+    href: '/pages/bergerakbebas-movease-by-shill',
     badge: 'NEW'
   },
   {
@@ -513,9 +513,9 @@ export const navCategories = [
     href: '#',
     badge: null,
     featuredCollabs: [
-      { title: 'JKT48', image: '/sites/erigostore-co-id/root/images/mega-jkt48.jpg', href: '/collections/erigo-x-jkt48' },
-      { title: 'MS Glow', image: '/sites/erigostore-co-id/root/images/mega-msglow.jpg', href: '/collections/ms-glow' },
-      { title: 'MPL id', image: '/sites/erigostore-co-id/root/images/mega-mpl.jpg', href: '/collections/erigo-x-mpl' }
+      { title: 'JKT48', image: '/sites/shillstore/root/images/mega-jkt48.jpg', href: '/collections/shill-x-jkt48' },
+      { title: 'MS Glow', image: '/sites/shillstore/root/images/mega-msglow.jpg', href: '/collections/ms-glow' },
+      { title: 'MPL id', image: '/sites/shillstore/root/images/mega-mpl.jpg', href: '/collections/shill-x-mpl' }
     ]
   },
   {

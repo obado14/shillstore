@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { categoryPills } from '@/data/erigo-data';
+import { categoryPills } from '@/data/shill-data';
 
 export function ProductRangePills() {
   return (

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState } from 'react';
-import { Product } from '@/types/erigo';
+import { Product } from '@/types/shill';
 
 export interface CartItem {
   product: Product;
@@ -29,12 +29,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     {
       product: {
         id: 'p1',
-        title: 'Erigo Chino Pants Sirius Black Unisex',
+        title: 'Shill Chino Pants Sirius Black Unisex',
         category: 'Chino Pants',
         price: 183000,
         formattedPrice: 'Rp 183.000',
-        images: ['/sites/erigostore-co-id/root/images/prod-chino-sirius-black.jpg'],
-        link: '/products/erigo-chino-pants-sirius-black-unisex',
+        images: ['/sites/shillstore/root/images/prod-chino-sirius-black.jpg'],
+        link: '/products/shill-chino-pants-sirius-black-unisex',
       },
       quantity: 1,
     },

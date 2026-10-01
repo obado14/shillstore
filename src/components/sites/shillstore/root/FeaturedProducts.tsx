@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
-import { productsData } from '@/data/erigo-data';
-import { Product } from '@/types/erigo';
+import { productsData } from '@/data/shill-data';
+import { Product } from '@/types/shill';
 
 export function FeaturedProducts() {
   const { addToCart } = useCart();

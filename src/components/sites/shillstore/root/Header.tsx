@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
-import { announcements, navCategories } from '@/data/erigo-data';
+import { announcements, navCategories } from '@/data/shill-data';
 import {
   SearchIcon,
   CartIcon,
@@ -12,7 +12,7 @@ import {
   IndonesiaFlag,
   ChevronDownIcon,
   CloseIcon
-} from '@/components/sites/erigostore-co-id/shared/icons';
+} from '@/components/sites/shillstore/shared/icons';
 
 export function Header() {
   const { totalItems, setIsCartOpen, setIsSearchOpen } = useCart();
@@ -97,8 +97,8 @@ export function Header() {
             <div className="flex items-center">
               <Link href="/" className="relative block w-28 md:w-36 h-8 md:h-10">
                 <Image
-                  src="/sites/erigostore-co-id/root/images/logo-erigo-black.png"
-                  alt="Erigo Official Store"
+                  src="/sites/shillstore/root/images/logo-shill-black.png"
+                  alt="Shill Official Store"
                   fill
                   priority
                   className="object-contain"
@@ -134,7 +134,7 @@ export function Header() {
                   {item.featuredCollabs && activeDropdown === item.title && (
                     <div className="absolute top-full left-1/2 -translate-x-1/2 w-[650px] bg-white shadow-xl rounded-xl border border-gray-100 p-6 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                       <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">
-                        Kolaborasi Spesial Erigo
+                        Kolaborasi Spesial Shill
                       </p>
                       <div className="grid grid-cols-3 gap-4">
                         {item.featuredCollabs.map((collab) => (
@@ -226,8 +226,8 @@ export function Header() {
               <div className="flex items-center justify-between p-5 border-b border-gray-100">
                 <div className="relative w-28 h-8">
                   <Image
-                    src="/sites/erigostore-co-id/root/images/logo-erigo-black.png"
-                    alt="Erigo"
+                    src="/sites/shillstore/root/images/logo-shill-black.png"
+                    alt="Shill"
                     fill
                     className="object-contain"
                   />

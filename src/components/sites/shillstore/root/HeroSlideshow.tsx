@@ -3,8 +3,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { bannerSlides } from '@/data/erigo-data';
-import { ChevronLeftIcon, ChevronRightIcon } from '@/components/sites/erigostore-co-id/shared/icons';
+import { bannerSlides } from '@/data/shill-data';
+import { ChevronLeftIcon, ChevronRightIcon } from '@/components/sites/shillstore/shared/icons';
 
 export function HeroSlideshow() {
   const [currentIdx, setCurrentIdx] = useState(0);

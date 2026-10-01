@@ -3,8 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { blogStoriesData } from '@/data/erigo-data';
-import { InstagramIcon } from '@/components/sites/erigostore-co-id/shared/icons';
+import { blogStoriesData } from '@/data/shill-data';
+import { InstagramIcon } from '@/components/sites/shillstore/shared/icons';
 
 export function BlogStories() {
   return (
@@ -15,7 +15,7 @@ export function BlogStories() {
             Cerita & Kolaborasi
           </span>
           <h2 className="text-3xl md:text-4xl font-extrabold uppercase font-koulen tracking-wide">
-            Erigo Stories
+            Shill Stories
           </h2>
         </div>
 
@@ -53,7 +53,7 @@ export function BlogStories() {
 
                 <div className="flex items-center justify-between pt-4 border-t border-white/10">
                   <a
-                    href="https://instagram.com/erigostore"
+                    href="https://instagram.com/shillstore"
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-center gap-1.5 text-xs text-gray-300 hover:text-white transition-colors"

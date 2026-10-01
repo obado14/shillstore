@@ -16,10 +16,10 @@ const koulen = Koulen({
 });
 
 export const metadata: Metadata = {
-  title: "Erigo Official Store – ERIGO",
-  description: "Erigo, Everywhere You Go. Renew your clothes right now with our cool and stylish collections.",
+  title: "Shill Official Store – SHILL",
+  description: "Shill, Everywhere You Go. Renew your clothes right now with our cool and stylish collections.",
   icons: {
-    icon: "/sites/erigostore-co-id/root/images/favicon-erigo.png",
+    icon: "/sites/shillstore/root/images/favicon-shill.png",
   },
 };
 

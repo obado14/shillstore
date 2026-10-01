@@ -3,11 +3,11 @@
 import React, { use } from 'react';
 import Link from 'next/link';
 import { CartProvider } from '@/context/CartContext';
-import { Header } from '@/components/sites/erigostore-co-id/root/Header';
-import { Footer } from '@/components/sites/erigostore-co-id/root/Footer';
-import { CartDrawer } from '@/components/sites/erigostore-co-id/root/CartDrawer';
-import { SearchModal } from '@/components/sites/erigostore-co-id/root/SearchModal';
-import { storeLocations, faqList } from '@/data/erigo-data';
+import { Header } from '@/components/sites/shillstore/root/Header';
+import { Footer } from '@/components/sites/shillstore/root/Footer';
+import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
+import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
+import { storeLocations, faqList } from '@/data/shill-data';
 
 export default function StaticInfoPage({
   params,
@@ -50,10 +50,10 @@ function StaticInfoContent({ handle }: { handle: string }) {
                   Offline Outlets
                 </span>
                 <h1 className="text-3xl md:text-5xl font-extrabold uppercase font-koulen tracking-wide mb-3">
-                  Lokasi Toko Erigo
+                  Lokasi Toko Shill
                 </h1>
                 <p className="text-sm text-gray-600">
-                  Kunjungi toko fisik kami untuk mencoba dan mendapatkan koleksi terbaru Erigo secara langsung.
+                  Kunjungi toko fisik kami untuk mencoba dan mendapatkan koleksi terbaru Shill secara langsung.
                 </p>
               </div>
 
@@ -90,14 +90,14 @@ function StaticInfoContent({ handle }: { handle: string }) {
           {handle === 'about' && (
             <div className="prose prose-sm md:prose-base max-w-none">
               <h1 className="text-3xl md:text-5xl font-extrabold uppercase font-koulen tracking-wide mb-6">
-                Tentang Kami (About Erigo)
+                Tentang Kami (About Shill)
               </h1>
               <p className="lead text-base md:text-lg text-gray-700">
-                Erigo adalah salah satu brand fashion lokal asal Indonesia yang berfokus pada penyediaan pakaian kasual sehari-hari berkualitas premium untuk pria dan wanita yang aktif dan dinamis.
+                Shill adalah salah satu brand fashion lokal asal Indonesia yang berfokus pada penyediaan pakaian kasual sehari-hari berkualitas premium untuk pria dan wanita yang aktif dan dinamis.
               </p>
               <h2 className="text-xl font-bold mt-6 mb-3">Filosofi & Identitas</h2>
               <p className="text-sm text-gray-600 leading-relaxed">
-                Mengusung semangat &quot;Everywhere You Go&quot;, kami berkomitmen untuk menciptakan produk yang tidak hanya trendi dan nyaman, namun juga dapat menemani setiap momen hidup generasi muda. Mulai dari panggung New York Fashion Week hingga keseharian anak muda urban Indonesia, Erigo membuktikan kebanggaan karya anak bangsa di kancah global.
+                Mengusung semangat &quot;Everywhere You Go&quot;, kami berkomitmen untuk menciptakan produk yang tidak hanya trendi dan nyaman, namun juga dapat menemani setiap momen hidup generasi muda. Mulai dari panggung New York Fashion Week hingga keseharian anak muda urban Indonesia, Shill membuktikan kebanggaan karya anak bangsa di kancah global.
               </p>
             </div>
           )}
@@ -142,13 +142,13 @@ function StaticInfoContent({ handle }: { handle: string }) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-4 text-sm text-gray-700">
                   <p>
-                    Ada pertanyaan tentang pesanan, kerja sama, atau bantuan lainnya? Tim Customer Care Erigo siap membantumu.
+                    Ada pertanyaan tentang pesanan, kerja sama, atau bantuan lainnya? Tim Customer Care Shill siap membantumu.
                   </p>
                   <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 space-y-2">
                     <p className="font-bold">Customer Service WhatsApp:</p>
                     <p className="text-red-600 font-semibold">0811-9757-222</p>
                     <p className="font-bold pt-2">Email Partnership & Pertanyaan Umum:</p>
-                    <p className="text-red-600 font-semibold">partnership@erigostore.co.id</p>
+                    <p className="text-red-600 font-semibold">partnership@shillstore.co.id</p>
                     <p className="text-xs text-gray-500 pt-2">Jam Operasional: Senin - Minggu (09.00 - 21.00 WIB)</p>
                   </div>
                 </div>
@@ -175,17 +175,17 @@ function StaticInfoContent({ handle }: { handle: string }) {
           )}
 
           {/* 5. PAYMENT & POLICIES & OTHER PAGES */}
-          {['payment-information', 'exchanges-returns', 'privacy-policy', 'how-to-use-discount-code', 'track-order', 'corporate-order-by-erigo', 'authenticate', 'bergerakbebas-movease-by-erigo'].includes(handle) && (
+          {['payment-information', 'exchanges-returns', 'privacy-policy', 'how-to-use-discount-code', 'track-order', 'corporate-order-by-shill', 'authenticate', 'bergerakbebas-movease-by-shill'].includes(handle) && (
             <div className="space-y-6">
               <h1 className="text-3xl md:text-5xl font-extrabold uppercase font-koulen tracking-wide mb-6">
                 {handle.replace(/-/g, ' ')}
               </h1>
               <div className="bg-gray-50 p-6 md:p-8 rounded-2xl border border-gray-200 text-sm text-gray-700 leading-relaxed space-y-4">
                 <p>
-                  Halaman resmi untuk layanan <strong>{handle.replace(/-/g, ' ')}</strong> Erigo Store Indonesia.
+                  Halaman resmi untuk layanan <strong>{handle.replace(/-/g, ' ')}</strong> Shill Store Indonesia.
                 </p>
                 <p>
-                  Semua transaksi, proses penukaran barang, dan perlindungan privasi data pelanggan dijamin keamanannya sesuai standar operasional PT Erigo Apparel Indonesia dan regulasi Kementerian Perdagangan RI.
+                  Semua transaksi, proses penukaran barang, dan perlindungan privasi data pelanggan dijamin keamanannya sesuai standar operasional PT Shill Apparel Indonesia dan regulasi Kementerian Perdagangan RI.
                 </p>
                 <div className="pt-4 border-t border-gray-200">
                   <p className="text-xs text-gray-500">

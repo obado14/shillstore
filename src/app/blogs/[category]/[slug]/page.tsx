@@ -4,11 +4,11 @@ import React, { use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CartProvider } from '@/context/CartContext';
-import { Header } from '@/components/sites/erigostore-co-id/root/Header';
-import { Footer } from '@/components/sites/erigostore-co-id/root/Footer';
-import { CartDrawer } from '@/components/sites/erigostore-co-id/root/CartDrawer';
-import { SearchModal } from '@/components/sites/erigostore-co-id/root/SearchModal';
-import { blogStoriesData } from '@/data/erigo-data';
+import { Header } from '@/components/sites/shillstore/root/Header';
+import { Footer } from '@/components/sites/shillstore/root/Footer';
+import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
+import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
+import { blogStoriesData } from '@/data/shill-data';
 
 export default function BlogPostPage({
   params,
@@ -31,11 +31,11 @@ function BlogPostContent({ category, slug }: { category: string; slug: string })
       .split('-')
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(' '),
-    excerpt: 'Kisah eksklusif mengenai pergerakan gaya hidup, produk baru, dan kolaborasi dari Erigo.',
-    image: '/sites/erigostore-co-id/root/images/blog-mpl.png',
+    excerpt: 'Kisah eksklusif mengenai pergerakan gaya hidup, produk baru, dan kolaborasi dari Shill.',
+    image: '/sites/shillstore/root/images/blog-mpl.png',
     link: `/blogs/${category}/${slug}`,
     tag: 'Blogs',
-    instagramHandle: '@erigostore',
+    instagramHandle: '@shillstore',
   };
 
   return (
@@ -66,7 +66,7 @@ function BlogPostContent({ category, slug }: { category: string; slug: string })
               {blog.title}
             </h1>
             <div className="flex items-center gap-4 text-xs text-gray-400">
-              <span>Ditulis oleh: Tim Editorial Erigo</span>
+              <span>Ditulis oleh: Tim Editorial Shill</span>
               <span>•</span>
               <span>Diperbarui baru saja</span>
             </div>
@@ -83,7 +83,7 @@ function BlogPostContent({ category, slug }: { category: string; slug: string })
               {blog.excerpt}
             </p>
             <p>
-              Di tengah pesatnya perkembangan budaya streetwear dan gaya hidup urban, Erigo terus berinovasi untuk menghadirkan karya yang relevan dengan generasi muda. Kerja sama ini menjadi representasi nyata dari semangat &quot;Everywhere You Go&quot; yang menggabungkan ekspresi seni, fashion, dan energi positif.
+              Di tengah pesatnya perkembangan budaya streetwear dan gaya hidup urban, Shill terus berinovasi untuk menghadirkan karya yang relevan dengan generasi muda. Kerja sama ini menjadi representasi nyata dari semangat &quot;Everywhere You Go&quot; yang menggabungkan ekspresi seni, fashion, dan energi positif.
             </p>
             <p>
               Koleksi ini menggunakan bahan katun pilihan dengan sablon grafis tahan lama dan jahitan ganda yang kokoh, dirancang untuk memastikan kenyamanan sepanjang hari. Jangan lewatkan kesempatan untuk memiliki koleksi edisi terbatas ini melalui toko resmi dan website kami.

@@ -6,14 +6,14 @@ import {
   InstagramIcon,
   TikTokIcon,
   YouTubeIcon,
-} from '@/components/sites/erigostore-co-id/shared/icons';
+} from '@/components/sites/shillstore/shared/icons';
 
 export function SocialMediaBanner() {
   const socials = [
-    { name: 'Facebook', href: 'https://www.facebook.com/erigostoreapparel/', icon: FacebookIcon },
-    { name: 'Instagram', href: 'https://www.instagram.com/erigostore/', icon: InstagramIcon },
-    { name: 'TikTok', href: 'https://www.tiktok.com/@erigo.store', icon: TikTokIcon },
-    { name: 'YouTube', href: 'https://www.youtube.com/c/ErigoOfficial', icon: YouTubeIcon },
+    { name: 'Facebook', href: 'https://www.facebook.com/shillstoreapparel/', icon: FacebookIcon },
+    { name: 'Instagram', href: 'https://www.instagram.com/shillstore/', icon: InstagramIcon },
+    { name: 'TikTok', href: 'https://www.tiktok.com/@shill.store', icon: TikTokIcon },
+    { name: 'YouTube', href: 'https://www.youtube.com/c/ShillOfficial', icon: YouTubeIcon },
   ];
 
   return (

@@ -1,18 +1,18 @@
 import React from 'react';
 import { CartProvider } from '@/context/CartContext';
-import { Header } from '@/components/sites/erigostore-co-id/root/Header';
-import { HeroSlideshow } from '@/components/sites/erigostore-co-id/root/HeroSlideshow';
-import { CollageBanner } from '@/components/sites/erigostore-co-id/root/CollageBanner';
-import { ProductRangePills } from '@/components/sites/erigostore-co-id/root/ProductRangePills';
-import { BrandStoryRichText } from '@/components/sites/erigostore-co-id/root/BrandStoryRichText';
-import { FeaturedProducts } from '@/components/sites/erigostore-co-id/root/FeaturedProducts';
-import { MultiBannerPromo } from '@/components/sites/erigostore-co-id/root/MultiBannerPromo';
-import { BlogStories } from '@/components/sites/erigostore-co-id/root/BlogStories';
-import { SocialMediaBanner } from '@/components/sites/erigostore-co-id/root/SocialMediaBanner';
-import { NewsletterSection } from '@/components/sites/erigostore-co-id/root/NewsletterSection';
-import { Footer } from '@/components/sites/erigostore-co-id/root/Footer';
-import { CartDrawer } from '@/components/sites/erigostore-co-id/root/CartDrawer';
-import { SearchModal } from '@/components/sites/erigostore-co-id/root/SearchModal';
+import { Header } from '@/components/sites/shillstore/root/Header';
+import { HeroSlideshow } from '@/components/sites/shillstore/root/HeroSlideshow';
+import { CollageBanner } from '@/components/sites/shillstore/root/CollageBanner';
+import { ProductRangePills } from '@/components/sites/shillstore/root/ProductRangePills';
+import { BrandStoryRichText } from '@/components/sites/shillstore/root/BrandStoryRichText';
+import { FeaturedProducts } from '@/components/sites/shillstore/root/FeaturedProducts';
+import { MultiBannerPromo } from '@/components/sites/shillstore/root/MultiBannerPromo';
+import { BlogStories } from '@/components/sites/shillstore/root/BlogStories';
+import { SocialMediaBanner } from '@/components/sites/shillstore/root/SocialMediaBanner';
+import { NewsletterSection } from '@/components/sites/shillstore/root/NewsletterSection';
+import { Footer } from '@/components/sites/shillstore/root/Footer';
+import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
+import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
 
 export default function Home() {
   return (

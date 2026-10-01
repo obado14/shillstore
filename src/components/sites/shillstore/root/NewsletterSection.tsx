@@ -19,7 +19,7 @@ export function NewsletterSection() {
         className="relative bg-cover bg-center py-16 md:py-24"
         style={{
           backgroundImage:
-            'url(/sites/erigostore-co-id/root/images/newsletter-bg.png)',
+            'url(/sites/shillstore/root/images/newsletter-bg.png)',
         }}
       >
         <div className="absolute inset-0 bg-black/60 backdrop-blur-2xs" />
@@ -36,7 +36,7 @@ export function NewsletterSection() {
           {/* Right Form */}
           <div className="w-full md:max-w-md bg-black/80 p-6 md:p-8 rounded-2xl border border-white/10 text-white">
             <h3 className="text-sm font-semibold text-gray-200 mb-4 leading-relaxed">
-              Jadi yang pertama tahu produk terbaru Erigo dan promo seru lainnya! Daftarkan emailmu di sini
+              Jadi yang pertama tahu produk terbaru Shill dan promo seru lainnya! Daftarkan emailmu di sini
             </h3>
 
             {submitted ? (
@@ -77,7 +77,7 @@ export function NewsletterSection() {
                     htmlFor="accept_marketing"
                     className="text-xs text-gray-300 select-none cursor-pointer leading-relaxed"
                   >
-                    Saya bersedia menerima email newsletter Erigo dan telah membaca Kebijakan Privasi
+                    Saya bersedia menerima email newsletter Shill dan telah membaca Kebijakan Privasi
                   </label>
                 </div>
 

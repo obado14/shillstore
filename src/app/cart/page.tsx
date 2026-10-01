@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CartProvider, useCart } from '@/context/CartContext';
-import { Header } from '@/components/sites/erigostore-co-id/root/Header';
-import { Footer } from '@/components/sites/erigostore-co-id/root/Footer';
-import { SearchModal } from '@/components/sites/erigostore-co-id/root/SearchModal';
+import { Header } from '@/components/sites/shillstore/root/Header';
+import { Footer } from '@/components/sites/shillstore/root/Footer';
+import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
 
 export default function CartPage() {
   return (
@@ -23,9 +23,9 @@ function CartPageContent() {
   const [appliedVoucher, setAppliedVoucher] = useState<string | null>(null);
 
   const applyVoucher = () => {
-    if (voucherCode.toUpperCase() === 'ERIGO30' || voucherCode.toUpperCase() === 'DISC30K') {
+    if (voucherCode.toUpperCase() === 'SHILL30' || voucherCode.toUpperCase() === 'DISC30K') {
       setDiscount(30000);
-      setAppliedVoucher('ERIGO30 (-Rp 30.000)');
+      setAppliedVoucher('SHILL30 (-Rp 30.000)');
     } else if (voucherCode.trim()) {
       setDiscount(15000);
       setAppliedVoucher(`${voucherCode.toUpperCase()} (-Rp 15.000)`);
@@ -47,7 +47,7 @@ function CartPageContent() {
           <div className="text-center py-20 bg-gray-50 rounded-2xl border border-gray-100 p-8 max-w-xl mx-auto">
             <p className="text-lg font-bold text-gray-800 mb-2">Keranjang Belanja Anda Kosong</p>
             <p className="text-sm text-gray-500 mb-6">
-              Yuk jelajahi koleksi terbaru Erigo dan temukan outfit favoritmu sekarang.
+              Yuk jelajahi koleksi terbaru Shill dan temukan outfit favoritmu sekarang.
             </p>
             <Link
               href="/collections/all-product"
@@ -146,7 +146,7 @@ function CartPageContent() {
                     type="text"
                     value={voucherCode}
                     onChange={(e) => setVoucherCode(e.target.value)}
-                    placeholder="Contoh: ERIGO30"
+                    placeholder="Contoh: SHILL30"
                     className="flex-1 px-3 py-2 text-xs border rounded-lg bg-white uppercase font-bold focus:outline-none focus:border-black"
                   />
                   <button

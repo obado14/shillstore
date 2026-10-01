@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
-import { CloseIcon } from '@/components/sites/erigostore-co-id/shared/icons';
+import { CloseIcon } from '@/components/sites/shillstore/shared/icons';
 
 export function CartDrawer() {
   const { cart, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, totalPrice, totalItems } = useCart();

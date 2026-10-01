@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
-import { SearchIcon, CloseIcon } from '@/components/sites/erigostore-co-id/shared/icons';
-import { productsData } from '@/data/erigo-data';
+import { SearchIcon, CloseIcon } from '@/components/sites/shillstore/shared/icons';
+import { productsData } from '@/data/shill-data';
 
 export function SearchModal() {
   const { isSearchOpen, setIsSearchOpen, addToCart } = useCart();

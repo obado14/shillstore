@@ -4,12 +4,12 @@ import React, { useState, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CartProvider, useCart } from '@/context/CartContext';
-import { Header } from '@/components/sites/erigostore-co-id/root/Header';
-import { Footer } from '@/components/sites/erigostore-co-id/root/Footer';
-import { CartDrawer } from '@/components/sites/erigostore-co-id/root/CartDrawer';
-import { SearchModal } from '@/components/sites/erigostore-co-id/root/SearchModal';
-import { productsData, collectionsList } from '@/data/erigo-data';
-import { Product } from '@/types/erigo';
+import { Header } from '@/components/sites/shillstore/root/Header';
+import { Footer } from '@/components/sites/shillstore/root/Footer';
+import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
+import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
+import { productsData, collectionsList } from '@/data/shill-data';
+import { Product } from '@/types/shill';
 
 export default function CollectionPage({
   params,
@@ -35,7 +35,7 @@ function CollectionContent({ handle }: { handle: string }) {
       .split('-')
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(' '),
-    description: 'Koleksi pakaian kasual eksklusif persembahan Erigo.',
+    description: 'Koleksi pakaian kasual eksklusif persembahan Shill.',
   };
 
   // Filter products by collection handle keyword

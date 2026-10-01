@@ -8,17 +8,17 @@ import {
   InstagramIcon,
   TikTokIcon,
   YouTubeIcon,
-} from '@/components/sites/erigostore-co-id/shared/icons';
+} from '@/components/sites/shillstore/shared/icons';
 
 export function Footer() {
   const footerSections = [
     {
-      title: 'ERIGO',
+      title: 'SHILL',
       links: [
         { label: 'Lokasi Toko', href: '/pages/our-store' },
         { label: 'Tentang Kami', href: '/pages/about' },
         { label: 'Hubungi Kami', href: '/pages/contact-us' },
-        { label: 'Corporate Order by Erigo', href: '/pages/corporate-order-by-erigo' },
+        { label: 'Corporate Order by Shill', href: '/pages/corporate-order-by-shill' },
       ],
     },
     {
@@ -79,8 +79,8 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1 flex flex-col gap-5">
             <div className="relative w-28 h-8">
               <Image
-                src="/sites/erigostore-co-id/root/images/logo-erigo-white.png"
-                alt="Erigo"
+                src="/sites/shillstore/root/images/logo-shill-white.png"
+                alt="Shill"
                 fill
                 className="object-contain"
               />
@@ -90,7 +90,7 @@ export function Footer() {
               <span className="text-white font-semibold block mb-1">Follow kami</span>
               <div className="flex items-center gap-3">
                 <a
-                  href="https://facebook.com/erigostoreapparel"
+                  href="https://facebook.com/shillstoreapparel"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white transition-colors"
@@ -98,7 +98,7 @@ export function Footer() {
                   <FacebookIcon className="w-4 h-4" />
                 </a>
                 <a
-                  href="https://instagram.com/erigostore"
+                  href="https://instagram.com/shillstore"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white transition-colors"
@@ -106,7 +106,7 @@ export function Footer() {
                   <InstagramIcon className="w-4 h-4" />
                 </a>
                 <a
-                  href="https://youtube.com/c/ErigoOfficial"
+                  href="https://youtube.com/c/ShillOfficial"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white transition-colors"
@@ -114,7 +114,7 @@ export function Footer() {
                   <YouTubeIcon className="w-4 h-4" />
                 </a>
                 <a
-                  href="https://tiktok.com/@erigo.store"
+                  href="https://tiktok.com/@shill.store"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white transition-colors"
@@ -132,8 +132,8 @@ export function Footer() {
                 </a>
               </p>
               <p>
-                <a href="mailto:partnership@erigostore.co.id" className="hover:text-white">
-                  partnership@erigostore.co.id
+                <a href="mailto:partnership@shillstore.co.id" className="hover:text-white">
+                  partnership@shillstore.co.id
                 </a>
               </p>
             </div>
@@ -141,13 +141,13 @@ export function Footer() {
             <div className="space-y-1 text-[11px] leading-relaxed pt-2">
               <span className="text-white font-semibold block">Toko offline kami</span>
               <p>
-                <strong>Erigo Store Bekasi:</strong> Grand Galaxy City RGB No.96, Bekasi
+                <strong>Shill Store Bekasi:</strong> Grand Galaxy City RGB No.96, Bekasi
               </p>
               <p>
-                <strong>Erigo Store Pamulang:</strong> Pamulang Permai Blok SH21, Tangerang Selatan
+                <strong>Shill Store Pamulang:</strong> Pamulang Permai Blok SH21, Tangerang Selatan
               </p>
               <p>
-                <strong>Erigo Store Banjarbaru:</strong> Jl. A. Yani Km 35, Kalimantan Selatan
+                <strong>Shill Store Banjarbaru:</strong> Jl. A. Yani Km 35, Kalimantan Selatan
               </p>
             </div>
           </div>
@@ -165,8 +165,8 @@ export function Footer() {
 
         {/* Bottom Copyright */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-gray-500">
-          <p>Hak Cipta © ERIGO Semua hak dilindungi undang-undang.</p>
-          <p>ERIGO © 2026</p>
+          <p>Hak Cipta © SHILL Semua hak dilindungi undang-undang.</p>
+          <p>SHILL © 2026</p>
         </div>
       </div>
     </footer>

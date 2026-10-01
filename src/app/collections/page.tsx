@@ -3,11 +3,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { CartProvider } from '@/context/CartContext';
-import { Header } from '@/components/sites/erigostore-co-id/root/Header';
-import { Footer } from '@/components/sites/erigostore-co-id/root/Footer';
-import { CartDrawer } from '@/components/sites/erigostore-co-id/root/CartDrawer';
-import { SearchModal } from '@/components/sites/erigostore-co-id/root/SearchModal';
-import { collectionsList } from '@/data/erigo-data';
+import { Header } from '@/components/sites/shillstore/root/Header';
+import { Footer } from '@/components/sites/shillstore/root/Footer';
+import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
+import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
+import { collectionsList } from '@/data/shill-data';
 
 export default function CollectionsIndexPage() {
   return (
@@ -18,7 +18,7 @@ export default function CollectionsIndexPage() {
         <main className="flex-1 py-12 page-width">
           <div className="text-center max-w-xl mx-auto mb-12">
             <h1 className="text-4xl md:text-5xl font-extrabold uppercase font-koulen tracking-wider mb-3">
-              Semua Koleksi Erigo
+              Semua Koleksi Shill
             </h1>
             <p className="text-sm text-gray-600">
               Temukan berbagai kategori pakaian kasual berkualitas untuk gaya harianmu.
