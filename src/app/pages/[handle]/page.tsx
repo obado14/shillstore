@@ -2,6 +2,7 @@
 
 import React, { use } from 'react';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { CartProvider } from '@/context/CartContext';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
@@ -24,6 +25,9 @@ export default function StaticInfoPage({
 }
 
 function StaticInfoContent({ handle }: { handle: string }) {
+  if (handle === 'bergerakbebas-movease-by-shill') {
+    notFound();
+  }
   // Render specific content depending on handle
   return (
     <div className="min-h-screen flex flex-col bg-white text-[#121212]">
@@ -175,7 +179,7 @@ function StaticInfoContent({ handle }: { handle: string }) {
           )}
 
           {/* 5. PAYMENT & POLICIES & OTHER PAGES */}
-          {['payment-information', 'exchanges-returns', 'privacy-policy', 'how-to-use-discount-code', 'track-order', 'corporate-order-by-shill', 'authenticate', 'bergerakbebas-movease-by-shill'].includes(handle) && (
+          {['payment-information', 'exchanges-returns', 'privacy-policy', 'how-to-use-discount-code', 'track-order', 'corporate-order-by-shill', 'authenticate'].includes(handle) && (
             <div className="space-y-6">
               <h1 className="text-3xl md:text-5xl font-extrabold uppercase font-koulen tracking-wide mb-6">
                 {handle.replace(/-/g, ' ')}

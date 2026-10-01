@@ -12,7 +12,7 @@ export function BlogStories() {
       <div className="page-width">
         <div className="text-center max-w-xl mx-auto mb-10">
           <span className="text-xs uppercase font-bold tracking-widest text-[#ff1b2d] block mb-2">
-            Cerita & Kolaborasi
+            Cerita & Artikel Terbaru
           </span>
           <h2 className="text-3xl md:text-4xl font-extrabold uppercase font-koulen tracking-wide">
             Shill Stories

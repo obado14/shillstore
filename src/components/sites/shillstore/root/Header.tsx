@@ -125,40 +125,10 @@ export function Header() {
                         {item.badge}
                       </span>
                     )}
-                    {(item.sublinks || item.featuredCollabs) && (
+                    {item.sublinks && (
                       <ChevronDownIcon className="w-3.5 h-3.5 text-gray-400 group-hover:rotate-180 transition-transform duration-200" />
                     )}
                   </Link>
-
-                  {/* Mega Menu for Kolaborasi */}
-                  {item.featuredCollabs && activeDropdown === item.title && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-[650px] bg-white shadow-xl rounded-xl border border-gray-100 p-6 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">
-                        Kolaborasi Spesial Shill
-                      </p>
-                      <div className="grid grid-cols-3 gap-4">
-                        {item.featuredCollabs.map((collab) => (
-                          <Link
-                            key={collab.title}
-                            href={collab.href}
-                            className="group/item flex flex-col gap-2 rounded-lg overflow-hidden"
-                          >
-                            <div className="relative aspect-4/3 rounded-lg overflow-hidden bg-gray-100">
-                              <Image
-                                src={collab.image}
-                                alt={collab.title}
-                                fill
-                                className="object-cover group-hover/item:scale-105 transition-transform duration-300"
-                              />
-                            </div>
-                            <span className="text-xs font-bold text-center text-gray-900 group-hover/item:text-red-600 transition-colors">
-                              {collab.title}
-                            </span>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
 
                   {/* Regular Dropdown Menu */}
                   {item.sublinks && activeDropdown === item.title && (

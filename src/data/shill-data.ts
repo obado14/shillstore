@@ -81,15 +81,6 @@ export const bannerSlides: BannerSlide[] = [
     mobileImage: '/sites/shillstore/root/images/hero-relax-chino.jpg',
     link: '/collections/category-pants-chino-pants',
     buttonText: 'Lihat Koleksi'
-  },
-  {
-    id: 'slide-movease',
-    title: 'SHILL MOVEASE',
-    subtitle: 'Bergerak Bebas',
-    desktopImage: '/sites/shillstore/root/images/hero-movease.jpg',
-    mobileImage: '/sites/shillstore/root/images/hero-movease.jpg',
-    link: '/pages/bergerakbebas-movease-by-shill',
-    buttonText: 'Jelajahi'
   }
 ];
 
@@ -341,19 +332,19 @@ export const productsData: Product[] = [
 export const blogStoriesData: BlogStory[] = [
   {
     id: 'blog-mpl',
-    title: 'Kolaborasi Shill x MPL Indonesia',
-    excerpt: 'Ditengah hiruk pikuk persaingan dunia fashion maupun game, akhirnya tercipta kolaborasi yang mempertemukan ambisi besar dan kreativitas, menyatukan misi untuk melahirkan sesuatu yang akan menjadi perbincangan hangat...',
+    title: 'Shill x MPL Indonesia',
+    excerpt: 'Ditengah hiruk pikuk persaingan dunia fashion maupun game, hadir rilisan spesial yang mempertemukan ambisi besar dan kreativitas streetwear...',
     image: '/sites/shillstore/root/images/blog-mpl.png',
-    link: '/blogs/blogs/kolaborasi-shill-x-mpl-indonesia',
+    link: '/blogs/blogs/shill-x-mpl-indonesia',
     tag: 'Blogs',
     instagramHandle: '@shillstore'
   },
   {
     id: 'blog-evos',
-    title: 'Kolaborasi Shill x EVOS esports',
-    excerpt: 'Langkah berani Shill dalam mendukung ekosistem esports tanah air terwujud melalui kerja sama spesial dengan salah satu tim terbesar di Asia Tenggara, EVOS esports...',
+    title: 'Shill x EVOS esports',
+    excerpt: 'Langkah berani Shill dalam mendukung ekosistem esports tanah air terwujud melalui kerja sama apparel resmi bersama EVOS esports...',
     image: '/sites/shillstore/root/images/blog-evos.jpg',
-    link: '/blogs/news/kolaborasi-shill-x-evos-esports',
+    link: '/blogs/news/shill-x-evos-esports',
     tag: 'Blogs',
     instagramHandle: '@shillstore'
   },
@@ -385,9 +376,6 @@ export const collectionsList = [
   { handle: 'category-pants-chino-pants', title: 'Celana / Pants', description: 'Chino pants, cargo pants, jogger pants, dan short pants berfitur flexi-fit.' },
   { handle: 'accessories', title: 'Aksesoris', description: 'Topi, tas, kaos kaki, dan perlengkapan fungsional pelengkap gaya urbanmu.' },
   { handle: 'perfume', title: 'Parfum Series', description: 'Aroma wewangian segar dan berkelas menemani setiap kegiatanmu.' },
-  { handle: 'shill-x-jkt48', title: 'Shill x JKT48', description: 'Koleksi spesial kolaborasi penuh energi bersama member JKT48.' },
-  { handle: 'shill-x-mpl', title: 'Shill x MPL Indonesia', description: 'Koleksi kolaborasi streetwear resmi MPL Indonesia.' },
-  { handle: 'ms-glow', title: 'Shill x MS Glow', description: 'Kolaborasi eksklusif produk perawatan dan apparel gaya hidup.' },
   { handle: 'atasan', title: 'Kategori Atasan', description: 'Koleksi lengkap pakaian atasan kasual: Kaos, Kemeja, Hoodie, dan Jaket.' },
   { handle: 'bawahan', title: 'Kategori Bawahan', description: 'Koleksi lengkap celana panjang, chino, cargo, dan celana pendek santai.' }
 ];
@@ -496,21 +484,6 @@ export const navCategories = [
     title: 'Parfum',
     href: '/collections/perfume',
     badge: null
-  },
-  {
-    title: 'MOVEASE',
-    href: '/pages/bergerakbebas-movease-by-shill',
-    badge: 'NEW'
-  },
-  {
-    title: 'Kolaborasi',
-    href: '#',
-    badge: null,
-    featuredCollabs: [
-      { title: 'JKT48', image: '/sites/shillstore/root/images/mega-jkt48.jpg', href: '/collections/shill-x-jkt48' },
-      { title: 'MS Glow', image: '/sites/shillstore/root/images/mega-msglow.jpg', href: '/collections/ms-glow' },
-      { title: 'MPL id', image: '/sites/shillstore/root/images/mega-mpl.jpg', href: '/collections/shill-x-mpl' }
-    ]
   },
   {
     title: 'Lokasi Toko',

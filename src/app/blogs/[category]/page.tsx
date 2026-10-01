@@ -38,7 +38,7 @@ function BlogCategoryContent({ category }: { category: string }) {
             {category === 'news' ? 'Kabar & Berita Shill' : 'Shill Stories & Blogs'}
           </h1>
           <p className="text-sm text-gray-600">
-            Temukan kisah inspiratif di balik kolaborasi, rilis produk terbaru, dan gaya hidup urban anak muda.
+            Temukan kisah inspiratif seputar rilis produk terbaru, cerita komunitas, dan gaya hidup urban anak muda.
           </p>
         </div>
 

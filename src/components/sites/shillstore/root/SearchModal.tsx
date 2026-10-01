@@ -12,7 +12,7 @@ export function SearchModal() {
 
   if (!isSearchOpen) return null;
 
-  const popularKeywords = ['Kaos Oversize', 'Chino Pants', 'Kemeja Rayon', 'MOVEASE', 'Jaket Parka', 'Parfum'];
+  const popularKeywords = ['Kaos Oversize', 'Chino Pants', 'Kemeja Rayon', 'Celana Cargo', 'Jaket Parka', 'Parfum'];
 
   const filteredProducts = query.trim()
     ? productsData.filter((p) =>

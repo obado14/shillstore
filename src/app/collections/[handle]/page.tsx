@@ -27,7 +27,7 @@ export default function CollectionPage({
 }
 
 function CollectionContent({ handle }: { handle: string }) {
-  if (handle === 'all-product') {
+  if (['all-product', 'shill-x-jkt48', 'shill-x-mpl', 'ms-glow'].includes(handle)) {
     notFound();
   }
 

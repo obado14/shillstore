@@ -31,7 +31,7 @@ function BlogPostContent({ category, slug }: { category: string; slug: string })
       .split('-')
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(' '),
-    excerpt: 'Kisah eksklusif mengenai pergerakan gaya hidup, produk baru, dan kolaborasi dari Shill.',
+    excerpt: 'Kisah eksklusif mengenai tren gaya hidup, rilis produk baru, dan kultur anak muda dari Shill.',
     image: '/sites/shillstore/root/images/blog-mpl.png',
     link: `/blogs/${category}/${slug}`,
     tag: 'Blogs',
