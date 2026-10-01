@@ -11,6 +11,7 @@ import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
 import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
 import { productsData } from '@/data/shill-data';
 import { Product } from '@/types/shill';
+import { ModernProductCard } from '@/components/sites/shillstore/root/ModernProductCard';
 
 export default function ProductDetailPage({
   params,
@@ -440,27 +441,12 @@ function ProductDetailContent({ handle }: { handle: string }) {
               Produk Terkait yang Mungkin Kamu Suka
             </h3>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              {relatedProducts.map((p) => (
-                <Link
-                  key={p.id}
-                  href={p.link}
-                  className="group flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 p-3 hover:shadow-lg transition-all"
-                >
-                  <div className="relative aspect-square w-full rounded-lg overflow-hidden bg-gray-50 mb-3">
-                    <Image
-                      src={p.images[0]}
-                      alt={p.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform"
-                    />
-                  </div>
-                  <h4 className="text-xs font-semibold text-gray-800 line-clamp-1 group-hover:text-red-600 transition-colors">
-                    {p.title}
-                  </h4>
-                  <span className="text-xs font-bold text-red-600 mt-1">{p.formattedPrice}</span>
-                </Link>
-              ))}
+            <div className="scope product-cards">
+              <div className="_card-list">
+                {relatedProducts.map((p) => (
+                  <ModernProductCard key={p.id} product={p} onAddToCart={addToCart} />
+                ))}
+              </div>
             </div>
           </div>
         </div>
