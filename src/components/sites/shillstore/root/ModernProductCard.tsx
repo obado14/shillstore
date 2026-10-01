@@ -25,15 +25,19 @@ export function getProductAccentColor(product: Product): string {
   if (product.id.includes('graphic')) return '#b45309';
 
   // Pants Models
-  if (product.id.includes('chino')) return '#3d5a80';
-  if (product.id.includes('cargo')) return '#43523d';
-  if (product.id.includes('jogger')) return '#1e293b';
-  if (product.id.includes('short')) return '#0f766e';
+  if (product.category === 'Celana') {
+    if (product.id.includes('chino')) return '#3d5a80';
+    if (product.id.includes('cargo')) return '#43523d';
+    if (product.id.includes('jogger')) return '#1e293b';
+    if (product.id.includes('short')) return '#0f766e';
+  }
 
   // Shirt Models
-  if (product.id.includes('oxford')) return '#0284c7';
-  if (product.id.includes('rayon')) return '#0d9488';
-  if (product.id.includes('flannel')) return '#b45309';
+  if (product.category === 'Kemeja') {
+    if (product.id.includes('oxford')) return '#0284c7';
+    if (product.id.includes('rayon')) return '#0d9488';
+    if (product.id.includes('flannel')) return '#b45309';
+  }
 
   const cat = product.category.toLowerCase();
   if (cat.includes('parfum')) return '#c34a36';

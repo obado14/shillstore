@@ -42,10 +42,9 @@ function CollectionContent({ handle }: { handle: string }) {
   const filteredProducts = productsData.filter((p) => {
     if (handle === 'all') return true;
     const h = handle.toLowerCase();
-    const t = p.title.toLowerCase();
     const c = p.category.toLowerCase();
-    if (h.includes('t-shirt') || h.includes('kaos')) return c === 'kaos' || t.includes('t-shirt');
-    if (h.includes('shirt') || h.includes('kemeja')) return c === 'kemeja' || t.includes('shirt');
+    if (h.includes('t-shirt') || h.includes('kaos')) return c === 'kaos';
+    if (h.includes('shirt') || h.includes('kemeja')) return c === 'kemeja';
     if (h.includes('chino') || h.includes('pants') || h.includes('celana') || h.includes('bawahan')) return c === 'celana';
     if (h.includes('jacket') || h.includes('jaket') || h.includes('parka')) return c === 'jaket';
     if (h.includes('atasan')) return c === 'kaos' || c === 'jaket' || c === 'kemeja';
