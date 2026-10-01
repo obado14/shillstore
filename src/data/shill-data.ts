@@ -104,15 +104,6 @@ export const collageItems: CollageItem[] = [
     link: '/collections/all-shirt',
     buttonText: '',
     buttonStyle: 'outline'
-  },
-  {
-    id: 'collage-pickup',
-    title: 'PICKUP IN STORE',
-    subtitle: '',
-    image: '/sites/shillstore/root/images/collage-pickup.jpg',
-    link: '/blogs/news/pickup-instore',
-    buttonText: 'PICKUP IN STORE',
-    buttonStyle: 'yellow'
   }
 ];
 
@@ -1299,15 +1290,6 @@ export const blogStoriesData: BlogStory[] = [
     excerpt: 'Beli langsung di website resmi Shill memberikan banyak keuntungan: jaminan 100% produk original, gratis ongkir ke seluruh Indonesia, serta jaminan return & refund tanpa ribet...',
     image: '/sites/shillstore/root/images/collage-why-buy.jpg',
     link: '/blogs/news/kenapa-harus-beli-di-website-shill',
-    tag: 'News',
-    instagramHandle: '@shillstore'
-  },
-  {
-    id: 'blog-pickup',
-    title: 'Layanan Baru: Pickup in Store',
-    excerpt: 'Sekarang kamu bisa memesan outfit Shill favoritmu secara online melalui website dan langsung mengambilnya di outlet Shill Store terdekat tanpa antri...',
-    image: '/sites/shillstore/root/images/collage-pickup.jpg',
-    link: '/blogs/news/pickup-instore',
     tag: 'News',
     instagramHandle: '@shillstore'
   }

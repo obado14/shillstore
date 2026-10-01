@@ -19,14 +19,14 @@ export function BlogStories() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {blogStoriesData.map((story) => (
             <div
               key={story.id}
-              className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/30 transition-all duration-300 flex flex-col sm:flex-row group"
+              className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/30 transition-all duration-300 flex flex-col group shadow-sm hover:shadow-lg"
             >
               {/* Image */}
-              <div className="relative w-full sm:w-1/2 aspect-4/3 sm:aspect-auto min-h-[240px] overflow-hidden">
+              <div className="relative w-full aspect-16/10 overflow-hidden">
                 <Image
                   src={story.image}
                   alt={story.title}

@@ -54,24 +54,6 @@ export function CollageBanner() {
             </h3>
           </div>
         </div>
-
-        {/* Card 3: PICKUP IN STORE */}
-        <div className="relative flex-1 rounded-[12px] overflow-hidden group min-h-[320px] md:min-h-[360px] bg-gray-900">
-          <Image
-            src={collageItems[2].image}
-            alt={collageItems[2].title}
-            fill
-            className="object-cover object-left group-hover:scale-105 transition-transform duration-500"
-          />
-          <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end items-center text-center z-10">
-            <Link
-              href={collageItems[2].link}
-              className="px-8 py-2.5 rounded-lg bg-[#ffbb00] hover:bg-[#e5a800] text-[#0b1a32] text-xs font-bold uppercase tracking-wider transition-colors shadow-md hover:scale-105"
-            >
-              {collageItems[2].buttonText}
-            </Link>
-          </div>
-        </div>
       </div>
     </section>
   );
