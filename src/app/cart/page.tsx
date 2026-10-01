@@ -75,9 +75,16 @@ function CartPageContent() {
                         {item.product.title}
                       </h3>
                       <p className="text-xs text-gray-500 mt-0.5">{item.product.category}</p>
-                      <p className="text-sm font-extrabold text-red-600 mt-1">
-                        Rp {item.product.price.toLocaleString('id-ID')}
-                      </p>
+                      <div className="flex items-baseline gap-2 mt-1">
+                        <p className="text-sm font-extrabold text-red-600">
+                          Rp {(item.product.price * item.quantity).toLocaleString('id-ID')}
+                        </p>
+                        {item.quantity > 1 && (
+                          <span className="text-xs text-gray-500 font-medium">
+                            (Rp {item.product.price.toLocaleString('id-ID')} x {item.quantity})
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
 

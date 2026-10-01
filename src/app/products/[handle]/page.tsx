@@ -114,11 +114,16 @@ function ProductDetailContent({ handle }: { handle: string }) {
                 {/* Price */}
                 <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl mb-6">
                   <span className="text-2xl md:text-3xl font-extrabold text-[#ff1b2d]">
-                    {product.formattedPrice}
+                    Rp {(product.price * quantity).toLocaleString('id-ID')}
                   </span>
-                  {product.formattedCompareAtPrice && (
+                  {product.compareAtPrice && (
                     <span className="text-sm md:text-base text-gray-400 line-through">
-                      {product.formattedCompareAtPrice}
+                      Rp {(product.compareAtPrice * quantity).toLocaleString('id-ID')}
+                    </span>
+                  )}
+                  {quantity > 1 && (
+                    <span className="text-xs text-gray-500 font-medium">
+                      ({product.formattedPrice} x {quantity})
                     </span>
                   )}
                   <span className="ml-auto text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded">
@@ -183,9 +188,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
                 <div className="flex flex-col sm:flex-row gap-3 mb-10">
                   <button
                     onClick={() => {
-                      for (let i = 0; i < quantity; i++) {
-                        addToCart(product);
-                      }
+                      addToCart(product, quantity);
                     }}
                     className="flex-1 py-4 bg-black hover:bg-gray-800 text-white text-sm font-bold uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer"
                   >
@@ -194,7 +197,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
 
                   <button
                     onClick={() => {
-                      addToCart(product);
+                      addToCart(product, quantity);
                     }}
                     className="flex-1 py-4 bg-[#ff1b2d] hover:bg-[#e70011] text-white text-sm font-bold uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer"
                   >

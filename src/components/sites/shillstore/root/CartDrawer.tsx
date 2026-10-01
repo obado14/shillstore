@@ -64,9 +64,16 @@ export function CartDrawer() {
                       <h4 className="text-xs font-semibold text-gray-900 line-clamp-2">
                         {item.product.title}
                       </h4>
-                      <p className="text-xs font-bold text-red-600 mt-1">
-                        Rp {item.product.price.toLocaleString('id-ID')}
-                      </p>
+                      <div className="flex items-baseline gap-1.5 mt-1">
+                        <p className="text-xs font-bold text-red-600">
+                          Rp {(item.product.price * item.quantity).toLocaleString('id-ID')}
+                        </p>
+                        {item.quantity > 1 && (
+                          <span className="text-[10px] text-gray-500 font-medium">
+                            (Rp {item.product.price.toLocaleString('id-ID')}/item)
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     <div className="flex items-center justify-between mt-2">

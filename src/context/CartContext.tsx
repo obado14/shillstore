@@ -17,7 +17,7 @@ export interface CartItem {
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -76,17 +76,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const addToCart = useCallback(
-    (product: Product) => {
+    (product: Product, quantity: number = 1) => {
+      const addQty = Math.max(1, quantity);
       const existing = cart.find((item) => item.product.id === product.id);
       let updated: CartItem[];
       if (existing) {
         updated = cart.map((item) =>
           item.product.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + addQty }
             : item
         );
       } else {
-        updated = [...cart, { product, quantity: 1 }];
+        updated = [...cart, { product, quantity: addQty }];
       }
       saveCart(updated);
       setIsCartOpen(true);
