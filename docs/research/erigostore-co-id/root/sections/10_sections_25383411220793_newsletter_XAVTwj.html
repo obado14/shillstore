@@ -1,0 +1,104 @@
+<section id="shopify-section-sections--25383411220793__newsletter_XAVTwj" class="shopify-section shopify-section-group-footer-group section"><link href="//erigostore.co.id/cdn/shop/t/25/assets/component-newsletter.css?v=27165604781018098951759386426" rel="stylesheet" type="text/css" media="all" />
+<link href="//erigostore.co.id/cdn/shop/t/25/assets/newsletter-section.css?v=65906925782554905801759386426" rel="stylesheet" type="text/css" media="all" />
+<style data-shopify>.section-sections--25383411220793__newsletter_XAVTwj-padding {
+    padding-top: 30px;
+    padding-bottom: 39px;
+    background-image: url(//erigostore.co.id/cdn/shop/files/Sign_Up_copy_6.png?v=1724150689&width=1000);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: unset;
+    height: 500px;
+  }
+
+  .newsletter__subheading {
+    max-width: 36rem;
+  }
+
+  .newsletter .field__input {
+    background: #ffffff;
+    color: #000000;
+  }
+  .newsletter .field__input:not(:placeholder-shown),
+  .newsletter .field__input:focus {
+    padding: 1.5rem;
+  }
+  .newsletter .field__label {
+    color: #000000;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-sections--25383411220793__newsletter_XAVTwj-padding {
+      padding-top: 40px;
+      padding-bottom: 52px;
+    }
+  }</style><div class="newsletter ">
+  <div class="newsletter__wrapper flex flex-row max-[768px]:flex-col gap-32 max-[768px]:gap-16 items-center max-[768px]:justify-center color-scheme-4 gradient content-container  content-container--full-width section-sections--25383411220793__newsletter_XAVTwj-padding">
+    <div class="page-width flex flex-row max-[768px]:flex-col gap-32 max-[768px]:gap-16 items-center max-[768px]:justify-center p-0">
+      <div class="newsletter__content-left flex-1 max-[768px]:flex-none">
+      <h2 class="h1">Tren Casual Fashion Terus Berkembang. Jangan mau ketinggalan!</h2>
+    </div>
+    <div class="newsletter__content-right w-full md:max-w-[400px] flex flex-col gap-8 flex-1 max-[768px]:flex-none"><h2
+              class="h2"
+              
+              
+            >
+              Jadi yang pertama tahu produk terbaru Erigo dan promo seru lainnya! Daftarkan emailmu di sini
+            </h2><div ><form method="post" action="/contact#ContactFooter" id="ContactFooter" accept-charset="UTF-8" class="footer__newsletter newsletter-form"><input type="hidden" name="form_type" value="customer" /><input type="hidden" name="utf8" value="✓" /><input type="hidden" name="contact[tags]" value="newsletter">
+                <div class="newsletter-form__field-wrapper">
+                  <label class="text-white w-full mb-[4px] block">Email<span class="text-red-600">*</span></label>
+                  <div class="field">
+                    <input
+                      id="NewsletterForm--sections--25383411220793__newsletter_XAVTwj"
+                      type="email"
+                      name="contact[email]"
+                      class="field__input"
+                      value=""
+                      aria-required="true"
+                      autocorrect="off"
+                      autocapitalize="off"
+                      autocomplete="email"
+                      
+                      placeholder="Enter your email"
+                      required
+                    >
+                    <label class="field__label" for="NewsletterForm--sections--25383411220793__newsletter_XAVTwj">
+                      Enter your email
+                    </label>
+                  </div>
+                  <div class="w-full py-[16px] text-white text-[14px] flex flex-row items-start justify-start gap-[16px]">
+                    <input type="checkbox" name="contact[accepts_marketing]" id="accepts_marketing" value="1" class="!mt-[6px] !mr-0 cursor-pointer"/>
+                    Saya bersedia menerima email newsletter Erigo dan telah membaca Kebijakan Privasi
+                  </div>
+                  <button
+                    type="submit"
+                    class="w-full px-[24px] h-[48px] flex flex-row items-center justify-center bg-red-600 hover:bg-red-500 text-[color:rgb(var(--color-button-text))] hover:bg-brown-active font-medium text-[16px] tracking-wide rounded-[8px]"
+                    name="commit"
+                    id="Subscribe"
+                    aria-label="Kirim"
+                  >
+                    Kirim
+                  </button></div></form></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    // if #accepts_marketing is not checked, disable submit button, else enable it
+    document.querySelector('#Subscribe').setAttribute('disabled', 'disabled');
+    document.querySelector('#Subscribe').classList.add('opacity-50');
+
+    document.querySelector('#accepts_marketing').addEventListener('change', function() {
+      if (this.checked) {
+        document.querySelector('#Subscribe').removeAttribute('disabled');
+        document.querySelector('#Subscribe').classList.remove('opacity-50');
+      } else {
+        document.querySelector('#Subscribe').setAttribute('disabled', 'disabled');
+        document.querySelector('#Subscribe').classList.add('opacity-50');
+      }
+    });
+  })
+</script>
+
+
+</section>

@@ -1,20 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Koulen } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const koulen = Koulen({
+  weight: "400",
+  variable: "--font-koulen",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Website Clone",
-  description: "Pixel-perfect website clone",
+  title: "Erigo Official Store – ERIGO",
+  description: "Erigo, Everywhere You Go. Renew your clothes right now with our cool and stylish collections.",
+  icons: {
+    icon: "/sites/erigostore-co-id/root/images/favicon-erigo.png",
+  },
 };
 
 export default function RootLayout({
@@ -24,10 +30,12 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="id"
+      className={`${inter.variable} ${koulen.variable} font-sans h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-white text-[#121212] selection:bg-[#ff1b2d] selection:text-white">
+        {children}
+      </body>
     </html>
   );
 }
