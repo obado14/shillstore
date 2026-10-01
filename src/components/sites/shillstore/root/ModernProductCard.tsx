@@ -18,6 +18,12 @@ export function getProductAccentColor(product: Product): string {
   if (product.id.includes('parka')) return '#15803d';
   if (product.id.includes('varsity')) return '#b91c1c';
 
+  // Kaos Models
+  if (product.id.includes('oversized')) return '#1e293b';
+  if (product.id.includes('polos')) return '#475569';
+  if (product.id.includes('washed')) return '#57534e';
+  if (product.id.includes('graphic')) return '#b45309';
+
   const cat = product.category.toLowerCase();
   if (cat.includes('parfum')) return '#c34a36';
   if (cat.includes('kaos')) return '#ff1b2d';
@@ -47,6 +53,10 @@ export function getProductDescription(product: Product): string {
     return 'Outerwear stylish berdaya tahan tinggi, menjaga tubuh tetap hangat dan trendi.';
   }
   if (product.category === 'Kaos') {
+    if (product.id.includes('oversized')) return 'Fitting oversized modern dengan drop shoulder, material 100% cotton combed 24s yang tebal, halus, dan nyaman dipakai.';
+    if (product.id.includes('polos')) return 'Kaos polos basic esensial bermaterial katun premium combed berdaya serap tinggi, potongan rapi, dan adem maksimal.';
+    if (product.id.includes('washed')) return 'T-shirt bergaya vintage wash dengan tekstur washed unik autentik, berkarakter retro streetwear.';
+    if (product.id.includes('graphic')) return 'T-shirt grafis streetwear dengan sablon plastisol premium tahan lama berdesain artistik dan berkarakter kuat.';
     return 'Material 100% katun combed premium dengan fitting relaxed unisex yang adem dan nyaman.';
   }
   if (product.category === 'Kemeja') {
@@ -70,6 +80,10 @@ export function getProductTags(product: Product): string[] {
     return ['Outerwear', 'Unisex', 'Streetwear'];
   }
   if (product.category === 'Kaos') {
+    if (product.id.includes('oversized')) return ['Oversized Fit', 'Drop Shoulder', 'Cotton 24s'];
+    if (product.id.includes('polos')) return ['Cotton Combed', 'Daily Basic', 'Regular Fit'];
+    if (product.id.includes('washed')) return ['Vintage Washed', 'Acid Wash', 'Retro Street'];
+    if (product.id.includes('graphic')) return ['Plastisol Print', 'Streetwear Art', 'Graphic Tee'];
     return ['Katun Combed', 'Unisex', 'Streetwear'];
   }
   if (product.category === 'Kemeja') {

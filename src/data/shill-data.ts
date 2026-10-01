@@ -462,19 +462,239 @@ export const productsData: Product[] = [
     colors: ['Black / White'],
     isNew: true
   },
+  // Kaos Oversized (3 Variants) - Rp179.000
   {
-    id: 'shill-p-1',
-    title: 'Shill T-Shirt Oversize Antelope Black Unisex',
+    id: 'shill-tshirt-oversized-college-grey',
+    title: 'Shill Kaos Oversized College Series Misty Grey',
     category: 'Kaos',
-    price: 110000,
-    formattedPrice: 'Rp 110.000',
-    compareAtPrice: 200000,
-    formattedCompareAtPrice: 'Rp 200.000',
+    price: 179000,
+    formattedPrice: 'Rp 179.000',
+    compareAtPrice: 279000,
+    formattedCompareAtPrice: 'Rp 279.000',
     discountBadge: 'Sale',
-    images: ['https://shillstore.co.id/cdn/shop/files/T-SHIRT-OVERSIZE-ANTELOPE-BLACK-100.jpg?v=1750320047&width=600'],
-    link: '/products/shill-t-shirt-oversize-antelope-black-unisex',
+    images: [
+      '/sites/shillstore/root/images/prod-tshirt-oversized-college-grey.jpg'
+    ],
+    link: '/products/shill-kaos-oversized-college-series-misty-grey',
+    rating: 5.0,
+    reviewCount: 142,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Misty Grey'],
+    isNew: true
+  },
+  {
+    id: 'shill-tshirt-oversized-minimal-green',
+    title: 'Shill Kaos Oversized Minimal Series Bottle Green',
+    category: 'Kaos',
+    price: 179000,
+    formattedPrice: 'Rp 179.000',
+    compareAtPrice: 279000,
+    formattedCompareAtPrice: 'Rp 279.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-tshirt-oversized-minimal-green.jpg'
+    ],
+    link: '/products/shill-kaos-oversized-minimal-series-bottle-green',
     rating: 4.9,
-    reviewCount: 312,
+    reviewCount: 128,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Bottle Green'],
+    isNew: true
+  },
+  {
+    id: 'shill-tshirt-oversized-essential-black',
+    title: 'Shill Kaos Oversized Essential Series Black',
+    category: 'Kaos',
+    price: 179000,
+    formattedPrice: 'Rp 179.000',
+    compareAtPrice: 279000,
+    formattedCompareAtPrice: 'Rp 279.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-tshirt-oversized-essential-black.jpg'
+    ],
+    link: '/products/shill-kaos-oversized-essential-series-black',
+    rating: 5.0,
+    reviewCount: 165,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Black'],
+    isNew: true
+  },
+
+  // Kaos Polos (3 Variants) - Rp129.000
+  {
+    id: 'shill-tshirt-polos-white',
+    title: 'Shill Kaos Polos Premium White',
+    category: 'Kaos',
+    price: 129000,
+    formattedPrice: 'Rp 129.000',
+    compareAtPrice: 199000,
+    formattedCompareAtPrice: 'Rp 199.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-tshirt-polos-white.jpg'
+    ],
+    link: '/products/shill-kaos-polos-premium-white',
+    rating: 4.9,
+    reviewCount: 210,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['White'],
+    isNew: true
+  },
+  {
+    id: 'shill-tshirt-polos-grey',
+    title: 'Shill Kaos Polos Premium Misty Grey',
+    category: 'Kaos',
+    price: 129000,
+    formattedPrice: 'Rp 129.000',
+    compareAtPrice: 199000,
+    formattedCompareAtPrice: 'Rp 199.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-tshirt-polos-grey.jpg'
+    ],
+    link: '/products/shill-kaos-polos-premium-misty-grey',
+    rating: 4.8,
+    reviewCount: 184,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Misty Grey'],
+    isNew: true
+  },
+  {
+    id: 'shill-tshirt-polos-black',
+    title: 'Shill Kaos Polos Premium Black',
+    category: 'Kaos',
+    price: 129000,
+    formattedPrice: 'Rp 129.000',
+    compareAtPrice: 199000,
+    formattedCompareAtPrice: 'Rp 199.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-tshirt-polos-black.jpg'
+    ],
+    link: '/products/shill-kaos-polos-premium-black',
+    rating: 5.0,
+    reviewCount: 250,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Black'],
+    isNew: true
+  },
+
+  // Washed T-Shirt (3 Variants) - Rp199.000
+  {
+    id: 'shill-tshirt-washed-black',
+    title: 'Shill Washed T-Shirt Vintage Washed Black',
+    category: 'Kaos',
+    price: 199000,
+    formattedPrice: 'Rp 199.000',
+    compareAtPrice: 299000,
+    formattedCompareAtPrice: 'Rp 299.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-tshirt-washed-black.jpg'
+    ],
+    link: '/products/shill-washed-t-shirt-vintage-washed-black',
+    rating: 5.0,
+    reviewCount: 175,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Washed Black'],
+    isNew: true
+  },
+  {
+    id: 'shill-tshirt-washed-cream',
+    title: 'Shill Washed T-Shirt Vintage Washed Cream',
+    category: 'Kaos',
+    price: 199000,
+    formattedPrice: 'Rp 199.000',
+    compareAtPrice: 299000,
+    formattedCompareAtPrice: 'Rp 299.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-tshirt-washed-cream.jpg'
+    ],
+    link: '/products/shill-washed-t-shirt-vintage-washed-cream',
+    rating: 4.9,
+    reviewCount: 154,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Washed Cream'],
+    isNew: true
+  },
+  {
+    id: 'shill-tshirt-washed-army-green',
+    title: 'Shill Washed T-Shirt Vintage Washed Army Green',
+    category: 'Kaos',
+    price: 199000,
+    formattedPrice: 'Rp 199.000',
+    compareAtPrice: 299000,
+    formattedCompareAtPrice: 'Rp 299.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-tshirt-washed-army-green.jpg'
+    ],
+    link: '/products/shill-washed-t-shirt-vintage-washed-army-green',
+    rating: 5.0,
+    reviewCount: 162,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Washed Army Green'],
+    isNew: true
+  },
+
+  // Kaos Grafis (3 Variants) - Rp159.000
+  {
+    id: 'shill-tshirt-graphic-wave-cream',
+    title: 'Shill Kaos Grafis Wave Series Cream',
+    category: 'Kaos',
+    price: 159000,
+    formattedPrice: 'Rp 159.000',
+    compareAtPrice: 249000,
+    formattedCompareAtPrice: 'Rp 249.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-tshirt-graphic-wave-cream.jpg'
+    ],
+    link: '/products/shill-kaos-grafis-wave-series-cream',
+    rating: 4.9,
+    reviewCount: 138,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Cream'],
+    isNew: true
+  },
+  {
+    id: 'shill-tshirt-graphic-globe-black',
+    title: 'Shill Kaos Grafis Globe Series Charcoal Black',
+    category: 'Kaos',
+    price: 159000,
+    formattedPrice: 'Rp 159.000',
+    compareAtPrice: 249000,
+    formattedCompareAtPrice: 'Rp 249.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-tshirt-graphic-globe-black.jpg'
+    ],
+    link: '/products/shill-kaos-grafis-globe-series-charcoal-black',
+    rating: 5.0,
+    reviewCount: 172,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Charcoal Black'],
+    isNew: true
+  },
+  {
+    id: 'shill-tshirt-graphic-mountain-black',
+    title: 'Shill Kaos Grafis Mountain Series Black',
+    category: 'Kaos',
+    price: 159000,
+    formattedPrice: 'Rp 159.000',
+    compareAtPrice: 249000,
+    formattedCompareAtPrice: 'Rp 249.000',
+    discountBadge: 'Sale',
+    images: [
+      '/sites/shillstore/root/images/prod-tshirt-graphic-mountain-black.jpg'
+    ],
+    link: '/products/shill-kaos-grafis-mountain-series-black',
+    rating: 5.0,
+    reviewCount: 190,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['Black'],
     isNew: true
   },
   {
