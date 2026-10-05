@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, use } from 'react';
+import React, { useState, useMemo, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,7 @@ import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
 import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
 import { productsData } from '@/data/shill-data';
 import { Product } from '@/types/shill';
-import { ModernProductCard } from '@/components/sites/shillstore/root/ModernProductCard';
+import { EditorialProductCard } from '@/components/sites/shillstore/root/EditorialProductCard';
 
 export default function ProductDetailPage({
   params,
@@ -206,313 +206,456 @@ function ProductDetailContent({ handle }: { handle: string }) {
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<'desc' | 'size' | 'shipping'>('desc');
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  const relatedProducts = productsData.filter((p) => p.id !== product.id).slice(0, 4);
+  // Sibling products for thumbnail gallery and related products
+  const siblingProducts = useMemo(() => {
+    return productsData.filter((p) => p.category === product.category && p.id !== product.id);
+  }, [product]);
+
+  // Gallery images: prioritize product's own images, complement with sibling angle/colorways if only 1
+  const galleryImages = useMemo(() => {
+    const list = [...product.images];
+    if (list.length === 1 && siblingProducts.length > 0) {
+      siblingProducts.slice(0, 3).forEach((sp) => {
+        if (sp.images[0] && !list.includes(sp.images[0])) {
+          list.push(sp.images[0]);
+        }
+      });
+    }
+    return list;
+  }, [product, siblingProducts]);
+
+  const activeImage = galleryImages[selectedImageIndex] || product.images[0];
+  const relatedProducts = siblingProducts.slice(0, 4);
+
+  const hasDiscount = Boolean(product.compareAtPrice && product.compareAtPrice > product.price);
+  const discountPercent = hasDiscount
+    ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100)
+    : null;
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-[#121212]">
+    <div className="min-h-screen flex flex-col bg-white text-neutral-900 font-sans selection:bg-black selection:text-white">
+      {/* Global Minimal Header */}
       <Header />
 
-      <main className="flex-1 py-8">
-        <div className="page-width">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-xs text-gray-500 mb-8">
-            <Link href="/" className="hover:text-black transition-colors">
-              Beranda
-            </Link>
-            <span>/</span>
-            <Link href="/collections" className="hover:text-black transition-colors">
-              Produk
-            </Link>
-            <span>/</span>
-            <span className="font-semibold text-gray-900 line-clamp-1">{product.title}</span>
-          </nav>
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-12 py-8 sm:py-12">
+        {/* Breadcrumb Navigation */}
+        <nav className="flex items-center gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-neutral-400 mb-8 sm:mb-12">
+          <Link href="/" className="hover:text-black transition-colors">
+            HOME
+          </Link>
+          <span>/</span>
+          <Link href="/collections" className="hover:text-black transition-colors">
+            {product.category.toUpperCase()}
+          </Link>
+          <span>/</span>
+          <span className="text-neutral-900 font-medium truncate max-w-[200px] sm:max-w-none">
+            {product.title}
+          </span>
+        </nav>
 
-          {/* Product Hero Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-            {/* Gallery Left */}
-            <div className="flex flex-col gap-4">
-              <div
-                className={`relative aspect-square w-full rounded-2xl overflow-hidden border border-gray-100 shadow-xs ${
-                  handle.includes('bloom')
-                    ? 'bg-[#fcf5f3]'
-                    : handle.includes('ocean') || handle.includes('elysium')
-                    ? 'bg-[#eef7fc]'
-                    : handle.includes('legacy') || handle.includes('savage')
-                    ? 'bg-[#26130b]'
-                    : handle.includes('ember')
-                    ? 'bg-[#2a1205]'
-                    : handle.includes('velo') || handle.includes('zenith')
-                    ? 'bg-[#383a3d]'
-                    : handle.includes('velvet')
-                    ? 'bg-[#2d0a12]'
-                    : isPerfume
-                    ? 'bg-[#121212]'
-                    : 'bg-gray-50'
-                }`}
-              >
-                {product.discountBadge && (
-                  <span className="absolute top-4 left-4 z-10 bg-[#ff1b2d] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                    {product.discountBadge}
-                  </span>
-                )}
-                <Image
-                  src={product.images[0]}
-                  alt={product.title}
-                  fill
-                  priority
-                  className="object-cover"
-                />
-              </div>
-            </div>
-
-            {/* Product Details Right */}
-            <div className="flex flex-col justify-between">
-              <div>
-                <span className="text-xs uppercase font-bold tracking-widest text-[#ff1b2d] block mb-2">
-                  {product.category}
+        {/* 1. Main Product Section (Clean, unified editorial grid) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-20 items-start">
+          {/* Left Column: Product Image Gallery (1:1 Ratio, No cropping) */}
+          <div className="lg:col-span-7 flex flex-col gap-4">
+            {/* Main 1:1 Image Canvas */}
+            <div
+              className="relative w-full aspect-square bg-[#f8f8f8] border border-neutral-150 overflow-hidden flex items-center justify-center"
+              style={{ aspectRatio: '1 / 1' }}
+            >
+              {hasDiscount && (
+                <span className="absolute top-4 left-4 z-10 text-[10px] uppercase tracking-[0.2em] font-semibold text-neutral-900 bg-white/95 px-2.5 py-1 border border-neutral-200">
+                  Sale
                 </span>
-
-                <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight mb-3">
-                  {product.title}
-                </h1>
-
-                {/* Rating */}
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="flex text-amber-400 text-sm">★★★★★</div>
-                  <span className="text-xs font-semibold text-gray-700">{product.rating || 4.9}</span>
-                  <span className="text-xs text-gray-400">({product.reviewCount || 340} ulasan)</span>
-                </div>
-
-                {/* Price */}
-                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl mb-6">
-                  <span className="text-2xl md:text-3xl font-extrabold text-[#ff1b2d]">
-                    Rp {(product.price * quantity).toLocaleString('id-ID')}
-                  </span>
-                  {product.compareAtPrice && (
-                    <span className="text-sm md:text-base text-gray-400 line-through">
-                      Rp {(product.compareAtPrice * quantity).toLocaleString('id-ID')}
-                    </span>
-                  )}
-                  {quantity > 1 && (
-                    <span className="text-xs text-gray-500 font-medium">
-                      ({product.formattedPrice} x {quantity})
-                    </span>
-                  )}
-                  <span className="ml-auto text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded">
-                    Hemat hingga 45%
-                  </span>
-                </div>
-
-                {/* Size Selector */}
-                <div className="mb-6">
-                  <div className="flex justify-between items-center mb-3">
-                    <label className="text-xs font-bold uppercase tracking-wider text-gray-800">
-                      Ukuran: <span className="text-black font-extrabold">{selectedSize}</span>
-                    </label>
-                    <button
-                      onClick={() => setActiveTab('size')}
-                      className="text-xs text-red-600 hover:underline font-medium"
-                    >
-                      {isPerfume ? 'Fragrance Notes' : 'Panduan Ukuran'}
-                    </button>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2.5">
-                    {sizes.map((s) => (
-                      <button
-                        key={s}
-                        onClick={() => setSelectedSize(s)}
-                        className={`min-w-12 h-12 px-3 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
-                          selectedSize === s
-                            ? 'bg-black text-white border-black shadow-xs'
-                            : 'bg-white text-gray-800 border-gray-200 hover:border-gray-400'
-                        }`}
-                      >
-                        {s}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Quantity */}
-                <div className="mb-8">
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-800 block mb-3">
-                    Jumlah:
-                  </label>
-                  <div className="flex items-center w-36 border border-gray-200 rounded-lg overflow-hidden bg-white">
-                    <button
-                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                      className="px-3.5 py-2.5 text-gray-600 hover:bg-gray-100 font-bold"
-                    >
-                      -
-                    </button>
-                    <span className="flex-1 text-center text-sm font-semibold">{quantity}</span>
-                    <button
-                      onClick={() => setQuantity((q) => q + 1)}
-                      className="px-3.5 py-2.5 text-gray-600 hover:bg-gray-100 font-bold"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                {/* Actions */}
-                <div className="flex flex-col sm:flex-row gap-3 mb-10">
-                  <button
-                    onClick={() => {
-                      addToCart(product, quantity);
-                    }}
-                    className="flex-1 py-4 bg-black hover:bg-gray-800 text-white text-sm font-bold uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer"
-                  >
-                    Tambah ke Keranjang
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      addToCart(product, quantity);
-                      setIsCartOpen(false);
-                      router.push('/checkout');
-                    }}
-                    className="flex-1 py-4 bg-[#ff1b2d] hover:bg-[#e70011] text-white text-sm font-bold uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer"
-                  >
-                    Beli Sekarang
-                  </button>
-                </div>
-              </div>
-
-              {/* Accordion Tabs */}
-              <div className="border-t border-gray-200 pt-6 space-y-4">
-                <div className="flex border-b border-gray-100 pb-3 gap-6 text-sm font-bold uppercase tracking-wider">
-                  <button
-                    onClick={() => setActiveTab('desc')}
-                    className={`pb-2 border-b-2 transition-colors ${
-                      activeTab === 'desc'
-                        ? 'border-black text-black'
-                        : 'border-transparent text-gray-400 hover:text-black'
-                    }`}
-                  >
-                    Deskripsi
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('size')}
-                    className={`pb-2 border-b-2 transition-colors ${
-                      activeTab === 'size'
-                        ? 'border-black text-black'
-                        : 'border-transparent text-gray-400 hover:text-black'
-                    }`}
-                  >
-                    {isPerfume ? 'Fragrance Notes' : 'Size Chart'}
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('shipping')}
-                    className={`pb-2 border-b-2 transition-colors ${
-                      activeTab === 'shipping'
-                        ? 'border-black text-black'
-                        : 'border-transparent text-gray-400 hover:text-black'
-                    }`}
-                  >
-                    Pengiriman & Return
-                  </button>
-                </div>
-
-                <div className="text-xs text-gray-600 leading-relaxed py-2">
-                  {activeTab === 'desc' && (
-                    <div className="space-y-2">
-                      {isPerfume ? (
-                        <>
-                          <p>
-                            <strong>{product.title}</strong> {perfumeInfo.tagline}
-                          </p>
-                          <ul className="list-disc pl-4 space-y-1">
-                            <li><strong>Konsentrasi:</strong> {perfumeInfo.type}</li>
-                            <li><strong>Ukuran:</strong> {perfumeInfo.volume}</li>
-                            <li><strong>Ketahanan:</strong> {perfumeInfo.longevity}</li>
-                            <li><strong>Karakter:</strong> {perfumeInfo.character}</li>
-                          </ul>
-                        </>
-                      ) : (
-                        <>
-                          <p>
-                            Didesain untuk kenyamanan maksimal dan penampilan kasual yang trendi, produk Shill menggunakan material katun pilihan dengan sirkulasi udara yang baik. Cocok digunakan sehari-hari untuk aktivitas santai maupun hangout.
-                          </p>
-                          <ul className="list-disc pl-4 space-y-1">
-                            <li>Bahan: 100% Katun Premium Combed / Twill Breathable</li>
-                            <li>Jahitan: Standar ekspor rapi dan kuat</li>
-                            <li>Fitting: Regular & Relaxed Fit Unisex</li>
-                          </ul>
-                        </>
-                      )}
-                    </div>
-                  )}
-
-                  {activeTab === 'size' && (
-                    <div className="space-y-2">
-                      {isPerfume ? (
-                        <div className="space-y-3">
-                          <p className="font-semibold text-gray-800">Piramida Aroma (Fragrance Notes):</p>
-                          <div className="space-y-2 bg-gray-50 p-4 rounded-xl border border-gray-200">
-                            <div>
-                              <span className="font-bold text-xs uppercase text-red-600 block">Top Notes:</span>
-                              <span className="text-gray-700">{perfumeInfo.top}</span>
-                            </div>
-                            <div>
-                              <span className="font-bold text-xs uppercase text-red-600 block">Middle Notes:</span>
-                              <span className="text-gray-700">{perfumeInfo.middle}</span>
-                            </div>
-                            <div>
-                              <span className="font-bold text-xs uppercase text-red-600 block">Base Notes:</span>
-                              <span className="text-gray-700">{perfumeInfo.base}</span>
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="space-y-2">
-                          <p>Rekomendasi ukuran berdasarkan tinggi dan berat badan:</p>
-                          <div className="grid grid-cols-4 gap-2 text-center border border-gray-200 p-2 rounded-lg font-mono">
-                            <span className="font-bold">Size</span>
-                            <span className="font-bold">Lebar Dada</span>
-                            <span className="font-bold">Panjang</span>
-                            <span className="font-bold">Pinggang</span>
-                            <span>S</span><span>50 cm</span><span>70 cm</span><span>28-30</span>
-                            <span>M</span><span>52 cm</span><span>72 cm</span><span>31-32</span>
-                            <span>L</span><span>54 cm</span><span>74 cm</span><span>33-34</span>
-                            <span>XL</span><span>56 cm</span><span>76 cm</span><span>35-36</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {activeTab === 'shipping' && (
-                    <div className="space-y-2">
-                      <p>🚚 <strong>Pasti Gratis Ongkir</strong> ke seluruh kota di Indonesia.</p>
-                      <p>🔄 <strong>Jaminan Return & Refund 7 Hari</strong> jika produk salah ukuran atau cacat produksi.</p>
-                    </div>
-                  )}
-                </div>
-              </div>
+              )}
+              <Image
+                src={activeImage}
+                alt={product.title}
+                fill
+                priority
+                className="object-contain p-6 sm:p-10 transition-opacity duration-300"
+                sizes="(max-width: 1024px) 100vw, 55vw"
+              />
             </div>
+
+            {/* Thumbnail Gallery (Alternative angles / colorways) */}
+            {galleryImages.length > 1 && (
+              <div className="flex items-center gap-3 overflow-x-auto scrollbar-none pt-1">
+                {galleryImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setSelectedImageIndex(idx)}
+                    className={`relative w-16 h-16 sm:w-20 sm:h-20 bg-[#f8f8f8] border transition-all cursor-pointer shrink-0 ${
+                      selectedImageIndex === idx
+                        ? 'border-black ring-1 ring-black'
+                        : 'border-neutral-200 hover:border-neutral-400 opacity-70 hover:opacity-100'
+                    }`}
+                    style={{ aspectRatio: '1 / 1' }}
+                    aria-label={`View image ${idx + 1}`}
+                  >
+                    <Image
+                      src={img}
+                      alt=""
+                      fill
+                      className="object-contain p-1.5"
+                      sizes="80px"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Related Products */}
-          <div className="mt-20 pt-10 border-t border-gray-100">
-            <h3 className="text-xl font-extrabold uppercase font-koulen tracking-wider text-gray-900 mb-6">
-              Produk Terkait yang Mungkin Kamu Suka
-            </h3>
+          {/* Right Column: Product Information & Purchase Controls */}
+          <div className="lg:col-span-5 flex flex-col">
+            {/* Category Subtitle */}
+            <span className="text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-medium block mb-2">
+              {product.category}
+            </span>
 
-            <div className="scope product-cards">
-              <div className="_card-list">
-                {relatedProducts.map((p) => (
-                  <ModernProductCard key={p.id} product={p} onAddToCart={addToCart} />
+            {/* Product Title */}
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light text-neutral-900 tracking-tight leading-[1.15] mb-3">
+              {product.title}
+            </h1>
+
+            {/* Simple Understated Rating */}
+            <div className="flex items-center gap-2 mb-6 text-xs text-neutral-500">
+              <div className="flex text-neutral-900 text-xs tracking-tighter">★★★★★</div>
+              <span className="font-medium text-neutral-800">{product.rating || 4.9}</span>
+              <span className="text-neutral-300">•</span>
+              <span>{product.reviewCount || 140} ulasan</span>
+            </div>
+
+            {/* Price & Simple Discount */}
+            <div className="flex items-baseline gap-3 mb-8 pb-6 border-b border-neutral-150">
+              <span className="text-2xl sm:text-3xl font-semibold text-neutral-900 tracking-tight">
+                Rp {(product.price * quantity).toLocaleString('id-ID')}
+              </span>
+              {hasDiscount && (
+                <>
+                  <span className="text-sm sm:text-base text-neutral-400 line-through">
+                    Rp {(product.compareAtPrice! * quantity).toLocaleString('id-ID')}
+                  </span>
+                  <span className="text-xs uppercase tracking-wider font-semibold text-red-600">
+                    -{discountPercent}%
+                  </span>
+                </>
+              )}
+            </div>
+
+            {/* Size / Variant Selector */}
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-2.5">
+                <span className="text-[11px] uppercase tracking-[0.16em] font-medium text-neutral-700">
+                  Ukuran: <span className="text-black font-semibold">{selectedSize}</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('size')}
+                  className="text-[11px] uppercase tracking-[0.14em] text-neutral-500 hover:text-black transition-colors font-medium border-b border-neutral-200 hover:border-black cursor-pointer pb-0.5"
+                >
+                  {isPerfume ? 'Fragrance Notes' : 'Panduan Ukuran'}
+                </button>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {sizes.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setSelectedSize(s)}
+                    className={`min-w-11 h-10 px-3.5 text-xs uppercase tracking-wider font-medium border transition-colors cursor-pointer ${
+                      selectedSize === s
+                        ? 'border-black bg-black text-white'
+                        : 'border-neutral-200 text-neutral-800 bg-white hover:border-black'
+                    }`}
+                  >
+                    {s}
+                  </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Quantity Selector */}
+            <div className="mb-8">
+              <span className="text-[11px] uppercase tracking-[0.16em] font-medium text-neutral-700 block mb-2.5">
+                Jumlah:
+              </span>
+              <div className="inline-flex items-center border border-neutral-200 h-10 bg-white">
+                <button
+                  type="button"
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                  className="w-10 h-full flex items-center justify-center text-neutral-600 hover:text-black hover:bg-neutral-50 transition-colors text-sm font-medium cursor-pointer"
+                  aria-label="Kurangi jumlah"
+                >
+                  -
+                </button>
+                <span className="w-12 text-center text-xs font-semibold text-neutral-900 select-none">
+                  {quantity}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setQuantity((q) => q + 1)}
+                  className="w-10 h-full flex items-center justify-center text-neutral-600 hover:text-black hover:bg-neutral-50 transition-colors text-sm font-medium cursor-pointer"
+                  aria-label="Tambah jumlah"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            {/* Action Buttons: Secondary Add To Cart, Primary Buy Now */}
+            <div className="flex flex-col sm:flex-row gap-3 mb-8">
+              {/* Secondary CTA: Tambah ke Keranjang */}
+              <button
+                type="button"
+                onClick={() => addToCart(product, quantity)}
+                className="flex-1 h-12 border border-black text-black hover:bg-neutral-50 text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors cursor-pointer text-center flex items-center justify-center"
+              >
+                Tambah ke Keranjang
+              </button>
+
+              {/* Primary CTA: Beli Sekarang */}
+              <button
+                type="button"
+                onClick={() => {
+                  addToCart(product, quantity);
+                  setIsCartOpen(false);
+                  router.push('/checkout');
+                }}
+                className="flex-1 h-12 bg-black hover:bg-neutral-800 text-white text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors cursor-pointer text-center flex items-center justify-center"
+              >
+                Beli Sekarang
+              </button>
+            </div>
+
+            {/* Subtle Editorial Reassurance */}
+            <div className="py-3.5 border-t border-b border-neutral-150 mb-10 grid grid-cols-3 gap-2 text-[10px] sm:text-[11px] uppercase tracking-wider text-neutral-500 text-center">
+              <div>Gratis Ongkir</div>
+              <div className="border-x border-neutral-200">100% Original</div>
+              <div>Garansi 7 Hari</div>
+            </div>
+
+            {/* Minimal Editorial Accordion Tabs */}
+            <div className="space-y-4">
+              <div className="flex border-b border-neutral-200 gap-8 text-xs uppercase tracking-[0.18em]">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('desc')}
+                  className={`pb-3 transition-colors cursor-pointer ${
+                    activeTab === 'desc'
+                      ? 'border-b-2 border-black font-semibold text-black -mb-[1px]'
+                      : 'text-neutral-400 hover:text-black font-medium'
+                  }`}
+                >
+                  Deskripsi
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('size')}
+                  className={`pb-3 transition-colors cursor-pointer ${
+                    activeTab === 'size'
+                      ? 'border-b-2 border-black font-semibold text-black -mb-[1px]'
+                      : 'text-neutral-400 hover:text-black font-medium'
+                  }`}
+                >
+                  {isPerfume ? 'Fragrance Notes' : 'Panduan Ukuran'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('shipping')}
+                  className={`pb-3 transition-colors cursor-pointer ${
+                    activeTab === 'shipping'
+                      ? 'border-b-2 border-black font-semibold text-black -mb-[1px]'
+                      : 'text-neutral-400 hover:text-black font-medium'
+                  }`}
+                >
+                  Pengiriman & Return
+                </button>
+              </div>
+
+              {/* Tab Content */}
+              <div className="py-2 text-xs sm:text-sm text-neutral-600 leading-relaxed">
+                {activeTab === 'desc' && (
+                  <div className="space-y-4">
+                    {isPerfume ? (
+                      <>
+                        <p>
+                          <span className="font-semibold text-neutral-900">{product.title}</span> {perfumeInfo.tagline}
+                        </p>
+                        <div className="grid grid-cols-2 gap-y-2.5 text-xs pt-3 border-t border-neutral-100">
+                          <div>
+                            <span className="text-neutral-400 block">Konsentrasi</span>
+                            <span className="text-neutral-900 font-medium">{perfumeInfo.type}</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Volume</span>
+                            <span className="text-neutral-900 font-medium">{perfumeInfo.volume}</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Ketahanan</span>
+                            <span className="text-neutral-900 font-medium">{perfumeInfo.longevity}</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Karakter</span>
+                            <span className="text-neutral-900 font-medium">{perfumeInfo.character}</span>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <p>
+                          Didesain untuk kenyamanan optimal dan siluet kasual modern. Menggunakan material katun pilihan berdaya tahan tinggi dengan sirkulasi udara yang baik untuk menunjang gaya hidup urban setiap hari.
+                        </p>
+                        <div className="grid grid-cols-2 gap-y-2.5 text-xs pt-3 border-t border-neutral-100">
+                          <div>
+                            <span className="text-neutral-400 block">Material</span>
+                            <span className="text-neutral-900 font-medium">100% Katun Premium Combed / Twill</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Fitting</span>
+                            <span className="text-neutral-900 font-medium">Regular & Relaxed Unisex</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Jahitan</span>
+                            <span className="text-neutral-900 font-medium">Standar Ekspor Rapi & Kuat</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Perawatan</span>
+                            <span className="text-neutral-900 font-medium">Cuci mesin air dingin, jemur teduh</span>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'size' && (
+                  <div>
+                    {isPerfume ? (
+                      <div className="space-y-4">
+                        <p className="text-neutral-500">Piramida aroma komposisi wewangian:</p>
+                        <div className="border border-neutral-150 p-4 space-y-3">
+                          <div>
+                            <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-neutral-400 block mb-0.5">
+                              Top Notes
+                            </span>
+                            <span className="text-neutral-900 font-medium">{perfumeInfo.top}</span>
+                          </div>
+                          <div className="border-t border-neutral-100 pt-2.5">
+                            <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-neutral-400 block mb-0.5">
+                              Middle Notes
+                            </span>
+                            <span className="text-neutral-900 font-medium">{perfumeInfo.middle}</span>
+                          </div>
+                          <div className="border-t border-neutral-100 pt-2.5">
+                            <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-neutral-400 block mb-0.5">
+                              Base Notes
+                            </span>
+                            <span className="text-neutral-900 font-medium">{perfumeInfo.base}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <p className="text-neutral-500">Panduan ukuran standar (cm):</p>
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-left border-collapse text-xs">
+                            <thead>
+                              <tr className="border-b border-neutral-200 text-[10px] uppercase tracking-wider text-neutral-400">
+                                <th className="py-2 pr-4 font-semibold">Ukuran</th>
+                                <th className="py-2 px-4 font-semibold">Lebar Dada</th>
+                                <th className="py-2 px-4 font-semibold">Panjang</th>
+                                <th className="py-2 pl-4 font-semibold">Pinggang</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-neutral-100 text-neutral-700">
+                              <tr>
+                                <td className="py-2 pr-4 font-semibold text-neutral-900">S</td>
+                                <td className="py-2 px-4">50 cm</td>
+                                <td className="py-2 px-4">70 cm</td>
+                                <td className="py-2 pl-4">28–30</td>
+                              </tr>
+                              <tr>
+                                <td className="py-2 pr-4 font-semibold text-neutral-900">M</td>
+                                <td className="py-2 px-4">52 cm</td>
+                                <td className="py-2 px-4">72 cm</td>
+                                <td className="py-2 pl-4">31–32</td>
+                              </tr>
+                              <tr>
+                                <td className="py-2 pr-4 font-semibold text-neutral-900">L</td>
+                                <td className="py-2 px-4">54 cm</td>
+                                <td className="py-2 px-4">74 cm</td>
+                                <td className="py-2 pl-4">33–34</td>
+                              </tr>
+                              <tr>
+                                <td className="py-2 pr-4 font-semibold text-neutral-900">XL</td>
+                                <td className="py-2 px-4">56 cm</td>
+                                <td className="py-2 px-4">76 cm</td>
+                                <td className="py-2 pl-4">35–36</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'shipping' && (
+                  <div className="space-y-3 text-xs sm:text-sm">
+                    <p>
+                      <strong className="text-neutral-900 font-medium">Pengiriman:</strong> Pesanan dikirimkan dalam 1–2 hari kerja melalui SiCepat, JNE, atau kurir instan. Gratis ongkos kirim ke seluruh Indonesia untuk pesanan di atas Rp 250.000.
+                    </p>
+                    <p>
+                      <strong className="text-neutral-900 font-medium">Jaminan Return &amp; Refund:</strong> Penukaran ukuran dapat dilakukan maksimal 7 hari setelah barang diterima dalam kondisi utuh dengan tag masih terpasang.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
+
+        {/* 2. Related Products Section (Clean, 1:1 image grid) */}
+        <div className="mt-20 sm:mt-28 pt-12 border-t border-neutral-150">
+          <div className="flex items-baseline justify-between mb-8 sm:mb-10">
+            <div>
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-medium block mb-2">
+                REKOMENDASI
+              </span>
+              <h3 className="text-xl sm:text-2xl font-light text-neutral-900 tracking-tight">
+                Produk Terkait yang Mungkin Kamu Suka
+              </h3>
+            </div>
+            <Link
+              href="/collections"
+              className="text-[11px] uppercase tracking-[0.18em] font-semibold text-neutral-500 hover:text-black transition-colors hidden sm:block"
+            >
+              Lihat Semua →
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14">
+            {relatedProducts.map((p, idx) => (
+              <EditorialProductCard
+                key={p.id}
+                product={p}
+                priority={idx < 2}
+                aspectRatio="square"
+                showDiscount={false}
+              />
+            ))}
+          </div>
+        </div>
       </main>
 
+      {/* Global Minimal Footer */}
       <Footer />
+
+      {/* Global Interactive Modals */}
       <CartDrawer />
       <SearchModal />
     </div>
