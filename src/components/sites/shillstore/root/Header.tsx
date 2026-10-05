@@ -1,261 +1,182 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
-import { announcements, navCategories } from '@/data/shill-data';
-import {
-  SearchIcon,
-  CartIcon,
-  UserIcon,
-  IndonesiaFlag,
-  ChevronDownIcon,
-  CloseIcon
-} from '@/components/sites/shillstore/shared/icons';
 
 export function Header() {
   const { totalItems, setIsCartOpen, setIsSearchOpen } = useCart();
-  const [currentAnnouncementIdx, setCurrentAnnouncementIdx] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  // Auto-cycle announcements
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentAnnouncementIdx((prev) => (prev + 1) % announcements.length);
-    }, 3500);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Track scroll position
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navLinks = [
+    { label: 'NEW IN', href: '/collections' },
+    { label: 'MEN', href: '/collections/all-t-shirt' },
+    { label: 'WOMEN', href: '/collections/all-shirt' },
+    { label: 'ACCESSORIES', href: '/collections/accessories' },
+    { label: 'SALE', href: '/collections/flight-jacket' },
+  ];
+
   return (
     <>
-      {/* Top Announcement Bar */}
-      <div className="bg-[#121212] text-white py-1.5 sm:py-2 text-center text-[11px] sm:text-[12px] font-medium tracking-wide overflow-hidden relative">
-        <div className="page-width flex items-center justify-between">
-          <div className="hidden md:flex items-center gap-2 text-gray-400 text-xs">
-            <IndonesiaFlag className="w-4 h-3 inline-block rounded-xs" />
-            <span>IDR (Rp)</span>
-          </div>
-
-          <div className="flex-1 flex justify-center items-center">
-            <span className="transition-all duration-500 ease-in-out">
-              {announcements[currentAnnouncementIdx]}
-            </span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-4 text-xs text-gray-300">
-            <Link href="/pages/reward" className="hover:text-white transition-colors">
-              Reward
-            </Link>
-            <span className="text-gray-600">|</span>
-            <Link href="/pages/authenticate" className="hover:text-white transition-colors">
-              Log in
-            </Link>
-          </div>
-        </div>
+      {/* Editorial Announcement Bar */}
+      <div className="bg-neutral-900 text-neutral-300 py-2 text-center text-[10px] md:text-[11px] uppercase tracking-[0.25em] font-medium">
+        <span>Complimentary Domestic Shipping on Orders Over Rp 250.000</span>
       </div>
 
-      {/* Main Sticky Navbar */}
+      {/* Main Clean Sticky Navbar */}
       <header
         className={`sticky top-0 z-40 w-full transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100'
-            : 'bg-white border-b border-gray-100'
+            ? 'bg-white/95 backdrop-blur-md border-b border-neutral-150 shadow-[0_1px_3px_rgba(0,0,0,0.02)]'
+            : 'bg-white border-b border-neutral-100'
         }`}
       >
-        <div className="page-width">
-          <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
-            {/* Mobile Menu Trigger */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+          <div className="flex items-center justify-between h-16 sm:h-20">
+            {/* Mobile Menu Trigger & Left Side on Mobile */}
             <div className="flex items-center lg:hidden">
               <button
+                type="button"
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="p-1.5 sm:p-2 -ml-1 sm:-ml-2 text-gray-900 hover:text-black focus:outline-none"
-                aria-label="Buka Menu"
+                className="p-2 -ml-2 text-neutral-900 hover:text-black focus:outline-none"
+                aria-label="Open Navigation Menu"
               >
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
                 </svg>
               </button>
             </div>
 
-            {/* Brand Logo */}
+            {/* Left: Brand Logo SHILLSTORE */}
             <div className="flex items-center">
-              <Link href="/" className="relative block w-32 sm:w-44 md:w-52 lg:w-60 h-8 sm:h-9 md:h-10 lg:h-12">
-                <Image
-                  src="/logo.png"
-                  alt="Shill Official Store"
-                  fill
-                  priority
-                  className="object-contain object-left"
-                />
+              <Link
+                href="/"
+                className="text-lg sm:text-xl md:text-2xl font-black tracking-[0.22em] uppercase text-black hover:opacity-80 transition-opacity select-none font-sans"
+              >
+                SHILLSTORE
               </Link>
             </div>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-[13px] font-bold tracking-wider uppercase">
-              {navCategories.map((item) => (
-                <div
-                  key={item.title}
-                  className="relative group py-6"
-                  onMouseEnter={() => setActiveDropdown(item.title)}
-                  onMouseLeave={() => setActiveDropdown(null)}
+            {/* Center: Desktop Minimal Menu */}
+            <nav className="hidden lg:flex items-center gap-8 xl:gap-10 text-[11px] tracking-[0.2em] font-medium uppercase text-neutral-700">
+              {navLinks.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="py-2 hover:text-black transition-colors relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1px] after:bg-black after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-200"
                 >
-                  <Link
-                    href={item.href}
-                    className="flex items-center gap-1 text-gray-800 hover:text-[#ff1b2d] transition-colors py-2"
-                  >
-                    <span>{item.title}</span>
-                    {item.badge && (
-                      <span className="bg-[#ff1b2d] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-1">
-                        {item.badge}
-                      </span>
-                    )}
-                    {item.sublinks && (
-                      <ChevronDownIcon className="w-3.5 h-3.5 text-gray-400 group-hover:rotate-180 transition-transform duration-200" />
-                    )}
-                  </Link>
-
-                  {/* Regular Dropdown Menu */}
-                  {item.sublinks && activeDropdown === item.title && (
-                    <div className="absolute top-full left-0 min-w-[200px] bg-white shadow-lg rounded-lg border border-gray-100 py-3 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                      {item.sublinks.map((sub) => (
-                        <Link
-                          key={sub.label}
-                          href={sub.href}
-                          className="block px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 hover:text-[#ff1b2d] transition-colors"
-                        >
-                          {sub.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                  {item.label}
+                </Link>
               ))}
             </nav>
 
-            {/* Header Right Actions */}
-            <div className="flex items-center gap-1.5 sm:gap-3 md:gap-5">
+            {/* Right: Clean Minimal Actions SEARCH / ACCOUNT / BAG */}
+            <div className="flex items-center gap-4 sm:gap-6 md:gap-7 text-[11px] tracking-[0.2em] font-medium uppercase text-neutral-800">
               <button
+                type="button"
                 onClick={() => setIsSearchOpen(true)}
-                className="p-1.5 sm:p-2 text-gray-700 hover:text-black transition-colors"
-                aria-label="Cari"
+                className="hover:text-black transition-colors py-2 cursor-pointer flex items-center gap-1.5"
+                aria-label="Search Catalog"
               >
-                <SearchIcon className="w-5 h-5 md:w-6 md:h-6" />
+                <span className="hidden sm:inline">SEARCH</span>
+                <svg className="w-4 h-4 sm:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
               </button>
 
               <Link
                 href="/pages/authenticate"
-                className="hidden sm:block p-2 text-gray-700 hover:text-black transition-colors"
-                aria-label="Akun"
+                className="hidden sm:inline-block hover:text-black transition-colors py-2"
               >
-                <UserIcon className="w-5 h-5 md:w-6 md:h-6" />
+                ACCOUNT
               </Link>
 
               <button
+                type="button"
                 onClick={() => setIsCartOpen(true)}
-                className="relative p-1.5 sm:p-2 text-gray-700 hover:text-black transition-colors"
-                aria-label="Keranjang Belanja"
+                className="hover:text-black transition-colors py-2 cursor-pointer flex items-center gap-1"
+                aria-label="View Shopping Bag"
               >
-                <CartIcon className="w-5 h-5 md:w-6 md:h-6" />
-                {totalItems > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-[#ff1b2d] text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-xs">
-                    {totalItems}
-                  </span>
-                )}
+                <span>BAG</span>
+                <span className="text-neutral-500 font-normal">
+                  ({totalItems})
+                </span>
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Drawer (Editorial Minimalist) */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden overflow-hidden">
           <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
+            className="absolute inset-0 bg-black/40 backdrop-blur-2xs transition-opacity"
             onClick={() => setIsMobileMenuOpen(false)}
           />
 
           <div className="fixed inset-y-0 left-0 max-w-full flex">
-            <div className="w-screen max-w-xs bg-white shadow-2xl flex flex-col">
-              <div className="flex items-center justify-between p-5 border-b border-gray-100">
-                <div className="relative w-48 h-10">
-                  <Image
-                    src="/logo.png"
-                    alt="Shill"
-                    fill
-                    className="object-contain object-left"
-                  />
+            <div className="w-screen max-w-sm bg-white shadow-xl flex flex-col justify-between p-6 sm:p-8">
+              <div>
+                {/* Drawer Header */}
+                <div className="flex items-center justify-between pb-6 border-b border-neutral-100">
+                  <span className="text-base font-black tracking-[0.2em] uppercase text-black">
+                    SHILLSTORE
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="p-2 text-neutral-500 hover:text-black"
+                    aria-label="Close menu"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                  </button>
                 </div>
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 text-gray-500 hover:text-black rounded-full"
-                >
-                  <CloseIcon className="w-5 h-5" />
-                </button>
-              </div>
 
-              <div className="flex-1 overflow-y-auto py-4 px-6 space-y-3">
-                {navCategories.map((item) => (
-                  <div key={item.title} className="py-2 border-b border-gray-50">
+                {/* Primary Nav Links */}
+                <div className="py-8 flex flex-col gap-6">
+                  {navLinks.map((item) => (
                     <Link
+                      key={item.label}
                       href={item.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center justify-between text-sm font-bold text-gray-900 uppercase tracking-wide hover:text-red-600 transition-colors"
+                      className="text-base font-medium uppercase tracking-[0.2em] text-neutral-900 hover:text-neutral-500 transition-colors"
                     >
-                      <span>{item.title}</span>
-                      {item.badge && (
-                        <span className="bg-[#ff1b2d] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
-                          {item.badge}
-                        </span>
-                      )}
+                      {item.label}
                     </Link>
+                  ))}
+                </div>
+              </div>
 
-                    {item.sublinks && (
-                      <div className="mt-2 pl-3 space-y-2 border-l-2 border-gray-100">
-                        {item.sublinks.map((sub) => (
-                          <Link
-                            key={sub.label}
-                            href={sub.href}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="block text-xs text-gray-600 hover:text-black"
-                          >
-                            {sub.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
-
-                <div className="pt-6 space-y-3 text-sm font-medium border-t border-gray-100">
-                  <Link
-                    href="/pages/authenticate"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center gap-2 text-gray-700"
-                  >
-                    <UserIcon className="w-4 h-4" />
-                    <span>Masuk ke Akun</span>
-                  </Link>
-                  <div className="flex items-center gap-2 text-gray-600 text-xs pt-2">
-                    <IndonesiaFlag className="w-4 h-3 inline-block" />
-                    <span>Indonesia (IDR Rp)</span>
-                  </div>
+              {/* Drawer Footer Links */}
+              <div className="pt-6 border-t border-neutral-100 flex flex-col gap-4 text-xs uppercase tracking-[0.18em] text-neutral-600">
+                <Link
+                  href="/pages/authenticate"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="hover:text-black"
+                >
+                  Account
+                </Link>
+                <Link
+                  href="/pages/our-store"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="hover:text-black"
+                >
+                  Our Stores
+                </Link>
+                <div className="pt-2 text-[11px] text-neutral-400 normal-case tracking-normal">
+                  Indonesia (IDR Rp)
                 </div>
               </div>
             </div>

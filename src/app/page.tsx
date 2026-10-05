@@ -1,58 +1,50 @@
 import React from 'react';
 import { Header } from '@/components/sites/shillstore/root/Header';
-import { HeroSlideshow } from '@/components/sites/shillstore/root/HeroSlideshow';
-import { CollageBanner } from '@/components/sites/shillstore/root/CollageBanner';
-import { ProductRangePills } from '@/components/sites/shillstore/root/ProductRangePills';
-import { BrandStoryRichText } from '@/components/sites/shillstore/root/BrandStoryRichText';
-import { FeaturedProducts } from '@/components/sites/shillstore/root/FeaturedProducts';
-import { MultiBannerPromo } from '@/components/sites/shillstore/root/MultiBannerPromo';
-import { BlogStories } from '@/components/sites/shillstore/root/BlogStories';
-import { SocialMediaBanner } from '@/components/sites/shillstore/root/SocialMediaBanner';
-import { NewsletterSection } from '@/components/sites/shillstore/root/NewsletterSection';
+import { EditorialHero } from '@/components/sites/shillstore/root/EditorialHero';
+import { ShopByCategory } from '@/components/sites/shillstore/root/ShopByCategory';
+import { NewArrivalsSection } from '@/components/sites/shillstore/root/NewArrivalsSection';
+import { EditorialCampaign } from '@/components/sites/shillstore/root/EditorialCampaign';
+import { BestSellersSection } from '@/components/sites/shillstore/root/BestSellersSection';
+import { EditorialStories } from '@/components/sites/shillstore/root/EditorialStories';
+import { EditorialNewsletter } from '@/components/sites/shillstore/root/EditorialNewsletter';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
 import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-white text-[#121212] overflow-x-hidden">
-      {/* Header & Sticky Nav */}
+    <div className="min-h-screen flex flex-col bg-white text-neutral-900 overflow-x-hidden font-sans selection:bg-black selection:text-white">
+      {/* 1. Minimal Clean Navbar */}
       <Header />
 
-      {/* Main Content Body */}
+      {/* Main Editorial Flow */}
       <main className="flex-1">
-        {/* Hero Slideshow Banner */}
-        <HeroSlideshow />
+        {/* 2. Campaign Editorial Hero */}
+        <EditorialHero />
 
-        {/* Feature Collage Banners */}
-        <CollageBanner />
+        {/* 3. Shop by Category (Clothing / Accessories / Fragrance) */}
+        <ShopByCategory />
 
-        {/* Product Range / Category Filter Pills */}
-        <ProductRangePills />
+        {/* 4. New Arrivals (8 Curated Products) */}
+        <NewArrivalsSection />
 
-        {/* Brand Narrative Rich Text */}
-        <BrandStoryRichText />
+        {/* 5. Editorial Magazine Campaign (The Shill Edit) */}
+        <EditorialCampaign />
 
-        {/* Featured Collections & Best Sellers */}
-        <FeaturedProducts />
+        {/* 6. Best Sellers (4 Iconic Products) */}
+        <BestSellersSection />
 
-        {/* Multi Banner Split (Perfume & Accessories) */}
-        <MultiBannerPromo />
+        {/* 7. Shill Stories (3 Cultural & Design Dispatches) */}
+        <EditorialStories />
 
-        {/* Blog Stories (MPL & EVOS Collaborations) */}
-        <BlogStories />
-
-        {/* Social Media Links Bar */}
-        <SocialMediaBanner />
-
-        {/* Newsletter Subscription */}
-        <NewsletterSection />
+        {/* 8. Minimalist Newsletter */}
+        <EditorialNewsletter />
       </main>
 
-      {/* Footer */}
+      {/* 9. Minimal Consistent Footer */}
       <Footer />
 
-      {/* Global Modals & Drawers */}
+      {/* Global Interactive Modals (Cart Drawer & Search Modal) */}
       <CartDrawer />
       <SearchModal />
     </div>
