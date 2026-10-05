@@ -11,6 +11,7 @@ interface EditorialProductCardProps {
   priority?: boolean;
   showBadge?: boolean;
   aspectRatio?: 'square' | 'portrait';
+  showDiscount?: boolean;
 }
 
 export function EditorialProductCard({
@@ -18,6 +19,7 @@ export function EditorialProductCard({
   priority = false,
   showBadge = false,
   aspectRatio = 'square',
+  showDiscount = false,
 }: EditorialProductCardProps) {
   const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
@@ -36,6 +38,10 @@ export function EditorialProductCard({
   };
 
   const isSquare = aspectRatio === 'square';
+  const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
+  const discountPercent = hasDiscount
+    ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100)
+    : null;
 
   return (
     <div className="group relative flex flex-col">
@@ -102,13 +108,23 @@ export function EditorialProductCard({
           {product.title}
         </Link>
 
-        <div className="flex items-baseline gap-2 mt-0.5">
-          <span className="text-xs sm:text-sm text-neutral-600 font-normal">
+        {/* Price & Discount Information */}
+        <div className="flex items-baseline gap-2 mt-0.5 flex-wrap">
+          <span
+            className={`text-xs sm:text-sm ${
+              showDiscount ? 'font-semibold text-neutral-900' : 'text-neutral-600 font-normal'
+            }`}
+          >
             {product.formattedPrice}
           </span>
-          {product.compareAtPrice && product.compareAtPrice > product.price && (
+          {hasDiscount && (
             <span className="text-[11px] sm:text-xs text-neutral-400 line-through font-normal">
               {product.formattedCompareAtPrice}
+            </span>
+          )}
+          {showDiscount && discountPercent && (
+            <span className="text-[10px] font-semibold tracking-wider text-red-600 bg-red-50/90 px-1.5 py-0.2">
+              -{discountPercent}%
             </span>
           )}
         </div>

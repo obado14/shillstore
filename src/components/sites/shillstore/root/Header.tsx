@@ -22,7 +22,7 @@ export function Header() {
     { label: 'MEN', href: '/collections/men' },
     { label: 'WOMEN', href: '/collections/women' },
     { label: 'ACCESSORIES', href: '/collections/accessories' },
-    { label: 'SALE', href: '/collections/flight-jacket' },
+    { label: 'SALE', href: '/collections/sale' },
   ];
 
   return (

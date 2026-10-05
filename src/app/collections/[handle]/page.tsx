@@ -25,10 +25,17 @@ function CollectionContent({ handle }: { handle: string }) {
     notFound();
   }
 
+  const isSalePage = handle === 'sale';
   const isMenPage = handle === 'men';
   const isWomenPage = handle === 'women';
   const [activeCategory, setActiveCategory] = useState<string>('ALL');
   const [sortBy, setSortBy] = useState<string>('featured');
+
+  const saleSubcategories = [
+    { id: 'ALL', label: 'ALL SALE' },
+    { id: 'CLOTHING', label: 'CLOTHING' },
+    { id: 'ACCESSORIES', label: 'ACCESSORIES' },
+  ];
 
   const menSubcategories = [
     { id: 'ALL', label: 'ALL' },
@@ -50,6 +57,15 @@ function CollectionContent({ handle }: { handle: string }) {
 
   // Collection metadata
   const collectionInfo = useMemo(() => {
+    if (isSalePage) {
+      return {
+        title: 'SALE',
+        subtitle: 'Good pieces. Better prices.',
+        description: 'Selected SHILL pieces, now available at special prices.',
+        breadcrumb: 'SALE',
+      };
+    }
+
     if (isWomenPage) {
       return {
         title: 'WOMEN',
@@ -89,13 +105,28 @@ function CollectionContent({ handle }: { handle: string }) {
       description: '',
       breadcrumb: formattedTitle.toUpperCase(),
     };
-  }, [handle, isMenPage, isWomenPage]);
+  }, [handle, isSalePage, isMenPage, isWomenPage]);
 
   // Filter products based on handle and active subcategory
   const filteredProducts = useMemo(() => {
     let list = [...productsData];
 
-    if (isWomenPage) {
+    if (isSalePage) {
+      // Strictly ONLY products with a genuine sale price!
+      list = list.filter((p) => p.compareAtPrice && p.compareAtPrice > p.price);
+
+      if (activeCategory === 'CLOTHING') {
+        list = list.filter(
+          (p) =>
+            p.category === 'Kaos' ||
+            p.category === 'Kemeja' ||
+            p.category === 'Jaket' ||
+            p.category === 'Celana'
+        );
+      } else if (activeCategory === 'ACCESSORIES') {
+        list = list.filter((p) => p.category === 'Aksesoris');
+      }
+    } else if (isWomenPage) {
       // Base WOMEN collection includes apparel, tops, shirts, outerwear, trousers, and accessories
       list = list.filter((p) => p.category !== 'Parfum');
 
@@ -132,7 +163,8 @@ function CollectionContent({ handle }: { handle: string }) {
         const c = p.category.toLowerCase();
         if (h.includes('t-shirt') || h.includes('kaos')) return c === 'kaos';
         if (h.includes('shirt') || h.includes('kemeja')) return c === 'kemeja';
-        if (h.includes('chino') || h.includes('pants') || h.includes('celana') || h.includes('bawahan')) return c === 'celana';
+        if (h.includes('chino') || h.includes('pants') || h.includes('celana') || h.includes('bawahan'))
+          return c === 'celana';
         if (h.includes('jacket') || h.includes('jaket') || h.includes('parka')) return c === 'jaket';
         if (h.includes('atasan')) return c === 'kaos' || c === 'jaket' || c === 'kemeja';
         if (h.includes('accessories') || h.includes('aksesoris')) return c === 'aksesoris';
@@ -148,12 +180,24 @@ function CollectionContent({ handle }: { handle: string }) {
       list.sort((a, b) => b.price - a.price);
     } else if (sortBy === 'newest') {
       list.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+    } else if (sortBy === 'biggest-discount') {
+      list.sort((a, b) => {
+        const discA = a.compareAtPrice ? (a.compareAtPrice - a.price) / a.compareAtPrice : 0;
+        const discB = b.compareAtPrice ? (b.compareAtPrice - b.price) / b.compareAtPrice : 0;
+        return discB - discA;
+      });
     }
 
     return list;
-  }, [handle, isMenPage, isWomenPage, activeCategory, sortBy]);
+  }, [handle, isSalePage, isMenPage, isWomenPage, activeCategory, sortBy]);
 
-  const activeSubcategories = isWomenPage ? womenSubcategories : isMenPage ? menSubcategories : null;
+  const activeSubcategories = isSalePage
+    ? saleSubcategories
+    : isWomenPage
+    ? womenSubcategories
+    : isMenPage
+    ? menSubcategories
+    : null;
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-neutral-900 font-sans selection:bg-black selection:text-white">
@@ -212,7 +256,7 @@ function CollectionContent({ handle }: { handle: string }) {
         {/* 3. Product Toolbar (Minimal typography, product count on left, Sort on right) */}
         <div className="flex flex-row items-center justify-between py-4 mb-8 sm:mb-12 border-b border-neutral-150 text-[11px] uppercase tracking-[0.18em]">
           <span className="font-medium text-neutral-500">
-            {filteredProducts.length} PRODUCTS
+            {filteredProducts.length} {isSalePage ? 'ITEMS ON SALE' : 'PRODUCTS'}
           </span>
 
           <div className="flex items-center gap-3">
@@ -222,10 +266,11 @@ function CollectionContent({ handle }: { handle: string }) {
               onChange={(e) => setSortBy(e.target.value)}
               className="bg-transparent text-[11px] uppercase tracking-[0.18em] font-semibold text-neutral-900 focus:outline-none cursor-pointer pr-1"
             >
-              <option value="featured">FEATURED</option>
-              <option value="newest">NEWEST</option>
-              <option value="price-low">PRICE: LOW TO HIGH</option>
-              <option value="price-high">PRICE: HIGH TO LOW</option>
+              <option value="featured">Featured</option>
+              <option value="newest">Newest</option>
+              {isSalePage && <option value="biggest-discount">Biggest Discount</option>}
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
             </select>
           </div>
         </div>
@@ -233,7 +278,7 @@ function CollectionContent({ handle }: { handle: string }) {
         {/* 4. Product Catalog Grid (Desktop 4 col, Tablet 3 col, Mobile 2 col) */}
         {filteredProducts.length === 0 ? (
           <div className="py-24 text-center">
-            <h2 className="text-base font-medium text-neutral-900 mb-2">No products found</h2>
+            <h2 className="text-base font-medium text-neutral-900 mb-2">No sale items found</h2>
             <p className="text-xs text-neutral-500 mb-6">
               There are currently no items available in this category.
             </p>
@@ -242,7 +287,7 @@ function CollectionContent({ handle }: { handle: string }) {
               onClick={() => setActiveCategory('ALL')}
               className="inline-block px-8 py-3.5 border border-black text-xs font-semibold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-colors cursor-pointer"
             >
-              View All
+              View All Sale
             </button>
           </div>
         ) : (
@@ -253,6 +298,7 @@ function CollectionContent({ handle }: { handle: string }) {
                 product={product}
                 priority={idx < 4}
                 aspectRatio="square"
+                showDiscount={isSalePage}
               />
             ))}
           </div>
