@@ -1301,7 +1301,7 @@ export const collectionsList = [
   { handle: 'all-shirt', title: 'Kemeja Pria & Wanita', description: 'Koleksi kemeja lengan pendek rayon, oxford shirt, dan flannel trendi.' },
   { handle: 'flight-jacket', title: 'Jaket & Outerwear', description: 'Parka jacket, coach jacket, varsity, dan windbreaker untuk petualangan harianmu.' },
   { handle: 'category-pants-chino-pants', title: 'Celana / Pants', description: 'Chino pants, cargo pants, jogger pants, dan short pants berfitur flexi-fit.' },
-  { handle: 'accessories', title: 'Aksesoris', description: 'Topi, tas, kaos kaki, dan perlengkapan fungsional pelengkap gaya urbanmu.' },
+  { handle: 'accessories', title: 'ACCESSORIES', description: 'Everyday essentials, made to complete your look.' },
   { handle: 'perfume', title: 'Parfum Series', description: 'Aroma wewangian segar dan berkelas menemani setiap kegiatanmu.' },
   { handle: 'atasan', title: 'Kategori Atasan', description: 'Koleksi lengkap pakaian atasan kasual: Kaos, Kemeja, Hoodie, dan Jaket.' },
   { handle: 'bawahan', title: 'Kategori Bawahan', description: 'Koleksi lengkap celana panjang, chino, cargo, dan celana pendek santai.' }

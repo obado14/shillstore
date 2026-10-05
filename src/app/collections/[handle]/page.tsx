@@ -28,6 +28,7 @@ function CollectionContent({ handle }: { handle: string }) {
   const isSalePage = handle === 'sale';
   const isMenPage = handle === 'men';
   const isWomenPage = handle === 'women';
+  const isAccessoriesPage = handle === 'accessories' || handle === 'aksesoris';
   const [activeCategory, setActiveCategory] = useState<string>('ALL');
   const [sortBy, setSortBy] = useState<string>('featured');
 
@@ -57,6 +58,15 @@ function CollectionContent({ handle }: { handle: string }) {
 
   // Collection metadata
   const collectionInfo = useMemo(() => {
+    if (isAccessoriesPage) {
+      return {
+        title: 'ACCESSORIES',
+        subtitle: 'Everyday essentials, made to complete your look.',
+        description: '',
+        breadcrumb: 'ACCESSORIES',
+      };
+    }
+
     if (isSalePage) {
       return {
         title: 'SALE',
@@ -105,7 +115,7 @@ function CollectionContent({ handle }: { handle: string }) {
       description: '',
       breadcrumb: formattedTitle.toUpperCase(),
     };
-  }, [handle, isSalePage, isMenPage, isWomenPage]);
+  }, [handle, isAccessoriesPage, isSalePage, isMenPage, isWomenPage]);
 
   // Filter products based on handle and active subcategory
   const filteredProducts = useMemo(() => {
@@ -253,43 +263,105 @@ function CollectionContent({ handle }: { handle: string }) {
           </div>
         )}
 
-        {/* 3. Product Toolbar (Minimal typography, product count on left, Sort on right) */}
-        <div className="flex flex-row items-center justify-between py-4 mb-8 sm:mb-12 border-b border-neutral-150 text-[11px] uppercase tracking-[0.18em]">
-          <span className="font-medium text-neutral-500">
-            {filteredProducts.length} {isSalePage ? 'ITEMS ON SALE' : 'PRODUCTS'}
-          </span>
+        {/* 3. Product Toolbar (Minimal typography, product count on left, Sort on right - hidden when empty) */}
+        {filteredProducts.length > 0 && (
+          <div className="flex flex-row items-center justify-between py-4 mb-8 sm:mb-12 border-b border-neutral-150 text-[11px] uppercase tracking-[0.18em]">
+            <span className="font-medium text-neutral-500">
+              {filteredProducts.length} {isSalePage ? 'ITEMS ON SALE' : 'PRODUCTS'}
+            </span>
 
-          <div className="flex items-center gap-3">
-            <span className="text-neutral-400 hidden sm:inline">SORT BY:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="bg-transparent text-[11px] uppercase tracking-[0.18em] font-semibold text-neutral-900 focus:outline-none cursor-pointer pr-1"
-            >
-              <option value="featured">Featured</option>
-              <option value="newest">Newest</option>
-              {isSalePage && <option value="biggest-discount">Biggest Discount</option>}
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-            </select>
+            <div className="flex items-center gap-3">
+              <span className="text-neutral-400 hidden sm:inline">SORT BY:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="bg-transparent text-[11px] uppercase tracking-[0.18em] font-semibold text-neutral-900 focus:outline-none cursor-pointer pr-1"
+              >
+                <option value="featured">Featured</option>
+                <option value="newest">Newest</option>
+                {isSalePage && <option value="biggest-discount">Biggest Discount</option>}
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+              </select>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* 4. Product Catalog Grid (Desktop 4 col, Tablet 3 col, Mobile 2 col) */}
+        {/* 4. Product Catalog Grid (Desktop 4 col, Tablet 3 col, Mobile 2 col) or Editorial Coming Soon */}
         {filteredProducts.length === 0 ? (
-          <div className="py-24 text-center">
-            <h2 className="text-base font-medium text-neutral-900 mb-2">No sale items found</h2>
-            <p className="text-xs text-neutral-500 mb-6">
-              There are currently no items available in this category.
-            </p>
-            <button
-              type="button"
-              onClick={() => setActiveCategory('ALL')}
-              className="inline-block px-8 py-3.5 border border-black text-xs font-semibold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-colors cursor-pointer"
-            >
-              View All Sale
-            </button>
-          </div>
+          isAccessoriesPage ? (
+            /* Intentional Editorial Coming Soon for Accessories */
+            <div className="py-20 sm:py-28 lg:py-36 text-center max-w-2xl mx-auto">
+              {/* Subtle top hairline divider */}
+              <div className="w-12 h-[1px] bg-neutral-300 mx-auto mb-10" />
+
+              {/* Small editorial detail text */}
+              <span className="block text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-medium mb-4">
+                SHILLSTORE / ACCESSORIES
+              </span>
+
+              {/* Eyebrow badge: COMING SOON */}
+              <div className="inline-block text-[11px] sm:text-xs font-semibold tracking-[0.2em] uppercase text-neutral-900 border border-neutral-200 px-4 py-1.5 mb-6">
+                COMING SOON
+              </div>
+
+              {/* Headline */}
+              <h2 className="text-2xl sm:text-4xl font-light text-neutral-900 tracking-tight leading-tight mb-4">
+                Accessories are on the way.
+              </h2>
+
+              {/* Body description */}
+              <p className="text-sm sm:text-base text-neutral-500 font-normal leading-relaxed max-w-lg mx-auto mb-10 sm:mb-12">
+                Bag, caps, wallets, and everyday essentials are coming soon.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
+                <Link
+                  href="/"
+                  className="w-full sm:w-auto px-8 py-3.5 bg-black text-white text-[11px] uppercase tracking-[0.2em] font-semibold hover:bg-neutral-800 transition-colors text-center"
+                >
+                  BACK TO SHOP
+                </Link>
+                <Link
+                  href="/collections"
+                  className="w-full sm:w-auto px-8 py-3.5 border border-black text-black text-[11px] uppercase tracking-[0.2em] font-semibold hover:bg-black hover:text-white transition-colors text-center"
+                >
+                  EXPLORE NEW IN
+                </Link>
+              </div>
+
+              {/* Subtle bottom hairline divider */}
+              <div className="w-12 h-[1px] bg-neutral-200 mx-auto mt-14 sm:mt-16" />
+            </div>
+          ) : (
+            <div className="py-24 text-center">
+              <h2 className="text-base font-medium text-neutral-900 mb-2">
+                {isSalePage ? 'No sale items found' : 'No products found'}
+              </h2>
+              <p className="text-xs text-neutral-500 mb-6">
+                {isSalePage
+                  ? 'There are currently no items on sale in this category.'
+                  : 'There are currently no items available in this category.'}
+              </p>
+              {isSalePage ? (
+                <button
+                  type="button"
+                  onClick={() => setActiveCategory('ALL')}
+                  className="inline-block px-8 py-3.5 border border-black text-xs font-semibold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-colors cursor-pointer"
+                >
+                  View All Sale
+                </button>
+              ) : (
+                <Link
+                  href="/collections"
+                  className="inline-block px-8 py-3.5 border border-black text-xs font-semibold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-colors"
+                >
+                  View All Products
+                </Link>
+              )}
+            </div>
+          )
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14 mb-20 sm:mb-28">
             {filteredProducts.map((product, idx) => (
