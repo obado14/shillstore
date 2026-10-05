@@ -10,12 +10,14 @@ interface EditorialProductCardProps {
   product: Product;
   priority?: boolean;
   showBadge?: boolean;
+  aspectRatio?: 'square' | 'portrait';
 }
 
 export function EditorialProductCard({
   product,
   priority = false,
   showBadge = false,
+  aspectRatio = 'square',
 }: EditorialProductCardProps) {
   const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
@@ -33,12 +35,17 @@ export function EditorialProductCard({
     }, 900);
   };
 
+  const isSquare = aspectRatio === 'square';
+
   return (
     <div className="group relative flex flex-col">
-      {/* Product Image Canvas */}
+      {/* Product Image Canvas (Strict 1:1 Aspect Ratio with object-contain to prevent cropping) */}
       <Link
         href={product.link}
-        className="relative block aspect-[3/4] w-full overflow-hidden bg-[#f4f4f4]"
+        className={`relative block w-full overflow-hidden bg-[#f7f7f7] ${
+          isSquare ? 'aspect-square' : 'aspect-[3/4]'
+        }`}
+        style={{ aspectRatio: isSquare ? '1 / 1' : '3 / 4' }}
       >
         {/* Primary Image */}
         <Image
@@ -47,7 +54,9 @@ export function EditorialProductCard({
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           priority={priority}
-          className={`object-cover object-center transition-all duration-700 ease-out group-hover:scale-105 ${
+          className={`${
+            isSquare ? 'object-contain' : 'object-cover'
+          } object-center transition-all duration-700 ease-out group-hover:scale-105 ${
             secondaryImage !== primaryImage ? 'group-hover:opacity-0' : ''
           }`}
         />
@@ -59,7 +68,9 @@ export function EditorialProductCard({
             alt={product.title}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover object-center absolute inset-0 opacity-0 transition-all duration-700 ease-out group-hover:opacity-100 group-hover:scale-105"
+            className={`${
+              isSquare ? 'object-contain' : 'object-cover'
+            } object-center absolute inset-0 opacity-0 transition-all duration-700 ease-out group-hover:opacity-100 group-hover:scale-105`}
           />
         )}
 
