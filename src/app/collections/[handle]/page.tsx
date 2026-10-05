@@ -26,6 +26,7 @@ function CollectionContent({ handle }: { handle: string }) {
   }
 
   const isMenPage = handle === 'men';
+  const isWomenPage = handle === 'women';
   const [activeCategory, setActiveCategory] = useState<string>('ALL');
   const [sortBy, setSortBy] = useState<string>('featured');
 
@@ -38,13 +39,32 @@ function CollectionContent({ handle }: { handle: string }) {
     { id: 'ACCESSORIES', label: 'ACCESSORIES' },
   ];
 
+  const womenSubcategories = [
+    { id: 'ALL', label: 'ALL' },
+    { id: 'TOPS', label: 'TOPS' },
+    { id: 'SHIRTS', label: 'SHIRTS' },
+    { id: 'OUTERWEAR', label: 'OUTERWEAR' },
+    { id: 'BOTTOMS', label: 'BOTTOMS' },
+    { id: 'ACCESSORIES', label: 'ACCESSORIES' },
+  ];
+
   // Collection metadata
   const collectionInfo = useMemo(() => {
+    if (isWomenPage) {
+      return {
+        title: 'WOMEN',
+        subtitle: 'Everyday pieces, styled your way.',
+        description: 'Explore shirts, outerwear, trousers, and everyday essentials from SHILL.',
+        breadcrumb: 'WOMEN',
+      };
+    }
+
     if (isMenPage) {
       return {
         title: 'MEN',
         subtitle: 'Everyday pieces, made for your style.',
-        breadcrumb: 'Men',
+        description: 'Discover versatile essentials crafted for movement, durability, and daily street style.',
+        breadcrumb: 'MEN',
       };
     }
 
@@ -53,7 +73,8 @@ function CollectionContent({ handle }: { handle: string }) {
       return {
         title: found.title,
         subtitle: found.description,
-        breadcrumb: found.title,
+        description: '',
+        breadcrumb: found.title.toUpperCase(),
       };
     }
 
@@ -65,15 +86,31 @@ function CollectionContent({ handle }: { handle: string }) {
     return {
       title: formattedTitle,
       subtitle: 'Exclusive apparel and essentials crafted by Shill.',
-      breadcrumb: formattedTitle,
+      description: '',
+      breadcrumb: formattedTitle.toUpperCase(),
     };
-  }, [handle, isMenPage]);
+  }, [handle, isMenPage, isWomenPage]);
 
   // Filter products based on handle and active subcategory
   const filteredProducts = useMemo(() => {
     let list = [...productsData];
 
-    if (isMenPage) {
+    if (isWomenPage) {
+      // Base WOMEN collection includes apparel, tops, shirts, outerwear, trousers, and accessories
+      list = list.filter((p) => p.category !== 'Parfum');
+
+      if (activeCategory === 'TOPS') {
+        list = list.filter((p) => p.category === 'Kaos');
+      } else if (activeCategory === 'SHIRTS') {
+        list = list.filter((p) => p.category === 'Kemeja');
+      } else if (activeCategory === 'OUTERWEAR') {
+        list = list.filter((p) => p.category === 'Jaket');
+      } else if (activeCategory === 'BOTTOMS') {
+        list = list.filter((p) => p.category === 'Celana');
+      } else if (activeCategory === 'ACCESSORIES') {
+        list = list.filter((p) => p.category === 'Aksesoris');
+      }
+    } else if (isMenPage) {
       // Base MEN collection includes apparel, pants, jackets, and accessories
       list = list.filter((p) => p.category !== 'Parfum');
 
@@ -114,7 +151,9 @@ function CollectionContent({ handle }: { handle: string }) {
     }
 
     return list;
-  }, [handle, isMenPage, activeCategory, sortBy]);
+  }, [handle, isMenPage, isWomenPage, activeCategory, sortBy]);
+
+  const activeSubcategories = isWomenPage ? womenSubcategories : isMenPage ? menSubcategories : null;
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-neutral-900 font-sans selection:bg-black selection:text-white">
@@ -126,9 +165,9 @@ function CollectionContent({ handle }: { handle: string }) {
         {/* 1. Page Header (Clean, spacious, pure typography, no cards) */}
         <div className="pt-12 sm:pt-16 pb-6 sm:pb-8">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-neutral-400 mb-4 sm:mb-6">
+          <nav className="flex items-center gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-neutral-400 mb-4 sm:mb-6">
             <Link href="/" className="hover:text-black transition-colors">
-              Home
+              HOME
             </Link>
             <span>/</span>
             <span className="text-neutral-900 font-medium">{collectionInfo.breadcrumb}</span>
@@ -139,16 +178,21 @@ function CollectionContent({ handle }: { handle: string }) {
             <h1 className="text-3xl sm:text-5xl font-light text-neutral-900 tracking-tight leading-[1.08] mb-3">
               {collectionInfo.title}
             </h1>
-            <p className="text-xs sm:text-sm text-neutral-500 font-normal leading-relaxed">
+            <p className="text-sm sm:text-base text-neutral-700 font-normal leading-relaxed">
               {collectionInfo.subtitle}
             </p>
+            {collectionInfo.description && (
+              <p className="text-xs sm:text-sm text-neutral-500 font-normal leading-relaxed mt-1">
+                {collectionInfo.description}
+              </p>
+            )}
           </div>
         </div>
 
-        {/* 2. Category Navigation (Subtle text links with underline, only for MEN page) */}
-        {isMenPage && (
+        {/* 2. Category Navigation (Subtle text links with underline) */}
+        {activeSubcategories && (
           <div className="flex items-center gap-6 sm:gap-8 overflow-x-auto scrollbar-none py-3 border-b border-neutral-100 text-xs uppercase tracking-[0.18em]">
-            {menSubcategories.map((sub) => (
+            {activeSubcategories.map((sub) => (
               <button
                 key={sub.id}
                 type="button"
@@ -171,17 +215,17 @@ function CollectionContent({ handle }: { handle: string }) {
             {filteredProducts.length} PRODUCTS
           </span>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-3">
             <span className="text-neutral-400 hidden sm:inline">SORT BY:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               className="bg-transparent text-[11px] uppercase tracking-[0.18em] font-semibold text-neutral-900 focus:outline-none cursor-pointer pr-1"
             >
-              <option value="featured">Featured</option>
-              <option value="newest">Newest</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
+              <option value="featured">FEATURED</option>
+              <option value="newest">NEWEST</option>
+              <option value="price-low">PRICE: LOW TO HIGH</option>
+              <option value="price-high">PRICE: HIGH TO LOW</option>
             </select>
           </div>
         </div>
@@ -198,7 +242,7 @@ function CollectionContent({ handle }: { handle: string }) {
               onClick={() => setActiveCategory('ALL')}
               className="inline-block px-8 py-3.5 border border-black text-xs font-semibold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-colors cursor-pointer"
             >
-              View All Men
+              View All
             </button>
           </div>
         ) : (
