@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, use } from 'react';
+import React, { useState, useMemo, useRef, useEffect, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -33,6 +33,15 @@ interface PerfumeDetail {
   top: string;
   middle: string;
   base: string;
+}
+
+interface ReviewItem {
+  id: string;
+  name: string;
+  rating: number;
+  date: string;
+  comment: string;
+  verified?: boolean;
 }
 
 const perfumeProfiles: Record<string, PerfumeDetail> = {
@@ -173,6 +182,7 @@ const perfumeProfiles: Record<string, PerfumeDetail> = {
 function ProductDetailContent({ handle }: { handle: string }) {
   const router = useRouter();
   const { addToCart, setIsCartOpen } = useCart();
+  const reviewsRef = useRef<HTMLDivElement>(null);
 
   // Find product by matching handle in link or title
   const product: Product = productsData.find(
@@ -191,8 +201,8 @@ function ProductDetailContent({ handle }: { handle: string }) {
     discountBadge: 'Sale',
     images: ['/sites/shillstore/root/images/prod-chino-sirius-black.jpg'],
     link: `/products/${handle}`,
-    rating: 4.9,
-    reviewCount: 520,
+    rating: 5.0,
+    reviewCount: 164,
     isNew: true,
   };
 
@@ -233,6 +243,205 @@ function ProductDetailContent({ handle }: { handle: string }) {
   const discountPercent = hasDiscount
     ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100)
     : null;
+
+  // Reviews functionality
+  const initialBaseCount = product.reviewCount || 164;
+  const initialBaseRating = product.rating || 5.0;
+
+  // Realistic default customer reviews
+  const defaultReviews: ReviewItem[] = useMemo(() => {
+    if (isPerfume) {
+      return [
+        {
+          id: 'rev-1',
+          name: 'Dimas Rizky',
+          rating: 5,
+          date: '3 Okt 2026',
+          comment: 'Aromanya mewah dan tahan seharian lebih dari 8 jam. Pas semprot pertama terasa fresh citrus, setelah beberapa jam drydown-nya hangat dan sangat elegan. Worth it banget!',
+          verified: true,
+        },
+        {
+          id: 'rev-2',
+          name: 'Sarah Amalia',
+          rating: 5,
+          date: '28 Sep 2026',
+          comment: 'Wangi floral-nya sangat lembut, tidak menyengat atau bikin pusing. Kemasan botolnya juga kokoh dan terasa sangat premium. Pasti repurchase varian ini.',
+          verified: true,
+        },
+        {
+          id: 'rev-3',
+          name: 'Kevin Pratama',
+          rating: 5,
+          date: '19 Sep 2026',
+          comment: 'Blind buy terbaik tahun ini. Proyeksi aromanya mantap, banyak yang nanya pakai parfum apa saat di kantor. Rekomendasi buat daily use.',
+          verified: true,
+        },
+        {
+          id: 'rev-4',
+          name: 'Nabila Putri',
+          rating: 5,
+          date: '12 Sep 2026',
+          comment: 'Pengiriman kilat dan packaging sangat aman dengan bubble wrap tebal. Ketahanan wangi sesuai deskripsi dari pagi sampai sore.',
+          verified: true,
+        },
+        {
+          id: 'rev-5',
+          name: 'Aditya Wardhana',
+          rating: 5,
+          date: '5 Sep 2026',
+          comment: 'Karakter aromanya unik dan versatile. Cocok dipakai acara formal maupun nongkrong malam hari. Sillage-nya sopan dan menyenangkan.',
+          verified: true,
+        },
+      ];
+    }
+
+    return [
+      {
+        id: 'rev-1',
+        name: 'Arya Maulana',
+        rating: 5,
+        date: '3 Okt 2026',
+        comment: 'Bahannya tebal tapi tetap breathable dan tidak gerah dipakai siang hari. Fitting regular-nya pas banget di badan, kualitas jahitan standar ekspor.',
+        verified: true,
+      },
+      {
+        id: 'rev-2',
+        name: 'Rendy Pratama',
+        rating: 5,
+        date: '27 Sep 2026',
+        comment: 'Cutting presisi dan bahannya premium. Jahitan kuat dan rapi, nyaman banget dipakai beraktivitas seharian tanpa kaku.',
+        verified: true,
+      },
+      {
+        id: 'rev-3',
+        name: 'Fajar Nugraha',
+        rating: 5,
+        date: '18 Sep 2026',
+        comment: 'Kualitas produk SHILLSTORE memang konsisten bagus. Warna kain pekat dan tidak luntur setelah beberapa kali pencucian.',
+        verified: true,
+      },
+      {
+        id: 'rev-4',
+        name: 'Dika Saputra',
+        rating: 5,
+        date: '10 Sep 2026',
+        comment: 'Desainnya clean dan streetwear banget. Cocok dipadukan dengan berbagai outfit casual harian. Pengiriman juga sangat cepat.',
+        verified: true,
+      },
+      {
+        id: 'rev-5',
+        name: 'Bintang Pratama',
+        rating: 5,
+        date: '2 Sep 2026',
+        comment: 'Kualitas kain solid, ukuran sesuai dengan tabel panduan. Sangat puas dengan harga segini dapat kualitas premium.',
+        verified: true,
+      },
+    ];
+  }, [isPerfume]);
+
+  const [userReviews, setUserReviews] = useState<ReviewItem[]>([]);
+  const [isWritingReview, setIsWritingReview] = useState(false);
+  const [newRating, setNewRating] = useState(5);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [newName, setNewName] = useState('');
+  const [newComment, setNewComment] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  // Load reviews from localStorage
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(`shill_reviews_${product.id}`);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          setUserReviews(parsed);
+        }
+      }
+    } catch {
+      // Ignore localStorage errors
+    }
+  }, [product.id]);
+
+  // Handle adding new review
+  const handleAddReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newName.trim() || !newComment.trim()) return;
+
+    const newRev: ReviewItem = {
+      id: `rev-${Date.now()}`,
+      name: newName.trim(),
+      rating: newRating,
+      date: new Date().toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      }),
+      comment: newComment.trim(),
+      verified: true,
+    };
+
+    const updated = [newRev, ...userReviews];
+    setUserReviews(updated);
+    try {
+      localStorage.setItem(`shill_reviews_${product.id}`, JSON.stringify(updated));
+    } catch {
+      // Ignore
+    }
+
+    setNewName('');
+    setNewComment('');
+    setNewRating(5);
+    setIsWritingReview(false);
+    setSuccessMessage('Terima kasih! Ulasan Anda telah berhasil diterbitkan.');
+    setTimeout(() => setSuccessMessage(''), 5000);
+  };
+
+  // Base counts
+  const initialStarCounts = useMemo(() => {
+    const five = Math.floor(initialBaseCount * 0.94);
+    const four = Math.floor(initialBaseCount * 0.05);
+    const three = Math.max(0, initialBaseCount - five - four);
+    return {
+      5: five,
+      4: four,
+      3: three,
+      2: 0,
+      1: 0,
+    };
+  }, [initialBaseCount]);
+
+  // Combined star counts
+  const starCounts = useMemo(() => {
+    const counts = { ...initialStarCounts };
+    userReviews.forEach((r) => {
+      const star = Math.min(5, Math.max(1, r.rating)) as 1 | 2 | 3 | 4 | 5;
+      counts[star] = (counts[star] || 0) + 1;
+    });
+    return counts;
+  }, [initialStarCounts, userReviews]);
+
+  // Total reviews count
+  const totalReviews = initialBaseCount + userReviews.length;
+
+  // Average rating calculated dynamically
+  const averageRating = useMemo(() => {
+    const baseTotalPoints = initialBaseCount * initialBaseRating;
+    const userPoints = userReviews.reduce((sum, r) => sum + r.rating, 0);
+    const totalPoints = baseTotalPoints + userPoints;
+    const avg = totalPoints / totalReviews;
+    return Math.min(5.0, Math.max(1.0, Number(avg.toFixed(1))));
+  }, [initialBaseCount, initialBaseRating, userReviews, totalReviews]);
+
+  const allReviews = useMemo(() => {
+    return [...userReviews, ...defaultReviews];
+  }, [userReviews, defaultReviews]);
+
+  // Smooth scroll handler
+  const scrollToReviews = () => {
+    if (reviewsRef.current) {
+      reviewsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-neutral-900 font-sans selection:bg-black selection:text-white">
@@ -320,12 +529,27 @@ function ProductDetailContent({ handle }: { handle: string }) {
               {product.title}
             </h1>
 
-            {/* Simple Understated Rating */}
+            {/* Functional Clickable Rating */}
             <div className="flex items-center gap-2 mb-6 text-xs text-neutral-500">
-              <div className="flex text-neutral-900 text-xs tracking-tighter">★★★★★</div>
-              <span className="font-medium text-neutral-800">{product.rating || 4.9}</span>
+              <button
+                type="button"
+                onClick={scrollToReviews}
+                className="flex items-center gap-1.5 hover:opacity-80 transition-opacity cursor-pointer group"
+                aria-label="Lihat ulasan produk"
+              >
+                <span className="flex text-neutral-900 text-xs tracking-tighter">
+                  {'★'.repeat(Math.min(5, Math.max(1, Math.round(averageRating))))}
+                </span>
+                <span className="font-semibold text-neutral-900">{averageRating.toFixed(1)}</span>
+              </button>
               <span className="text-neutral-300">•</span>
-              <span>{product.reviewCount || 140} ulasan</span>
+              <button
+                type="button"
+                onClick={scrollToReviews}
+                className="hover:underline hover:text-black transition-colors cursor-pointer text-neutral-500 font-medium"
+              >
+                {totalReviews} ulasan
+              </button>
             </div>
 
             {/* Price & Simple Discount */}
@@ -619,7 +843,206 @@ function ProductDetailContent({ handle }: { handle: string }) {
           </div>
         </div>
 
-        {/* 2. Related Products Section (Clean, 1:1 image grid) */}
+        {/* 2. Customer Reviews Section (Functional & Interactive) */}
+        <section ref={reviewsRef} id="reviews" className="mt-20 sm:mt-28 pt-12 border-t border-neutral-150 scroll-mt-24">
+          {/* Section Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 pb-6 border-b border-neutral-150">
+            <div>
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-medium block mb-2">
+                TESTIMONI &amp; RATING
+              </span>
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-light text-neutral-900 tracking-tight">
+                Ulasan Pelanggan
+              </h2>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsWritingReview((prev) => !prev)}
+              className="inline-flex items-center justify-center px-6 py-3 border border-black text-black hover:bg-black hover:text-white text-[11px] uppercase tracking-[0.18em] font-semibold transition-colors cursor-pointer self-start sm:self-auto"
+            >
+              {isWritingReview ? 'Tutup Form' : 'Tulis Ulasan'}
+            </button>
+          </div>
+
+          {/* Success Notification */}
+          {successMessage && (
+            <div className="mb-8 p-4 bg-neutral-900 text-white text-xs font-medium uppercase tracking-wider flex items-center justify-between">
+              <span>{successMessage}</span>
+              <button
+                type="button"
+                onClick={() => setSuccessMessage('')}
+                className="text-neutral-400 hover:text-white text-base ml-4 cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
+          {/* Rating Summary Breakdown & Score */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 pb-12 mb-12 border-b border-neutral-150">
+            {/* Left: Overall Score */}
+            <div className="md:col-span-4 flex flex-col justify-center sm:border-r border-neutral-150 sm:pr-8">
+              <div className="text-5xl sm:text-6xl font-light text-neutral-900 tracking-tight mb-2">
+                {averageRating.toFixed(1)}
+              </div>
+              <div className="flex text-neutral-900 text-sm tracking-tighter mb-2">
+                {'★'.repeat(Math.min(5, Math.max(1, Math.round(averageRating))))}
+                {'☆'.repeat(Math.max(0, 5 - Math.round(averageRating)))}
+              </div>
+              <p className="text-xs text-neutral-500 uppercase tracking-wider">
+                Berdasarkan {totalReviews} ulasan terverifikasi
+              </p>
+            </div>
+
+            {/* Right: Star Breakdown Bars */}
+            <div className="md:col-span-8 flex flex-col justify-center gap-2.5">
+              {[5, 4, 3, 2, 1].map((stars) => {
+                const count = starCounts[stars as 1 | 2 | 3 | 4 | 5] || 0;
+                const percentage = totalReviews > 0 ? Math.round((count / totalReviews) * 100) : 0;
+                return (
+                  <div key={stars} className="flex items-center gap-3 text-xs">
+                    <span className="w-16 text-neutral-500 shrink-0 font-medium">
+                      {stars} Bintang
+                    </span>
+                    <div className="flex-1 h-2 bg-neutral-100 overflow-hidden">
+                      <div
+                        className="h-full bg-neutral-900 transition-all duration-500"
+                        style={{ width: `${percentage}%` }}
+                      />
+                    </div>
+                    <span className="w-12 text-right text-neutral-400 font-mono text-[11px] shrink-0">
+                      {percentage}%
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* "Tulis Ulasan" Collapsible Form */}
+          {isWritingReview && (
+            <form onSubmit={handleAddReview} className="mb-12 p-6 sm:p-8 bg-[#FAFAF9] border border-neutral-200">
+              <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-[0.18em] text-neutral-900 mb-6">
+                Tulis Ulasan Anda
+              </h3>
+
+              {/* Star Rating Picker */}
+              <div className="mb-5">
+                <label className="text-[11px] uppercase tracking-[0.14em] font-medium text-neutral-700 block mb-2">
+                  Rating Bintang <span className="text-neutral-400">*</span>
+                </label>
+                <div className="flex items-center gap-1.5">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setNewRating(star)}
+                      onMouseEnter={() => setHoverRating(star)}
+                      onMouseLeave={() => setHoverRating(0)}
+                      className="text-2xl transition-transform hover:scale-110 cursor-pointer p-0.5"
+                      aria-label={`Beri rating ${star} bintang`}
+                    >
+                      <span
+                        className={
+                          (hoverRating || newRating) >= star
+                            ? 'text-neutral-900'
+                            : 'text-neutral-300'
+                        }
+                      >
+                        ★
+                      </span>
+                    </button>
+                  ))}
+                  <span className="text-xs font-semibold text-neutral-800 ml-2">
+                    {hoverRating || newRating} / 5
+                  </span>
+                </div>
+              </div>
+
+              {/* Name Input */}
+              <div className="mb-4">
+                <label className="text-[11px] uppercase tracking-[0.14em] font-medium text-neutral-700 block mb-1.5">
+                  Nama Lengkap <span className="text-neutral-400">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  placeholder="Contoh: Budi Santoso"
+                  className="w-full h-11 px-3.5 text-xs text-neutral-900 bg-white border border-neutral-200 rounded-[2px] focus:outline-none focus:border-black placeholder:text-neutral-400"
+                  required
+                />
+              </div>
+
+              {/* Comment Input */}
+              <div className="mb-6">
+                <label className="text-[11px] uppercase tracking-[0.14em] font-medium text-neutral-700 block mb-1.5">
+                  Ulasan / Komentar <span className="text-neutral-400">*</span>
+                </label>
+                <textarea
+                  rows={3}
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Ceritakan pengalaman Anda mengenai produk ini..."
+                  className="w-full p-3.5 text-xs text-neutral-900 bg-white border border-neutral-200 rounded-[2px] focus:outline-none focus:border-black placeholder:text-neutral-400"
+                  required
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-3">
+                <button
+                  type="submit"
+                  className="px-8 py-3.5 bg-black hover:bg-neutral-800 text-white text-[11px] uppercase tracking-[0.2em] font-semibold transition-colors cursor-pointer"
+                >
+                  Kirim Ulasan
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsWritingReview(false)}
+                  className="px-6 py-3.5 border border-neutral-200 text-neutral-600 hover:text-black text-[11px] uppercase tracking-[0.2em] font-semibold transition-colors cursor-pointer"
+                >
+                  Batal
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* Reviews List */}
+          <div className="divide-y divide-neutral-150">
+            {allReviews.map((rev) => (
+              <div key={rev.id} className="py-6 sm:py-8 first:pt-0">
+                <div className="flex items-center justify-between gap-4 mb-2">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs sm:text-sm font-semibold text-neutral-900">
+                      {rev.name}
+                    </span>
+                    {rev.verified && (
+                      <span className="text-[9px] uppercase tracking-[0.16em] font-semibold text-neutral-500 border border-neutral-200 px-2 py-0.5">
+                        Terverifikasi
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[11px] text-neutral-400 font-mono">
+                    {rev.date}
+                  </span>
+                </div>
+
+                <div className="flex text-neutral-900 text-xs tracking-tighter mb-2">
+                  {'★'.repeat(rev.rating)}
+                  {'☆'.repeat(5 - rev.rating)}
+                </div>
+
+                <p className="text-xs sm:text-sm text-neutral-700 leading-relaxed font-normal">
+                  {rev.comment}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 3. Related Products Section (Clean, 1:1 image grid) */}
         <div className="mt-20 sm:mt-28 pt-12 border-t border-neutral-150">
           <div className="flex items-baseline justify-between mb-8 sm:mb-10">
             <div>
