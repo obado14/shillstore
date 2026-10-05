@@ -9,9 +9,14 @@ import { useCart } from '@/context/CartContext';
 interface EditorialProductCardProps {
   product: Product;
   priority?: boolean;
+  showBadge?: boolean;
 }
 
-export function EditorialProductCard({ product, priority = false }: EditorialProductCardProps) {
+export function EditorialProductCard({
+  product,
+  priority = false,
+  showBadge = false,
+}: EditorialProductCardProps) {
   const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
 
@@ -30,7 +35,7 @@ export function EditorialProductCard({ product, priority = false }: EditorialPro
 
   return (
     <div className="group relative flex flex-col">
-      {/* Product Image Stage */}
+      {/* Product Image Canvas */}
       <Link
         href={product.link}
         className="relative block aspect-[3/4] w-full overflow-hidden bg-[#f4f4f4]"
@@ -47,7 +52,7 @@ export function EditorialProductCard({ product, priority = false }: EditorialPro
           }`}
         />
 
-        {/* Secondary Image on Hover (if different) */}
+        {/* Secondary Image on Hover (if available) */}
         {secondaryImage !== primaryImage && (
           <Image
             src={secondaryImage}
@@ -58,14 +63,14 @@ export function EditorialProductCard({ product, priority = false }: EditorialPro
           />
         )}
 
-        {/* Subtle New or Exclusive Marker */}
-        {product.isNew && (
-          <span className="absolute top-3 left-3 text-[9px] uppercase tracking-[0.25em] font-semibold text-neutral-800 bg-white/90 backdrop-blur-xs px-2 py-0.5 pointer-events-none">
+        {/* Optional subtle badge only when requested */}
+        {showBadge && product.isNew && (
+          <span className="absolute top-3 left-3 text-[9px] uppercase tracking-[0.25em] font-semibold text-neutral-900 bg-white/95 px-2 py-0.5 pointer-events-none">
             New
           </span>
         )}
 
-        {/* Quick Add To Bag Overlay Button on Desktop */}
+        {/* Subtle Quick Add To Bag on Desktop Hover */}
         <div className="absolute inset-x-0 bottom-0 p-3 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto hidden sm:block">
           <button
             type="button"
@@ -77,34 +82,39 @@ export function EditorialProductCard({ product, priority = false }: EditorialPro
         </div>
       </Link>
 
-      {/* Product Information */}
-      <div className="mt-3.5 flex flex-col gap-1">
-        <div className="flex items-start justify-between gap-2">
-          <Link
-            href={product.link}
-            className="text-xs md:text-sm font-medium text-neutral-900 tracking-tight hover:text-neutral-500 transition-colors line-clamp-1"
-          >
-            {product.title}
-          </Link>
-        </div>
+      {/* Product Details (Minimal Editorial Catalog Style) */}
+      <div className="mt-3 flex flex-col gap-0.5">
+        <Link
+          href={product.link}
+          className="text-xs sm:text-sm font-medium text-neutral-900 tracking-tight hover:text-neutral-500 transition-colors line-clamp-1"
+        >
+          {product.title}
+        </Link>
 
-        <div className="flex items-baseline gap-2">
-          <span className="text-xs md:text-sm text-neutral-600 font-normal">
+        <div className="flex items-baseline gap-2 mt-0.5">
+          <span className="text-xs sm:text-sm text-neutral-600 font-normal">
             {product.formattedPrice}
           </span>
           {product.compareAtPrice && product.compareAtPrice > product.price && (
-            <span className="text-[11px] md:text-xs text-neutral-400 line-through font-normal">
+            <span className="text-[11px] sm:text-xs text-neutral-400 line-through font-normal">
               {product.formattedCompareAtPrice}
             </span>
           )}
         </div>
 
-        {/* Mobile Quick Add */}
+        {/* Available Color / Variant indicator if present */}
+        {product.colors && product.colors.length > 0 && (
+          <span className="text-[11px] text-neutral-400 font-normal mt-0.5">
+            {product.colors[0]}
+          </span>
+        )}
+
+        {/* Mobile Quick Add Button */}
         <div className="mt-2 block sm:hidden">
           <button
             type="button"
             onClick={handleQuickAdd}
-            className="w-full py-2 border border-neutral-300 text-neutral-900 text-[10px] font-semibold uppercase tracking-[0.18em] hover:bg-black hover:text-white transition-colors cursor-pointer"
+            className="w-full py-2 border border-neutral-300 text-neutral-900 text-[10px] font-semibold uppercase tracking-[0.18em] active:bg-black active:text-white transition-colors cursor-pointer"
           >
             {isAdding ? 'Added' : 'Add to Bag'}
           </button>

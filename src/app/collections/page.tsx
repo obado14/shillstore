@@ -1,56 +1,144 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
+import React, { useState, useMemo } from 'react';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
 import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
-import { collectionsList } from '@/data/shill-data';
+import { EditorialProductCard } from '@/components/sites/shillstore/root/EditorialProductCard';
+import { productsData } from '@/data/shill-data';
 
 export default function CollectionsIndexPage() {
+  const [activeFilter, setActiveFilter] = useState<'ALL' | 'CLOTHING' | 'PANTS' | 'OUTERWEAR' | 'FRAGRANCE'>('ALL');
+  const [sortBy, setSortBy] = useState<'newest' | 'price-asc' | 'price-desc'>('newest');
+
+  // Curated 12 newest standout items across the brand
+  const newestProductIds = [
+    'shill-shirt-oxford-long-blue',
+    'shill-pants-chino-black',
+    'shill-tshirt-washed-black',
+    'shill-jacket-parka-army-green',
+    'shill-perfume-noir',
+    'shill-pants-cargo-olive',
+    'shill-tshirt-oversized-essential-black',
+    'shill-relax-chino-errol-black',
+    'shill-shirt-rayon-sage',
+    'shill-jacket-coach-black',
+    'shill-pants-chino-beige',
+    'shill-perfume-elysium',
+  ];
+
+  const curatedNewest = useMemo(() => {
+    const matched = newestProductIds
+      .map((id) => productsData.find((p) => p.id === id))
+      .filter(Boolean) as typeof productsData;
+    return matched.length === 12 ? matched : productsData.slice(0, 12);
+  }, []);
+
+  const filteredProducts = useMemo(() => {
+    let list = [...curatedNewest];
+
+    if (activeFilter === 'CLOTHING') {
+      list = productsData.filter((p) => p.category === 'Kaos' || p.category === 'Kemeja').slice(0, 12);
+    } else if (activeFilter === 'PANTS') {
+      list = productsData.filter((p) => p.category === 'Celana').slice(0, 12);
+    } else if (activeFilter === 'OUTERWEAR') {
+      list = productsData.filter((p) => p.category === 'Jaket').slice(0, 12);
+    } else if (activeFilter === 'FRAGRANCE') {
+      list = productsData.filter((p) => p.category === 'Parfum').slice(0, 12);
+    }
+
+    if (sortBy === 'price-asc') {
+      list.sort((a, b) => a.price - b.price);
+    } else if (sortBy === 'price-desc') {
+      list.sort((a, b) => b.price - a.price);
+    }
+
+    return list;
+  }, [curatedNewest, activeFilter, sortBy]);
+
+  const filterOptions = [
+    { id: 'ALL', label: 'All Items' },
+    { id: 'CLOTHING', label: 'Tops & Shirts' },
+    { id: 'PANTS', label: 'Pants & Chinos' },
+    { id: 'OUTERWEAR', label: 'Outerwear' },
+    { id: 'FRAGRANCE', label: 'Fragrance' },
+  ] as const;
+
   return (
-    <div className="min-h-screen flex flex-col bg-white text-[#121212]">
-        <Header />
+    <div className="min-h-screen flex flex-col bg-white text-neutral-900 font-sans selection:bg-black selection:text-white">
+      {/* Header */}
+      <Header />
 
-        <main className="flex-1 py-12 page-width">
-          <div className="text-center max-w-xl mx-auto mb-12">
-            <h1 className="text-4xl md:text-5xl font-extrabold uppercase font-koulen tracking-wider mb-3">
-              Semua Koleksi Shill
-            </h1>
-            <p className="text-sm text-gray-600">
-              Temukan berbagai kategori pakaian kasual berkualitas untuk gaya harianmu.
-            </p>
-          </div>
+      {/* Main Editorial Flow */}
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-12">
+        {/* Page Intro (Pure Typography & Whitespace) */}
+        <div className="pt-14 pb-8 sm:pt-20 sm:pb-12 max-w-3xl">
+          <span className="text-[11px] uppercase tracking-[0.3em] font-medium text-neutral-400 block mb-3">
+            NEW IN
+          </span>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-light text-neutral-900 tracking-tight leading-[1.08] mb-4">
+            Latest arrivals from SHILL.
+          </h1>
+          <p className="text-xs sm:text-sm text-neutral-500 font-normal leading-relaxed max-w-lg">
+            Discover the latest pieces added to our collection.
+          </p>
+        </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {collectionsList.map((col) => (
-              <Link
-                key={col.handle}
-                href={`/collections/${col.handle}`}
-                className="group relative rounded-2xl overflow-hidden border border-gray-100 p-8 bg-gray-50 hover:bg-black hover:text-white transition-all duration-300 flex flex-col justify-between min-h-[220px] shadow-2xs hover:shadow-xl"
+        {/* Filter & Sort Bar (Clean Minimal Border Bar) */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 mb-10 sm:mb-14 border-y border-neutral-150 text-[11px] uppercase tracking-[0.18em]">
+          {/* Left: Filter Categories */}
+          <div className="flex items-center gap-6 overflow-x-auto scrollbar-none py-1">
+            <span className="font-semibold text-neutral-900 shrink-0">FILTER:</span>
+            {filterOptions.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => setActiveFilter(f.id)}
+                className={`shrink-0 transition-colors cursor-pointer ${
+                  activeFilter === f.id
+                    ? 'font-bold text-black border-b border-black pb-0.5'
+                    : 'text-neutral-400 hover:text-black'
+                }`}
               >
-                <div>
-                  <h2 className="text-2xl font-bold uppercase font-koulen tracking-wide mb-2 group-hover:text-white transition-colors">
-                    {col.title}
-                  </h2>
-                  <p className="text-xs text-gray-500 group-hover:text-gray-300 leading-relaxed transition-colors">
-                    {col.description}
-                  </p>
-                </div>
-
-                <div className="mt-6 flex items-center gap-2 text-xs font-bold text-red-600 group-hover:text-white transition-colors">
-                  <span>Lihat Produk</span>
-                  <span>→</span>
-                </div>
-              </Link>
+                {f.label}
+              </button>
             ))}
           </div>
-        </main>
 
-        <Footer />
-        <CartDrawer />
-        <SearchModal />
-      </div>
+          {/* Right: Sort By Dropdown */}
+          <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-auto">
+            <span className="text-neutral-400">SORT BY:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+              className="bg-transparent text-[11px] uppercase tracking-[0.18em] font-semibold text-neutral-900 focus:outline-none cursor-pointer pr-1"
+            >
+              <option value="newest">Newest</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Product Catalog Grid (Desktop 4 col, Tablet 3 col, Mobile 2 col) */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14 mb-20 sm:mb-28">
+          {filteredProducts.map((product, idx) => (
+            <EditorialProductCard
+              key={product.id}
+              product={product}
+              priority={idx < 4}
+            />
+          ))}
+        </div>
+      </main>
+
+      {/* Footer */}
+      <Footer />
+
+      {/* Global Interactive Drawers */}
+      <CartDrawer />
+      <SearchModal />
+    </div>
   );
 }
