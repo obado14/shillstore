@@ -94,7 +94,7 @@ export function Header() {
               </button>
 
               <Link
-                href="/pages/authenticate"
+                href="/account"
                 className="hidden sm:inline-block hover:text-black transition-colors py-2"
               >
                 ACCOUNT
@@ -162,7 +162,7 @@ export function Header() {
               {/* Drawer Footer Links */}
               <div className="pt-6 border-t border-neutral-100 flex flex-col gap-4 text-xs uppercase tracking-[0.18em] text-neutral-600">
                 <Link
-                  href="/pages/authenticate"
+                  href="/account"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="hover:text-black"
                 >
