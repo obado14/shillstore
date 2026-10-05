@@ -116,7 +116,7 @@ export function EditorialProductCard({
         {/* Available Color / Variant indicator if present */}
         {product.colors && product.colors.length > 0 && (
           <span className="text-[11px] text-neutral-400 font-normal mt-0.5">
-            {product.colors[0]}
+            {product.colors.join(' / ')}
           </span>
         )}
 

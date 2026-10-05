@@ -19,7 +19,7 @@ export function Header() {
 
   const navLinks = [
     { label: 'NEW IN', href: '/collections' },
-    { label: 'MEN', href: '/collections/all-t-shirt' },
+    { label: 'MEN', href: '/collections/men' },
     { label: 'WOMEN', href: '/collections/all-shirt' },
     { label: 'ACCESSORIES', href: '/collections/accessories' },
     { label: 'SALE', href: '/collections/flight-jacket' },
