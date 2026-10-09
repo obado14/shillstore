@@ -23,7 +23,7 @@ export function Footer() {
         { label: 'Customer Care', href: '/pages/contact-us' },
         { label: 'Shipping & Delivery', href: '/pages/payment-information' },
         { label: 'Exchanges & Returns', href: '/pages/exchanges-returns' },
-        { label: 'Track Your Order', href: '/pages/track-order' },
+        { label: 'Track Your Order', href: '/tracking' },
         { label: 'Frequently Asked Questions', href: '/pages/faq' },
       ],
     },

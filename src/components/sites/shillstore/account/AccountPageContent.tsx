@@ -7,6 +7,8 @@ import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
 import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
+import { getOrders } from '@/lib/orderStorage';
+import { Truck, ArrowRight } from 'lucide-react';
 
 interface UserProfile {
   fullName: string;
@@ -178,10 +180,39 @@ export function AccountPageContent() {
         setUserProfile(JSON.parse(savedProfile));
       }
 
-      const savedOrders = localStorage.getItem('shill_customer_orders');
-      if (savedOrders) {
-        setOrders(JSON.parse(savedOrders));
-      }
+      const loadStoredOrders = () => {
+        try {
+          const stored = getOrders();
+          const mapped: CustomerOrder[] = stored.map((o) => {
+            let st: 'Processing' | 'Shipped' | 'Delivered' = 'Processing';
+            if (o.currentStep === 'delivered') st = 'Delivered';
+            else if (o.currentStep === 'handed_over' || o.currentStep === 'in_transit') st = 'Shipped';
+            return {
+              orderNumber: o.orderNumber,
+              date: o.date,
+              status: st,
+              courier: o.courierName,
+              trackingNumber: o.trackingNumber,
+              items: o.items.map((it) => ({
+                id: it.id,
+                title: it.title,
+                price: it.price,
+                image: it.image,
+                quantity: it.quantity,
+                size: it.size,
+              })),
+              totalAmount: o.total,
+              shippingAddress: `${o.customer.address}, ${o.customer.city}`,
+            };
+          });
+          setOrders(mapped);
+        } catch {
+          // Ignore
+        }
+      };
+
+      loadStoredOrders();
+      window.addEventListener('shill-orders-updated', loadStoredOrders);
 
       const rememberedEmail = localStorage.getItem('shill_remembered_email');
       if (rememberedEmail) {
@@ -661,17 +692,35 @@ export function AccountPageContent() {
                           </div>
 
                           {/* Order Footer & Tracking */}
-                          <div className="pt-3 mt-3 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-2 text-xs">
-                            <span className="text-[11px] text-neutral-500 font-mono">
-                              {order.courier} • Resi: {order.trackingNumber}
-                            </span>
-                            <div className="flex items-baseline gap-1.5">
-                              <span className="text-[11px] text-neutral-500 uppercase tracking-wider">
-                                Total:
+                          <div className="pt-3 mt-3 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-3 text-xs">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                              <span className="text-[11px] text-neutral-500 font-mono">
+                                {order.courier} • Resi: {order.trackingNumber}
                               </span>
-                              <span className="font-semibold text-neutral-900 text-sm">
-                                Rp {order.totalAmount.toLocaleString('id-ID')}
-                              </span>
+                              <div className="flex items-baseline gap-1.5">
+                                <span className="text-[11px] text-neutral-500 uppercase tracking-wider">
+                                  Total:
+                                </span>
+                                <span className="font-semibold text-neutral-900 text-sm">
+                                  Rp {order.totalAmount.toLocaleString('id-ID')}
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <Link
+                                href={`/tracking?orderId=${order.orderNumber}`}
+                                className="px-3.5 py-1.5 bg-[#111111] hover:bg-neutral-800 text-white text-[10px] uppercase tracking-wider font-semibold rounded-[2px] transition-colors inline-flex items-center gap-1.5"
+                              >
+                                <Truck className="w-3 h-3" />
+                                <span>Lacak Pesanan</span>
+                              </Link>
+                              <Link
+                                href={`/order-confirmation?orderId=${order.orderNumber}`}
+                                className="px-3 py-1.5 border border-neutral-200 hover:border-black text-neutral-700 hover:text-black text-[10px] uppercase tracking-wider font-semibold rounded-[2px] transition-colors"
+                              >
+                                Detail
+                              </Link>
                             </div>
                           </div>
                         </div>

@@ -4,31 +4,22 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCart, CartItem } from '@/context/CartContext';
-
-interface OrderCustomer {
-  fullName: string;
-  phone: string;
-  email: string;
-  province: string;
-  city: string;
-  postalCode: string;
-  address: string;
-  notes: string;
-}
-
-interface OrderSuccessData {
-  orderNumber: string;
-  items: CartItem[];
-  subtotal: number;
-  shippingCost: number;
-  discount: number;
-  total: number;
-  customer: OrderCustomer;
-  courier: 'jne' | 'sicepat' | 'jnt' | 'instant';
-  paymentMethod: 'qris' | 'bca_va' | 'mandiri_va' | 'cod';
-  date: string;
-}
+import { useCart } from '@/context/CartContext';
+import { saveOrder } from '@/lib/orderStorage';
+import { ShillOrder, OrderItemDetail } from '@/types/order';
+import {
+  Check,
+  AlertCircle,
+  Copy,
+  CheckCheck,
+  X,
+  ShieldCheck,
+  ArrowRight,
+  QrCode,
+  CreditCard,
+  Banknote,
+  RotateCcw,
+} from 'lucide-react';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -54,362 +45,17 @@ export default function CheckoutPage() {
   const [appliedVoucher, setAppliedVoucher] = useState<string | null>(null);
   const [voucherError, setVoucherError] = useState('');
 
-  // Submission state
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // Form & Simulation state
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
-  const [orderSuccess, setOrderSuccess] = useState<OrderSuccessData | null>(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [paymentSimulationError, setPaymentSimulationError] = useState<string | null>(null);
   const [copiedVA, setCopiedVA] = useState(false);
 
   // Calculations
   const shippingCost = courier === 'instant' ? 20000 : 0;
   const finalTotal = Math.max(0, totalPrice + shippingCost - discount);
 
-  const applyVoucher = () => {
-    setVoucherError('');
-    const code = voucherCode.trim().toUpperCase();
-    if (code === 'SHILL30' || code === 'DISC30K') {
-      setDiscount(30000);
-      setAppliedVoucher('SHILL30 (-Rp 30.000)');
-    } else if (code === 'HEMAT45' || code === 'SHILL45') {
-      const disc = Math.round(totalPrice * 0.45);
-      setDiscount(disc);
-      setAppliedVoucher(`HEMAT45 (-Rp ${disc.toLocaleString('id-ID')})`);
-    } else if (code) {
-      setVoucherError('Kode promo tidak valid atau sudah kedaluwarsa.');
-    }
-  };
-
-  const handleCheckout = (e: React.FormEvent) => {
-    e.preventDefault();
-    const errors: { [key: string]: string } = {};
-
-    if (!fullName.trim()) errors.fullName = 'Nama lengkap wajib diisi';
-    if (!phone.trim()) {
-      errors.phone = 'Nomor WhatsApp / HP wajib diisi';
-    } else if (phone.trim().length < 9) {
-      errors.phone = 'Nomor telepon minimal 9 digit';
-    }
-    if (!address.trim()) errors.address = 'Alamat pengiriman lengkap wajib diisi';
-
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    setFormErrors({});
-    setIsSubmitting(true);
-
-    const generatedOrderNumber = `SHILL-${Math.floor(100000 + Math.random() * 900000)}`;
-
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setOrderSuccess({
-        orderNumber: generatedOrderNumber,
-        items: [...cart],
-        subtotal: totalPrice,
-        shippingCost,
-        discount,
-        total: finalTotal,
-        customer: {
-          fullName,
-          phone,
-          email,
-          province,
-          city,
-          postalCode,
-          address,
-          notes,
-        },
-        courier,
-        paymentMethod,
-        date: new Date().toLocaleString('id-ID', {
-          dateStyle: 'medium',
-          timeStyle: 'short',
-        }),
-      });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 800);
-  };
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedVA(true);
-    setTimeout(() => setCopiedVA(false), 2000);
-  };
-
-  // SUCCESS SCREEN
-  if (orderSuccess) {
-    const waText = encodeURIComponent(
-      `Halo Admin SHILLSTORE, saya ingin konfirmasi pesanan saya:\n\n` +
-      `*No. Pesanan:* #${orderSuccess.orderNumber}\n` +
-      `*Nama Pemesan:* ${orderSuccess.customer.fullName}\n` +
-      `*No. HP:* ${orderSuccess.customer.phone}\n` +
-      `*Alamat:* ${orderSuccess.customer.address}, ${orderSuccess.customer.city}, ${orderSuccess.customer.province}\n` +
-      `*Kurir:* ${orderSuccess.courier.toUpperCase()}\n` +
-      `*Metode Bayar:* ${orderSuccess.paymentMethod.toUpperCase().replace('_', ' ')}\n` +
-      `*Total Tagihan:* Rp ${orderSuccess.total.toLocaleString('id-ID')}\n\n` +
-      `Mohon segera diproses. Terima kasih!`
-    );
-
-    return (
-      <div className="min-h-screen bg-white text-[#111111] font-sans flex flex-col">
-        {/* Minimal Header */}
-        <header className="border-b border-[#E5E5E5] bg-white sticky top-0 z-30">
-          <div className="max-w-6xl mx-auto px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Link
-                href="/"
-                className="text-base sm:text-lg font-black tracking-[0.22em] uppercase text-[#111111] hover:opacity-80 transition-opacity"
-              >
-                SHILLSTORE
-              </Link>
-              <span className="text-neutral-300">/</span>
-              <span className="text-xs sm:text-[13px] font-semibold tracking-[0.16em] uppercase text-neutral-500">
-                PESANAN BERHASIL
-              </span>
-            </div>
-            <span className="text-[11px] uppercase tracking-[0.15em] text-neutral-500 font-medium">
-              STATUS: DITERIMA
-            </span>
-          </div>
-        </header>
-
-        <main className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-8 py-12 sm:py-16">
-          <div className="text-center max-w-xl mx-auto mb-10">
-            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-medium block mb-3">
-              SHILLSTORE ORDER CONFIRMATION
-            </span>
-            <h1 className="text-2xl sm:text-3xl font-light text-[#111111] tracking-tight mb-2">
-              Pesanan Anda Telah Dibuat
-            </h1>
-            <p className="text-xs sm:text-sm text-neutral-500 leading-relaxed">
-              Terima kasih telah berbelanja di SHILLSTORE. Silakan selesaikan pembayaran untuk memproses pengiriman.
-            </p>
-            <div className="mt-4 inline-block border border-neutral-300 px-4 py-1.5 text-xs font-mono tracking-widest text-[#111111]">
-              NOMOR PESANAN: #{orderSuccess.orderNumber}
-            </div>
-          </div>
-
-          {/* Payment Details */}
-          <div className="border border-[#E5E5E5] p-6 sm:p-8 mb-8 space-y-6">
-            {orderSuccess.paymentMethod === 'qris' && (
-              <div className="text-center space-y-4">
-                <div className="text-xs uppercase tracking-[0.18em] font-semibold text-[#111111]">
-                  PEMBAYARAN QRIS INSTAN
-                </div>
-                <div className="bg-white p-4 border border-[#E5E5E5] inline-block">
-                  <div className="w-48 h-48 mx-auto relative flex flex-col items-center justify-center border border-dashed border-neutral-300 bg-neutral-50">
-                    <div className="grid grid-cols-6 gap-1.5 p-3">
-                      {Array.from({ length: 36 }).map((_, i) => (
-                        <div
-                          key={i}
-                          className={`w-5 h-5 ${
-                            (i % 2 === 0 || i % 5 === 0) && i !== 14 && i !== 21
-                              ? 'bg-black'
-                              : 'bg-neutral-200'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <span className="absolute bottom-1.5 text-[9px] font-mono tracking-widest text-neutral-500 uppercase">
-                      SCAN QRIS
-                    </span>
-                  </div>
-                </div>
-                <p className="text-xs text-neutral-500 max-w-md mx-auto leading-relaxed">
-                  Buka aplikasi mobile banking (BCA, Mandiri, BNI, BRI) atau e-wallet (GoPay, OVO, ShopeePay, DANA) lalu scan QR code di atas.
-                </p>
-              </div>
-            )}
-
-            {orderSuccess.paymentMethod === 'bca_va' && (
-              <div className="space-y-3">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="uppercase tracking-[0.15em] font-semibold text-[#111111]">
-                    BCA Virtual Account
-                  </span>
-                  <span className="text-neutral-400">Verifikasi Otomatis</span>
-                </div>
-                <div className="flex items-center justify-between p-3.5 border border-[#E5E5E5] bg-neutral-50">
-                  <span className="font-mono text-base sm:text-lg font-bold text-[#111111] tracking-wider">
-                    8077 0812 3456 7890
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => copyToClipboard('8077081234567890')}
-                    className="px-4 py-1.5 bg-[#111111] hover:bg-neutral-800 text-white text-[11px] uppercase tracking-wider font-semibold transition-colors cursor-pointer"
-                  >
-                    {copiedVA ? 'Tersalin' : 'Salin'}
-                  </button>
-                </div>
-                <p className="text-[11px] text-neutral-500">
-                  Transfer melalui menu Transfer &gt; BCA Virtual Account pada m-BCA, KlikBCA, atau ATM BCA.
-                </p>
-              </div>
-            )}
-
-            {orderSuccess.paymentMethod === 'mandiri_va' && (
-              <div className="space-y-3">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="uppercase tracking-[0.15em] font-semibold text-[#111111]">
-                    Mandiri Virtual Account
-                  </span>
-                  <span className="text-neutral-400">Verifikasi Otomatis</span>
-                </div>
-                <div className="flex items-center justify-between p-3.5 border border-[#E5E5E5] bg-neutral-50">
-                  <span className="font-mono text-base sm:text-lg font-bold text-[#111111] tracking-wider">
-                    8890 8081 2345 6789
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => copyToClipboard('8890808123456789')}
-                    className="px-4 py-1.5 bg-[#111111] hover:bg-neutral-800 text-white text-[11px] uppercase tracking-wider font-semibold transition-colors cursor-pointer"
-                  >
-                    {copiedVA ? 'Tersalin' : 'Salin'}
-                  </button>
-                </div>
-                <p className="text-[11px] text-neutral-500">
-                  Transfer melalui menu Bayar &gt; Virtual Account pada Livin&apos; by Mandiri atau ATM Mandiri.
-                </p>
-              </div>
-            )}
-
-            {orderSuccess.paymentMethod === 'cod' && (
-              <div className="space-y-2">
-                <span className="text-xs uppercase tracking-[0.15em] font-semibold text-[#111111] block">
-                  Cash on Delivery (COD)
-                </span>
-                <p className="text-xs text-neutral-600 leading-relaxed">
-                  Harap siapkan uang tunai pas sebesar <strong>Rp {orderSuccess.total.toLocaleString('id-ID')}</strong> saat kurir mengantarkan paket ke alamat Anda.
-                </p>
-              </div>
-            )}
-
-            {/* Order Items Review */}
-            <div className="border-t border-[#E5E5E5] pt-6">
-              <h3 className="text-[11px] uppercase tracking-[0.18em] font-semibold text-neutral-400 mb-4">
-                Rincian Produk
-              </h3>
-              <div className="divide-y divide-[#E5E5E5]">
-                {orderSuccess.items.map((item) => (
-                  <div key={item.product.id} className="py-3 flex items-center justify-between gap-4 text-xs">
-                    <div className="flex items-center gap-3">
-                      <div className="relative w-12 h-12 bg-white border border-[#E5E5E5] shrink-0 overflow-hidden">
-                        <Image
-                          src={item.product.images[0]}
-                          alt={item.product.title}
-                          fill
-                          className="object-contain p-0.5"
-                        />
-                      </div>
-                      <div>
-                        <p className="font-medium text-[#111111] line-clamp-1">{item.product.title}</p>
-                        <p className="text-neutral-500 text-[11px]">Qty: {item.quantity}</p>
-                      </div>
-                    </div>
-                    <span className="font-semibold text-[#111111]">
-                      Rp {(item.product.price * item.quantity).toLocaleString('id-ID')}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Price Breakdown */}
-              <div className="mt-4 pt-4 border-t border-[#E5E5E5] space-y-2 text-xs">
-                <div className="flex justify-between text-neutral-600">
-                  <span>Subtotal</span>
-                  <span>Rp {orderSuccess.subtotal.toLocaleString('id-ID')}</span>
-                </div>
-                <div className="flex justify-between text-neutral-600">
-                  <span>Pengiriman ({orderSuccess.courier.toUpperCase()})</span>
-                  <span>{orderSuccess.shippingCost === 0 ? 'GRATIS' : `Rp ${orderSuccess.shippingCost.toLocaleString('id-ID')}`}</span>
-                </div>
-                {orderSuccess.discount > 0 && (
-                  <div className="flex justify-between text-emerald-700">
-                    <span>Potongan Diskon</span>
-                    <span>-Rp {orderSuccess.discount.toLocaleString('id-ID')}</span>
-                  </div>
-                )}
-                <div className="flex justify-between text-sm font-semibold text-[#111111] pt-3 border-t border-[#E5E5E5]">
-                  <span>Total Tagihan</span>
-                  <span>Rp {orderSuccess.total.toLocaleString('id-ID')}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Delivery Details */}
-            <div className="border-t border-[#E5E5E5] pt-4 text-xs text-neutral-600 space-y-1">
-              <p><strong>Penerima:</strong> {orderSuccess.customer.fullName} ({orderSuccess.customer.phone})</p>
-              <p><strong>Alamat:</strong> {orderSuccess.customer.address}, {orderSuccess.customer.city}, {orderSuccess.customer.province}</p>
-            </div>
-          </div>
-
-          {/* Action CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href={`https://wa.me/628119757222?text=${waText}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 h-12 bg-[#111111] hover:bg-neutral-800 text-white text-[11px] uppercase tracking-[0.2em] font-semibold transition-colors flex items-center justify-center gap-2"
-            >
-              Konfirmasi via WhatsApp
-            </a>
-            <button
-              type="button"
-              onClick={() => {
-                clearCart();
-                router.push('/');
-              }}
-              className="flex-1 h-12 border border-[#E5E5E5] hover:border-black text-[#111111] text-[11px] uppercase tracking-[0.2em] font-semibold transition-colors cursor-pointer"
-            >
-              Selesai &amp; Belanja Lagi
-            </button>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  // EMPTY CART SCREEN
-  if (cart.length === 0) {
-    return (
-      <div className="min-h-screen bg-white text-[#111111] font-sans flex flex-col">
-        <header className="border-b border-[#E5E5E5] bg-white sticky top-0 z-30">
-          <div className="max-w-6xl mx-auto px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
-            <Link
-              href="/"
-              className="text-base sm:text-lg font-black tracking-[0.22em] uppercase text-[#111111] hover:opacity-80 transition-opacity"
-            >
-              SHILLSTORE
-            </Link>
-          </div>
-        </header>
-
-        <main className="flex-1 flex items-center justify-center p-6">
-          <div className="text-center max-w-md w-full py-16">
-            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-medium block mb-3">
-              CHECKOUT
-            </span>
-            <h1 className="text-2xl sm:text-3xl font-light text-[#111111] tracking-tight mb-3">
-              Keranjang Belanja Kosong
-            </h1>
-            <p className="text-xs sm:text-sm text-neutral-500 leading-relaxed mb-8">
-              Anda belum menambahkan produk ke keranjang belanja. Silakan pilih produk dari koleksi kami.
-            </p>
-            <Link
-              href="/collections"
-              className="inline-block px-8 py-3.5 bg-[#111111] hover:bg-neutral-800 text-white text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors"
-            >
-              JELAJAHI KOLEKSI
-            </Link>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  // MAIN CHECKOUT FORM
   const shippingOptions = [
     { id: 'sicepat' as const, name: 'SiCepat Express', estimate: 'Estimasi 1–2 Hari', cost: 0 },
     { id: 'jne' as const, name: 'JNE Reguler', estimate: 'Estimasi 2–3 Hari', cost: 0 },
@@ -437,9 +83,198 @@ export default function CheckoutPage() {
     'Kalimantan Selatan',
   ];
 
+  const applyVoucher = () => {
+    setVoucherError('');
+    const code = voucherCode.trim().toUpperCase();
+    if (code === 'SHILL30' || code === 'DISC30K') {
+      setDiscount(30000);
+      setAppliedVoucher('SHILL30 (-Rp 30.000)');
+    } else if (code === 'HEMAT45' || code === 'SHILL45') {
+      const disc = Math.round(totalPrice * 0.45);
+      setDiscount(disc);
+      setAppliedVoucher(`HEMAT45 (-Rp ${disc.toLocaleString('id-ID')})`);
+    } else if (code) {
+      setVoucherError('Kode promo tidak valid atau sudah kedaluwarsa.');
+    }
+  };
+
+  const handleCheckoutSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const errors: { [key: string]: string } = {};
+
+    if (!fullName.trim()) errors.fullName = 'Nama lengkap wajib diisi';
+    if (!phone.trim()) {
+      errors.phone = 'Nomor WhatsApp / HP wajib diisi';
+    } else if (phone.trim().length < 9) {
+      errors.phone = 'Nomor telepon minimal 9 digit';
+    }
+    if (!address.trim()) errors.address = 'Alamat pengiriman lengkap wajib diisi';
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    setFormErrors({});
+    setPaymentSimulationError(null);
+    setShowPaymentModal(true);
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedVA(true);
+    setTimeout(() => setCopiedVA(false), 2000);
+  };
+
+  // 1. Simulate SUCCESSFUL payment
+  const handlePaymentSuccess = () => {
+    setIsProcessingPayment(true);
+    setPaymentSimulationError(null);
+
+    const generatedOrderNumber = `SHILL-${Math.floor(100000 + Math.random() * 900000)}`;
+
+    let generatedResi = `SCP-${Math.floor(10000000 + Math.random() * 90000000)}`;
+    if (courier === 'jne') generatedResi = `JNE-${Math.floor(10000000 + Math.random() * 90000000)}`;
+    if (courier === 'jnt') generatedResi = `JT-${Math.floor(10000000 + Math.random() * 90000000)}`;
+    if (courier === 'instant') generatedResi = `INST-${Math.floor(10000000 + Math.random() * 90000000)}`;
+
+    const selectedCourierObj = shippingOptions.find((o) => o.id === courier) || shippingOptions[0];
+    const selectedPaymentObj = paymentOptions.find((o) => o.id === paymentMethod) || paymentOptions[0];
+
+    const now = new Date();
+    const formattedDate =
+      now.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }) +
+      ', ' +
+      now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) +
+      ' WIB';
+
+    const orderItems: OrderItemDetail[] = cart.map((item) => ({
+      id: item.product.id,
+      title: item.product.title,
+      price: item.product.price,
+      image: item.product.images[0] || '/sites/shillstore/root/images/prod-perfume-shillstore-bloom.jpg',
+      quantity: item.quantity,
+      size: item.product.sizes?.[0] || 'All Size',
+    }));
+
+    const newOrder: ShillOrder = {
+      orderNumber: generatedOrderNumber,
+      date: formattedDate,
+      customer: {
+        fullName,
+        phone,
+        email: email || undefined,
+        province,
+        city,
+        postalCode: postalCode || undefined,
+        address,
+        notes: notes || undefined,
+      },
+      items: orderItems,
+      subtotal: totalPrice,
+      shippingCost,
+      discount,
+      voucherCode: appliedVoucher || undefined,
+      total: finalTotal,
+      courierId: courier,
+      courierName: selectedCourierObj.name,
+      trackingNumber: generatedResi,
+      estimatedArrival: selectedCourierObj.estimate,
+      paymentMethod,
+      paymentMethodName: selectedPaymentObj.name,
+      paymentStatus: 'paid',
+      currentStep: 'processing', // Step 1 & 2 completed, step 3 active!
+      history: [
+        {
+          step: 'created',
+          title: 'Pesanan Dibuat',
+          description: 'Pesanan berhasil dibuat di sistem SHILLSTORE',
+          location: 'SHILLSTORE Online Store',
+          timestamp: formattedDate,
+        },
+        {
+          step: 'paid',
+          title: 'Pembayaran Berhasil',
+          description: `Pembayaran Rp ${finalTotal.toLocaleString('id-ID')} via ${selectedPaymentObj.name} berhasil diverifikasi`,
+          location: 'Payment Gateway SHILLSTORE',
+          timestamp: formattedDate,
+        },
+        {
+          step: 'processing',
+          title: 'Pesanan Diproses',
+          description: 'Paket sedang disiapkan & quality check di warehouse',
+          location: 'Warehouse SHILLSTORE Jakarta Selatan',
+          timestamp: formattedDate,
+        },
+      ],
+    };
+
+    setTimeout(() => {
+      saveOrder(newOrder);
+      clearCart();
+      setIsProcessingPayment(false);
+      setShowPaymentModal(false);
+      router.push(`/order-confirmation?orderId=${newOrder.orderNumber}`);
+    }, 800);
+  };
+
+  // 2. Simulate FAILED payment
+  const handlePaymentFailed = () => {
+    setIsProcessingPayment(true);
+    setTimeout(() => {
+      setIsProcessingPayment(false);
+      setPaymentSimulationError(
+        '⚠️ Simulasi Pembayaran Gagal: Transaksi ditolak atau batas waktu pembayaran habis. Saldo Anda tidak terpotong dan pesanan belum dibuat. Silakan coba lagi atau ganti metode pembayaran.'
+      );
+    }, 600);
+  };
+
+  // EMPTY CART SCREEN
+  if (cart.length === 0 && !showPaymentModal) {
+    return (
+      <div className="min-h-screen bg-white text-[#111111] font-sans flex flex-col">
+        <header className="border-b border-[#E5E5E5] bg-white sticky top-0 z-30">
+          <div className="max-w-6xl mx-auto px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
+            <Link
+              href="/"
+              className="text-base sm:text-lg font-black tracking-[0.22em] uppercase text-[#111111] hover:opacity-80 transition-opacity"
+            >
+              SHILLSTORE
+            </Link>
+          </div>
+        </header>
+
+        <main className="flex-1 flex items-center justify-center p-6">
+          <div className="text-center max-w-md w-full py-16">
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-medium block mb-3">
+              CHECKOUT
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-light text-[#111111] tracking-tight mb-3">
+              Keranjang Belanja Kosong
+            </h1>
+            <p className="text-xs sm:text-sm text-neutral-500 leading-relaxed mb-8">
+              Anda belum menambahkan produk ke keranjang belanja. Silakan pilih produk dari koleksi kami.
+            </p>
+            <Link
+              href="/collections"
+              className="inline-block px-8 py-3.5 bg-[#111111] hover:bg-neutral-800 text-white text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors rounded-[2px]"
+            >
+              JELAJAHI KOLEKSI
+            </Link>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white text-[#111111] font-sans flex flex-col">
-      {/* 1. Header (Clean, minimalist, no bulky security badges) */}
+      {/* 1. Header (Clean, minimalist) */}
       <header className="border-b border-[#E5E5E5] bg-white sticky top-0 z-30">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
           {/* Left: SHILLSTORE / CHECKOUT */}
@@ -459,9 +294,7 @@ export default function CheckoutPage() {
           {/* Right: Security Reassurance & Back to Cart */}
           <div className="flex items-center gap-4 sm:gap-6">
             <span className="hidden md:flex items-center gap-1.5 text-[11px] uppercase tracking-[0.15em] text-neutral-400 font-medium">
-              <svg className="w-3.5 h-3.5 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-              </svg>
+              <ShieldCheck className="w-4 h-4 text-neutral-400" />
               Secure checkout
             </span>
             <Link
@@ -476,7 +309,7 @@ export default function CheckoutPage() {
 
       {/* 2. Main Checkout Layout (Desktop 2-column: 60% Left, 40% Sticky Right) */}
       <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-8 py-8 sm:py-12">
-        <form onSubmit={handleCheckout} className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+        <form onSubmit={handleCheckoutSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* LEFT COLUMN: Checkout Info (~60%) */}
           <div className="lg:col-span-7">
             {/* 01 INFORMASI PEMBELI */}
@@ -747,52 +580,43 @@ export default function CheckoutPage() {
 
           {/* RIGHT COLUMN: Order Summary (~40%, Sticky on Desktop) */}
           <div className="lg:col-span-5 lg:sticky lg:top-28">
-            <div className="border border-[#E5E5E5] bg-[#FAFAF9] p-6 sm:p-7">
-              {/* Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-[#E5E5E5]">
+            <div className="border border-[#E5E5E5] bg-[#FAFAF9] p-6 sm:p-7 rounded-[2px]">
+              <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#E5E5E5]">
                 <h3 className="text-xs sm:text-[13px] font-semibold tracking-[0.18em] uppercase text-[#111111]">
                   RINGKASAN PESANAN
                 </h3>
-                <Link
-                  href="/cart"
-                  className="text-[11px] uppercase tracking-[0.14em] text-neutral-500 hover:text-black transition-colors font-medium"
-                >
-                  Ubah
-                </Link>
+                <span className="text-[11px] text-neutral-500">
+                  {cart.reduce((total, i) => total + i.quantity, 0)} Items
+                </span>
               </div>
 
-              {/* Product Items List (1:1 aspect ratio thumbnails) */}
-              <div className="divide-y divide-[#E5E5E5]/70 max-h-72 overflow-y-auto pr-1">
+              {/* Items List */}
+              <div className="divide-y divide-[#E5E5E5] max-h-72 overflow-y-auto pr-1">
                 {cart.map((item) => (
-                  <div key={item.product.id} className="py-4 flex items-start gap-4">
-                    <div className="relative w-16 h-16 sm:w-18 sm:h-18 bg-white border border-[#E5E5E5] shrink-0 overflow-hidden">
-                      <Image
-                        src={item.product.images[0]}
-                        alt={item.product.title}
-                        fill
-                        className="object-contain p-1"
-                      />
+                  <div key={item.product.id} className="py-3 flex items-center justify-between gap-3 text-xs">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="relative w-12 h-12 bg-white border border-[#E5E5E5] shrink-0 overflow-hidden rounded-[2px]">
+                        <Image
+                          src={item.product.images[0]}
+                          alt={item.product.title}
+                          fill
+                          className="object-contain p-1"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-medium text-[#111111] truncate">{item.product.title}</p>
+                        <p className="text-neutral-500 text-[11px]">Qty: {item.quantity}</p>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-xs sm:text-[13px] font-medium text-[#111111] line-clamp-2 leading-snug">
-                        {item.product.title}
-                      </h4>
-                      <p className="text-[11px] text-neutral-500 mt-1">
-                        Qty {item.quantity}
-                      </p>
-                      <p className="text-xs font-semibold text-[#111111] mt-1.5">
-                        Rp {(item.product.price * item.quantity).toLocaleString('id-ID')}
-                      </p>
-                    </div>
+                    <span className="font-semibold text-[#111111] shrink-0">
+                      Rp {(item.product.price * item.quantity).toLocaleString('id-ID')}
+                    </span>
                   </div>
                 ))}
               </div>
 
               {/* Promo Code Input */}
-              <div className="pt-4 border-t border-[#E5E5E5]">
-                <label className="text-[10px] uppercase tracking-[0.15em] font-medium text-neutral-500 block mb-1.5">
-                  Kode Promo
-                </label>
+              <div className="pt-4 mt-3 border-t border-[#E5E5E5]">
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -830,7 +654,7 @@ export default function CheckoutPage() {
                   </span>
                 </div>
                 <div className="flex justify-between text-neutral-600">
-                  <span>Pengiriman</span>
+                  <span>Pengiriman ({shippingOptions.find((o) => o.id === courier)?.name})</span>
                   <span className={shippingCost === 0 ? 'font-semibold text-emerald-700' : 'font-medium text-[#111111]'}>
                     {shippingCost === 0 ? 'GRATIS' : `Rp ${shippingCost.toLocaleString('id-ID')}`}
                   </span>
@@ -851,32 +675,223 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Submit CTA Button (Solid Premium Black) */}
+              {/* Submit CTA Button */}
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full h-12 sm:h-13 bg-[#111111] hover:bg-neutral-800 disabled:bg-neutral-400 text-white text-xs sm:text-[13px] font-semibold uppercase tracking-[0.2em] transition-colors cursor-pointer flex items-center justify-center gap-2 mt-5 rounded-[2px]"
+                className="w-full h-12 sm:h-13 bg-[#111111] hover:bg-neutral-800 text-white text-xs sm:text-[13px] font-semibold uppercase tracking-[0.2em] transition-colors cursor-pointer flex items-center justify-center gap-2 mt-5 rounded-[2px]"
               >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Memproses...</span>
-                  </>
-                ) : (
-                  <span>
-                    BAYAR SEKARANG — Rp {finalTotal.toLocaleString('id-ID')}
-                  </span>
-                )}
+                <span>
+                  BAYAR SEKARANG — Rp {finalTotal.toLocaleString('id-ID')}
+                </span>
+                <ArrowRight className="w-4 h-4" />
               </button>
 
-              {/* Small Subtle Reassurance Text */}
               <p className="text-[11px] text-neutral-500 text-center tracking-normal mt-3">
-                Gratis pengiriman • Pembayaran aman • Garansi retur 7 hari
+                Gratis pengiriman • Garansi tukar ukuran 7 hari • Pembayaran aman
               </p>
             </div>
           </div>
         </form>
       </main>
+
+      {/* =========================================================================
+          3. SIMULASI PEMBAYARAN MODAL (Clean, Minimal, High-End Fashion Style)
+         ========================================================================= */}
+      {showPaymentModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-2xs overflow-y-auto">
+          <div className="bg-white border border-neutral-200 max-w-lg w-full p-6 sm:p-8 shadow-2xl rounded-[2px] relative my-8">
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => {
+                if (!isProcessingPayment) {
+                  setShowPaymentModal(false);
+                  setPaymentSimulationError(null);
+                }
+              }}
+              className="absolute top-4 right-4 text-neutral-400 hover:text-black cursor-pointer p-1"
+              aria-label="Tutup"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Modal Header */}
+            <div className="text-center pb-5 mb-5 border-b border-neutral-150">
+              <span className="text-[10px] uppercase tracking-[0.25em] text-neutral-400 font-semibold block mb-1">
+                SHILLSTORE GATEWAY
+              </span>
+              <h2 className="text-lg sm:text-xl font-light text-[#111111] tracking-tight">
+                Simulasi Pembayaran
+              </h2>
+              <div className="mt-2 text-xs text-neutral-500">
+                Total Tagihan:{' '}
+                <strong className="text-neutral-900 font-semibold text-sm">
+                  Rp {finalTotal.toLocaleString('id-ID')}
+                </strong>
+              </div>
+            </div>
+
+            {/* Error Notification if Simulated Payment Failed */}
+            {paymentSimulationError && (
+              <div className="mb-5 p-3.5 bg-red-50 border border-red-200 text-red-800 text-xs rounded-[2px] flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                <p className="leading-relaxed">{paymentSimulationError}</p>
+              </div>
+            )}
+
+            {/* PAYMENT METHOD DETAILS */}
+            <div className="mb-6 space-y-4">
+              {/* QRIS */}
+              {paymentMethod === 'qris' && (
+                <div className="text-center space-y-3">
+                  <div className="flex items-center justify-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-neutral-900">
+                    <QrCode className="w-4 h-4" />
+                    <span>Scan QRIS Resmi</span>
+                  </div>
+                  <div className="bg-white p-3 border border-neutral-200 inline-block shadow-2xs">
+                    <div className="w-44 h-44 mx-auto relative flex flex-col items-center justify-center border border-dashed border-neutral-300 bg-neutral-50">
+                      <div className="grid grid-cols-6 gap-1.5 p-3">
+                        {Array.from({ length: 36 }).map((_, i) => (
+                          <div
+                            key={i}
+                            className={`w-4.5 h-4.5 ${
+                              (i % 2 === 0 || i % 5 === 0) && i !== 14 && i !== 21
+                                ? 'bg-black'
+                                : 'bg-neutral-200'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="absolute bottom-1.5 text-[8px] font-mono tracking-widest text-neutral-500 uppercase">
+                        SHILLSTORE QRIS
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-neutral-500 max-w-sm mx-auto leading-relaxed">
+                    Buka BCA Mobile, GoPay, OVO, ShopeePay, atau aplikasi mobile banking favorit Anda, lalu scan kode QR di atas.
+                  </p>
+                </div>
+              )}
+
+              {/* BCA VA */}
+              {paymentMethod === 'bca_va' && (
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="uppercase tracking-[0.15em] font-semibold text-[#111111] flex items-center gap-1.5">
+                      <CreditCard className="w-4 h-4" />
+                      BCA Virtual Account
+                    </span>
+                    <span className="text-neutral-400 text-[11px]">Verifikasi Otomatis</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3.5 border border-neutral-200 bg-neutral-50 rounded-[2px]">
+                    <span className="font-mono text-base sm:text-lg font-bold text-[#111111] tracking-wider">
+                      8077 0812 3456 7890
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard('8077081234567890')}
+                      className="px-3.5 py-1.5 bg-[#111111] hover:bg-neutral-800 text-white text-[11px] uppercase tracking-wider font-semibold transition-colors cursor-pointer rounded-[2px]"
+                    >
+                      {copiedVA ? 'Tersalin' : 'Salin'}
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-neutral-500 leading-relaxed">
+                    Pilih Transfer &gt; BCA Virtual Account pada m-BCA atau KlikBCA. Masukkan nomor VA di atas.
+                  </p>
+                </div>
+              )}
+
+              {/* MANDIRI VA */}
+              {paymentMethod === 'mandiri_va' && (
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="uppercase tracking-[0.15em] font-semibold text-[#111111] flex items-center gap-1.5">
+                      <CreditCard className="w-4 h-4" />
+                      Mandiri Virtual Account
+                    </span>
+                    <span className="text-neutral-400 text-[11px]">Verifikasi Otomatis</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3.5 border border-neutral-200 bg-neutral-50 rounded-[2px]">
+                    <span className="font-mono text-base sm:text-lg font-bold text-[#111111] tracking-wider">
+                      8890 8081 2345 6789
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard('8890808123456789')}
+                      className="px-3.5 py-1.5 bg-[#111111] hover:bg-neutral-800 text-white text-[11px] uppercase tracking-wider font-semibold transition-colors cursor-pointer rounded-[2px]"
+                    >
+                      {copiedVA ? 'Tersalin' : 'Salin'}
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-neutral-500 leading-relaxed">
+                    Pilih Bayar &gt; Virtual Account pada aplikasi Livin&apos; by Mandiri atau ATM Mandiri.
+                  </p>
+                </div>
+              )}
+
+              {/* COD */}
+              {paymentMethod === 'cod' && (
+                <div className="space-y-2 p-3.5 bg-neutral-50 border border-neutral-200 rounded-[2px]">
+                  <div className="flex items-center gap-2 text-xs uppercase tracking-[0.15em] font-semibold text-[#111111]">
+                    <Banknote className="w-4 h-4" />
+                    <span>Cash on Delivery (COD)</span>
+                  </div>
+                  <p className="text-xs text-neutral-600 leading-relaxed">
+                    Siapkan uang tunai sebesar <strong>Rp {finalTotal.toLocaleString('id-ID')}</strong> saat kurir mengantarkan paket ke alamat Anda.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* SIMULATION ACTION BUTTONS */}
+            <div className="space-y-2.5 pt-4 border-t border-neutral-150">
+              {/* 1. Simulate SUCCESS */}
+              <button
+                type="button"
+                disabled={isProcessingPayment}
+                onClick={handlePaymentSuccess}
+                className="w-full h-12 bg-[#111111] hover:bg-neutral-800 disabled:bg-neutral-400 text-white text-xs font-semibold uppercase tracking-[0.2em] transition-colors rounded-[2px] flex items-center justify-center gap-2 cursor-pointer"
+              >
+                {isProcessingPayment ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Memverifikasi Pembayaran...</span>
+                  </>
+                ) : (
+                  <>
+                    <Check className="w-4 h-4" />
+                    <span>Simulasikan Pembayaran Berhasil</span>
+                  </>
+                )}
+              </button>
+
+              {/* 2. Simulate FAILED */}
+              <button
+                type="button"
+                disabled={isProcessingPayment}
+                onClick={handlePaymentFailed}
+                className="w-full h-11 border border-neutral-300 hover:border-red-600 hover:text-red-600 text-neutral-700 text-xs font-semibold uppercase tracking-[0.15em] transition-colors rounded-[2px] flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <AlertCircle className="w-4 h-4" />
+                <span>Simulasikan Pembayaran Gagal</span>
+              </button>
+
+              {/* 3. Cancel / Change Method */}
+              <button
+                type="button"
+                disabled={isProcessingPayment}
+                onClick={() => {
+                  setShowPaymentModal(false);
+                  setPaymentSimulationError(null);
+                }}
+                className="w-full py-2 text-center text-[11px] text-neutral-400 hover:text-black uppercase tracking-wider transition-colors cursor-pointer"
+              >
+                Batal / Ganti Metode Pembayaran
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

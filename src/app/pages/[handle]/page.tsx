@@ -24,6 +24,10 @@ function StaticInfoContent({ handle }: { handle: string }) {
     redirect('/account');
   }
 
+  if (handle === 'track-order') {
+    redirect('/tracking');
+  }
+
   if (handle === 'bergerakbebas-movease-by-shill') {
     notFound();
   }
