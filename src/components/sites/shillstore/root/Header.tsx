@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Search, User, ShoppingCart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
 export function Header() {
@@ -79,37 +80,40 @@ export function Header() {
               ))}
             </nav>
 
-            {/* Right: Clean Minimal Actions SEARCH / ACCOUNT / BAG */}
-            <div className="flex items-center gap-4 sm:gap-6 md:gap-7 text-[11px] tracking-[0.2em] font-medium uppercase text-neutral-800">
+            {/* Right: Clean Minimal Icons SEARCH / ACCOUNT / CART */}
+            <div className="flex items-center gap-1 sm:gap-2 text-neutral-800">
+              {/* Search Icon (Kaca Pembesar) */}
               <button
                 type="button"
                 onClick={() => setIsSearchOpen(true)}
-                className="hover:text-black transition-colors py-2 cursor-pointer flex items-center gap-1.5"
-                aria-label="Search Catalog"
+                className="p-2 hover:text-black transition-colors cursor-pointer flex items-center justify-center"
+                aria-label="Cari Produk"
               >
-                <span className="hidden sm:inline">SEARCH</span>
-                <svg className="w-4 h-4 sm:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
+                <Search className="w-5 h-5 stroke-[1.5]" />
               </button>
 
+              {/* Account Icon (Profil Pengguna) */}
               <Link
                 href="/account"
-                className="hidden sm:inline-block hover:text-black transition-colors py-2"
+                className="p-2 hover:text-black transition-colors flex items-center justify-center"
+                aria-label="Akun Pengguna"
               >
-                ACCOUNT
+                <User className="w-5 h-5 stroke-[1.5]" />
               </Link>
 
+              {/* Cart Icon (Keranjang Belanja) */}
               <button
                 type="button"
                 onClick={() => setIsCartOpen(true)}
-                className="hover:text-black transition-colors py-2 cursor-pointer flex items-center gap-1"
-                aria-label="View Shopping Bag"
+                className="relative p-2 hover:text-black transition-colors cursor-pointer flex items-center justify-center"
+                aria-label={`Keranjang Belanja (${totalItems})`}
               >
-                <span>BAG</span>
-                <span className="text-neutral-500 font-normal">
-                  ({totalItems})
-                </span>
+                <ShoppingCart className="w-5 h-5 stroke-[1.5]" />
+                {totalItems > 0 && (
+                  <span className="absolute top-1 right-0.5 min-w-4 h-4 px-1 bg-black text-white text-[9px] font-semibold flex items-center justify-center rounded-full leading-none">
+                    {totalItems}
+                  </span>
+                )}
               </button>
             </div>
           </div>
