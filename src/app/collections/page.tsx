@@ -73,11 +73,11 @@ export default function CollectionsIndexPage() {
       {/* Main Editorial Flow */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-12">
         {/* Page Intro (Pure Typography & Whitespace) */}
-        <div className="pt-14 pb-8 sm:pt-20 sm:pb-12 max-w-3xl">
-          <span className="text-[11px] uppercase tracking-[0.3em] font-medium text-neutral-400 block mb-3">
+        <div className="pt-8 pb-5 sm:pt-20 sm:pb-12 max-w-3xl">
+          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-medium text-neutral-400 block mb-2 sm:mb-3">
             NEW IN
           </span>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-light text-neutral-900 tracking-tight leading-[1.08] mb-4">
+          <h1 className="text-2xl sm:text-5xl md:text-6xl font-light text-neutral-900 tracking-tight leading-[1.08] mb-3 sm:mb-4">
             Latest arrivals from SHILL.
           </h1>
           <p className="text-xs sm:text-sm text-neutral-500 font-normal leading-relaxed max-w-lg">
@@ -86,9 +86,9 @@ export default function CollectionsIndexPage() {
         </div>
 
         {/* Filter & Sort Bar (Clean Minimal Border Bar) */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 mb-10 sm:mb-14 border-y border-neutral-150 text-[11px] uppercase tracking-[0.18em]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 py-3 sm:py-4 mb-6 sm:mb-14 border-y border-neutral-150 text-[10px] sm:text-[11px] uppercase tracking-[0.18em]">
           {/* Left: Filter Categories */}
-          <div className="flex items-center gap-6 overflow-x-auto scrollbar-none py-1">
+          <div className="flex items-center gap-4 sm:gap-6 overflow-x-auto scrollbar-none py-1">
             <span className="font-semibold text-neutral-900 shrink-0">FILTER:</span>
             {filterOptions.map((f) => (
               <button
@@ -112,7 +112,7 @@ export default function CollectionsIndexPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-              className="bg-transparent text-[11px] uppercase tracking-[0.18em] font-semibold text-neutral-900 focus:outline-none cursor-pointer pr-1"
+              className="bg-transparent text-[10px] sm:text-[11px] uppercase tracking-[0.18em] font-semibold text-neutral-900 focus:outline-none cursor-pointer pr-1"
             >
               <option value="newest">Newest</option>
               <option value="price-asc">Price: Low to High</option>
@@ -122,7 +122,7 @@ export default function CollectionsIndexPage() {
         </div>
 
         {/* Product Catalog Grid (Desktop 4 col, Tablet 3 col, Mobile 2 col) */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14 mb-20 sm:mb-28">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 sm:gap-x-6 sm:gap-y-14 mb-16 sm:mb-28">
           {filteredProducts.map((product, idx) => (
             <EditorialProductCard
               key={product.id}

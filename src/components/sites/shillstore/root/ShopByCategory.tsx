@@ -27,16 +27,16 @@ export function ShopByCategory() {
   ];
 
   return (
-    <section className="py-20 sm:py-28 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+    <section className="py-10 sm:py-20 lg:py-24 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
       {/* Section Header */}
-      <div className="mb-8 sm:mb-12">
-        <h2 className="text-xs uppercase tracking-[0.25em] font-semibold text-neutral-400">
+      <div className="mb-6 sm:mb-10">
+        <h2 className="text-[11px] sm:text-xs uppercase tracking-[0.25em] font-semibold text-neutral-400">
           SHOP BY CATEGORY
         </h2>
       </div>
 
-      {/* 3 Large Visual Category Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+      {/* 3 Visual Category Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
         {categories.map((cat) => (
           <Link
             key={cat.title}
@@ -44,7 +44,7 @@ export function ShopByCategory() {
             className="group block relative"
           >
             {/* Image Container */}
-            <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-100">
+            <div className="relative aspect-[16/10] sm:aspect-[4/5] w-full overflow-hidden bg-neutral-100 rounded-[1px]">
               <Image
                 src={cat.image}
                 alt={cat.title}
@@ -56,16 +56,16 @@ export function ShopByCategory() {
             </div>
 
             {/* Typography Caption */}
-            <div className="mt-4 flex items-center justify-between">
+            <div className="mt-2.5 sm:mt-4 flex items-center justify-between">
               <div>
-                <h3 className="text-sm uppercase tracking-[0.2em] font-semibold text-neutral-900 group-hover:text-neutral-500 transition-colors">
+                <h3 className="text-xs sm:text-sm uppercase tracking-[0.2em] font-semibold text-neutral-900 group-hover:text-neutral-500 transition-colors">
                   {cat.title}
                 </h3>
-                <p className="text-xs text-neutral-500 mt-1 font-normal">
+                <p className="text-[11px] sm:text-xs text-neutral-500 mt-0.5 font-normal">
                   {cat.subtitle}
                 </p>
               </div>
-              <span className="text-sm text-neutral-400 group-hover:text-black group-hover:translate-x-1 transition-all duration-200">
+              <span className="text-xs sm:text-sm text-neutral-400 group-hover:text-black group-hover:translate-x-1 transition-all duration-200">
                 →
               </span>
             </div>

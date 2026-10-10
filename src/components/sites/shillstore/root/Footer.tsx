@@ -48,16 +48,16 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-white border-t border-neutral-100 text-neutral-800 pt-16 sm:pt-20 pb-12">
+    <footer className="bg-white border-t border-neutral-100 text-neutral-800 pt-10 sm:pt-20 pb-10 sm:pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
         {/* 4 Distinct Columns: SHOP / HELP / ABOUT / FOLLOW */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 pb-16 border-b border-neutral-100">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8 sm:gap-8 lg:gap-12 pb-10 sm:pb-16 border-b border-neutral-100">
           {footerColumns.map((col) => (
             <div key={col.title} className="flex flex-col">
-              <h3 className="text-xs uppercase tracking-[0.22em] font-semibold text-neutral-900 mb-5">
+              <h3 className="text-[11px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.22em] font-semibold text-neutral-900 mb-3.5 sm:mb-5">
                 {col.title}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5 sm:space-y-3">
                 {col.links.map((link) => (
                   <li key={link.label}>
                     {link.href.startsWith('http') ? (
@@ -65,14 +65,14 @@ export function Footer() {
                         href={link.href}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-xs text-neutral-500 hover:text-black transition-colors font-normal"
+                        className="text-[11px] sm:text-xs text-neutral-500 hover:text-black transition-colors font-normal"
                       >
                         {link.label}
                       </a>
                     ) : (
                       <Link
                         href={link.href}
-                        className="text-xs text-neutral-500 hover:text-black transition-colors font-normal"
+                        className="text-[11px] sm:text-xs text-neutral-500 hover:text-black transition-colors font-normal"
                       >
                         {link.label}
                       </Link>
@@ -85,7 +85,7 @@ export function Footer() {
         </div>
 
         {/* Minimal Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-neutral-400 font-normal">
+        <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-[10px] sm:text-[11px] text-neutral-400 font-normal text-center sm:text-left">
           <div>
             <span>INDONESIA (IDR Rp)</span>
           </div>
@@ -94,7 +94,7 @@ export function Footer() {
             <span>© 2026 SHILLSTORE. ALL RIGHTS RESERVED.</span>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-5 sm:gap-6">
             <Link href="/pages/privacy-policy" className="hover:text-black transition-colors">
               Privacy Policy
             </Link>

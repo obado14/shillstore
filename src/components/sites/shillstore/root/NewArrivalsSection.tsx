@@ -11,28 +11,25 @@ export function NewArrivalsSection() {
     'shill-pants-chino-black',
     'shill-tshirt-washed-black',
     'shill-jacket-parka-army-green',
-    'shill-perfume-noir',
-    'shill-pants-cargo-olive',
-    'shill-tshirt-oversized-essential-black',
-    'shill-relax-chino-errol-black',
   ];
 
-  // Pick exactly 8 curated products, falling back to top 8 if needed
+  // Pick exactly 4 curated products
   const curatedProducts = selectedIds
     .map((id) => productsData.find((p) => p.id === id))
     .filter(Boolean) as typeof productsData;
 
-  const displayProducts = curatedProducts.length === 8 ? curatedProducts : productsData.slice(0, 8);
+  const displayProducts =
+    curatedProducts.length === 4 ? curatedProducts : productsData.slice(0, 4);
 
   return (
-    <section className="py-20 sm:py-28 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 border-t border-neutral-100">
+    <section className="py-10 sm:py-20 lg:py-24 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 border-t border-neutral-100">
       {/* Editorial Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 sm:mb-14">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4 mb-6 sm:mb-12">
         <div>
-          <span className="text-xs uppercase tracking-[0.25em] font-semibold text-neutral-400 block mb-2">
+          <span className="text-[10px] sm:text-xs uppercase tracking-[0.25em] font-semibold text-neutral-400 block mb-1 sm:mb-2">
             NEW IN
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight text-neutral-900">
+          <h2 className="text-xl sm:text-3xl md:text-4xl font-light tracking-tight text-neutral-900">
             New Arrivals
           </h2>
         </div>
@@ -41,24 +38,24 @@ export function NewArrivalsSection() {
         </p>
       </div>
 
-      {/* 4-Column Responsive Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14">
+      {/* 2-Column Mobile Grid, 4-Column Desktop */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-6 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8">
         {displayProducts.map((product, idx) => (
           <EditorialProductCard
             key={product.id}
             product={product}
-            priority={idx < 4}
+            priority={idx < 2}
           />
         ))}
       </div>
 
       {/* View All Products CTA */}
-      <div className="mt-14 sm:mt-18 text-center">
+      <div className="mt-8 sm:mt-14 text-center">
         <Link
           href="/collections"
-          className="inline-block px-10 py-4 border border-neutral-900 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-900 hover:bg-neutral-900 hover:text-white transition-all duration-300"
+          className="inline-block px-7 sm:px-10 py-3 sm:py-3.5 border border-neutral-900 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-neutral-900 hover:bg-neutral-900 hover:text-white transition-all duration-300"
         >
-          VIEW ALL PRODUCTS
+          VIEW ALL NEW ARRIVALS
         </Link>
       </div>
     </section>

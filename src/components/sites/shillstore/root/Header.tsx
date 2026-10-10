@@ -29,7 +29,7 @@ export function Header() {
   return (
     <>
       {/* Editorial Announcement Bar */}
-      <div className="bg-neutral-900 text-neutral-300 py-2 text-center text-[10px] md:text-[11px] uppercase tracking-[0.25em] font-medium">
+      <div className="bg-neutral-900 text-neutral-300 py-1.5 sm:py-2 px-3 text-center text-[9px] sm:text-[10px] md:text-[11px] uppercase tracking-[0.18em] sm:tracking-[0.25em] font-medium truncate sm:whitespace-normal">
         <span>Complimentary Domestic Shipping on Orders Over Rp 250.000</span>
       </div>
 
@@ -41,14 +41,14 @@ export function Header() {
             : 'bg-white border-b border-neutral-100'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
-          <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="max-w-7xl mx-auto px-3 sm:px-8 lg:px-12">
+          <div className="flex items-center justify-between h-14 sm:h-20">
             {/* Mobile Menu Trigger & Left Side on Mobile */}
             <div className="flex items-center lg:hidden">
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="p-2 -ml-2 text-neutral-900 hover:text-black focus:outline-none"
+                className="p-2 -ml-1.5 text-neutral-900 hover:text-black focus:outline-none min-w-[38px] min-h-[38px] flex items-center justify-center cursor-pointer"
                 aria-label="Open Navigation Menu"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,11 +57,11 @@ export function Header() {
               </button>
             </div>
 
-            {/* Left: Brand Logo SHILLSTORE */}
+            {/* Left/Center: Brand Logo SHILLSTORE */}
             <div className="flex items-center">
               <Link
                 href="/"
-                className="text-lg sm:text-xl md:text-2xl font-black tracking-[0.22em] uppercase text-black hover:opacity-80 transition-opacity select-none font-sans"
+                className="text-base xs:text-lg sm:text-xl md:text-2xl font-black tracking-[0.18em] sm:tracking-[0.22em] uppercase text-black hover:opacity-80 transition-opacity select-none font-sans"
               >
                 SHILLSTORE
               </Link>
@@ -81,36 +81,36 @@ export function Header() {
             </nav>
 
             {/* Right: Clean Minimal Icons SEARCH / ACCOUNT / CART */}
-            <div className="flex items-center gap-1 sm:gap-2 text-neutral-800">
+            <div className="flex items-center gap-0.5 sm:gap-2 text-neutral-800">
               {/* Search Icon (Kaca Pembesar) */}
               <button
                 type="button"
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 hover:text-black transition-colors cursor-pointer flex items-center justify-center"
+                className="p-2 hover:text-black transition-colors cursor-pointer flex items-center justify-center min-w-[36px] min-h-[36px]"
                 aria-label="Cari Produk"
               >
-                <Search className="w-5 h-5 stroke-[1.5]" />
+                <Search className="w-[18px] h-[18px] sm:w-5 sm:h-5 stroke-[1.5]" />
               </button>
 
               {/* Account Icon (Profil Pengguna) */}
               <Link
                 href="/account"
-                className="p-2 hover:text-black transition-colors flex items-center justify-center"
+                className="p-2 hover:text-black transition-colors flex items-center justify-center min-w-[36px] min-h-[36px]"
                 aria-label="Akun Pengguna"
               >
-                <User className="w-5 h-5 stroke-[1.5]" />
+                <User className="w-[18px] h-[18px] sm:w-5 sm:h-5 stroke-[1.5]" />
               </Link>
 
               {/* Cart Icon (Keranjang Belanja) */}
               <button
                 type="button"
                 onClick={() => setIsCartOpen(true)}
-                className="relative p-2 hover:text-black transition-colors cursor-pointer flex items-center justify-center"
+                className="relative p-2 hover:text-black transition-colors cursor-pointer flex items-center justify-center min-w-[36px] min-h-[36px]"
                 aria-label={`Keranjang Belanja (${totalItems})`}
               >
-                <ShoppingCart className="w-5 h-5 stroke-[1.5]" />
+                <ShoppingCart className="w-[18px] h-[18px] sm:w-5 sm:h-5 stroke-[1.5]" />
                 {totalItems > 0 && (
-                  <span className="absolute top-1 right-0.5 min-w-4 h-4 px-1 bg-black text-white text-[9px] font-semibold flex items-center justify-center rounded-full leading-none">
+                  <span className="absolute top-1 right-0.5 min-w-3.5 h-3.5 px-0.5 sm:min-w-4 sm:h-4 bg-black text-white text-[8px] sm:text-[9px] font-semibold flex items-center justify-center rounded-full leading-none">
                     {totalItems}
                   </span>
                 )}

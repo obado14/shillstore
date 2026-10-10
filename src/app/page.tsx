@@ -2,11 +2,10 @@ import React from 'react';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { EditorialHero } from '@/components/sites/shillstore/root/EditorialHero';
 import { ShopByCategory } from '@/components/sites/shillstore/root/ShopByCategory';
-import { NewArrivalsSection } from '@/components/sites/shillstore/root/NewArrivalsSection';
-import { EditorialCampaign } from '@/components/sites/shillstore/root/EditorialCampaign';
 import { BestSellersSection } from '@/components/sites/shillstore/root/BestSellersSection';
-import { EditorialStories } from '@/components/sites/shillstore/root/EditorialStories';
-import { EditorialNewsletter } from '@/components/sites/shillstore/root/EditorialNewsletter';
+import { EditorialCampaign } from '@/components/sites/shillstore/root/EditorialCampaign';
+import { NewArrivalsSection } from '@/components/sites/shillstore/root/NewArrivalsSection';
+import { StoreBenefits } from '@/components/sites/shillstore/root/StoreBenefits';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
 import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
@@ -14,37 +13,34 @@ import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-neutral-900 overflow-x-hidden font-sans selection:bg-black selection:text-white">
-      {/* 1. Minimal Clean Navbar */}
+      {/* 1. Header */}
       <Header />
 
       {/* Main Editorial Flow */}
       <main className="flex-1">
-        {/* 2. Campaign Editorial Hero */}
+        {/* 2. Hero Banner */}
         <EditorialHero />
 
-        {/* 3. Shop by Category (Clothing / Accessories / Fragrance) */}
+        {/* 3. Categories (Clothing / Accessories / Fragrance) */}
         <ShopByCategory />
 
-        {/* 4. New Arrivals (8 Curated Products) */}
-        <NewArrivalsSection />
-
-        {/* 5. Editorial Magazine Campaign (The Shill Edit) */}
-        <EditorialCampaign />
-
-        {/* 6. Best Sellers (4 Iconic Products) */}
+        {/* 4. Best Sellers (4 Signature Products + View All CTA) */}
         <BestSellersSection />
 
-        {/* 7. Shill Stories (3 Cultural & Design Dispatches) */}
-        <EditorialStories />
+        {/* 5. Campaign Banner (Single Focused Seasonal Editorial) */}
+        <EditorialCampaign />
 
-        {/* 8. Minimalist Newsletter */}
-        <EditorialNewsletter />
+        {/* 6. New Arrivals (4 Curated Products + View All CTA) */}
+        <NewArrivalsSection />
+
+        {/* 7. Store Benefits (Shipping, Exchanges, Authenticity, Payments) */}
+        <StoreBenefits />
       </main>
 
-      {/* 9. Minimal Consistent Footer */}
+      {/* 8. Footer */}
       <Footer />
 
-      {/* Global Interactive Modals (Cart Drawer & Search Modal) */}
+      {/* Global Interactive Modals */}
       <CartDrawer />
       <SearchModal />
     </div>

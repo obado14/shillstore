@@ -61,7 +61,7 @@ export function EditorialProductCard({
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           priority={priority}
           className={`${
-            isSquare ? 'object-contain' : 'object-cover'
+            isSquare ? 'object-contain p-2 sm:p-2.5' : 'object-cover'
           } object-center transition-all duration-700 ease-out group-hover:scale-105 ${
             secondaryImage !== primaryImage ? 'group-hover:opacity-0' : ''
           }`}
@@ -75,7 +75,7 @@ export function EditorialProductCard({
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className={`${
-              isSquare ? 'object-contain' : 'object-cover'
+              isSquare ? 'object-contain p-2 sm:p-2.5' : 'object-cover'
             } object-center absolute inset-0 opacity-0 transition-all duration-700 ease-out group-hover:opacity-100 group-hover:scale-105`}
           />
         )}

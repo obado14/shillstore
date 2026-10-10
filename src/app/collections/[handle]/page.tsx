@@ -363,7 +363,7 @@ function CollectionContent({ handle }: { handle: string }) {
             </div>
           )
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14 mb-20 sm:mb-28">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 sm:gap-x-6 sm:gap-y-14 mb-16 sm:mb-28">
             {filteredProducts.map((product, idx) => (
               <EditorialProductCard
                 key={product.id}
