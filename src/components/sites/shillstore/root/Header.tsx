@@ -41,10 +41,74 @@ export function Header() {
             : 'bg-white border-b border-neutral-100'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-2.5 sm:px-8 lg:px-12">
-          <div className="relative flex items-center justify-between h-14 sm:h-20">
+        <div className="max-w-7xl mx-auto px-3 sm:px-8 lg:px-12">
+          {/* ================= DESKTOP & LAPTOP HEADER (lg: >= 1024px) ================= */}
+          <div className="hidden lg:flex items-center justify-between h-20">
+            {/* Left: Brand Logo */}
+            <div className="flex items-center">
+              <Link
+                href="/"
+                className="text-xl xl:text-2xl font-black tracking-[0.22em] uppercase text-black hover:opacity-80 transition-opacity select-none font-sans"
+              >
+                SHILLSTORE
+              </Link>
+            </div>
+
+            {/* Center: Desktop Navigation Menu */}
+            <nav className="flex items-center gap-8 xl:gap-10 text-[11px] tracking-[0.2em] font-medium uppercase text-neutral-700">
+              {navLinks.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="py-2 hover:text-black transition-colors relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1px] after:bg-black after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-200"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+
+            {/* Right: Clean Minimal Icons SEARCH / ACCOUNT / CART */}
+            <div className="flex items-center gap-2 xl:gap-3 text-neutral-800">
+              {/* Search Icon (Kaca Pembesar) */}
+              <button
+                type="button"
+                onClick={() => setIsSearchOpen(true)}
+                className="p-2 hover:text-black transition-colors cursor-pointer flex items-center justify-center min-w-[38px] min-h-[38px]"
+                aria-label="Cari Produk"
+              >
+                <Search className="w-5 h-5 stroke-[1.5]" />
+              </button>
+
+              {/* Account Icon (Profil Pengguna) */}
+              <Link
+                href="/account"
+                className="p-2 hover:text-black transition-colors flex items-center justify-center min-w-[38px] min-h-[38px]"
+                aria-label="Akun Pengguna"
+              >
+                <User className="w-5 h-5 stroke-[1.5]" />
+              </Link>
+
+              {/* Cart Icon (Keranjang Belanja) */}
+              <button
+                type="button"
+                onClick={() => setIsCartOpen(true)}
+                className="relative p-2 hover:text-black transition-colors cursor-pointer flex items-center justify-center min-w-[38px] min-h-[38px]"
+                aria-label={`Keranjang Belanja (${totalItems})`}
+              >
+                <ShoppingCart className="w-5 h-5 stroke-[1.5]" />
+                {totalItems > 0 && (
+                  <span className="absolute top-1 right-0.5 min-w-4 h-4 px-1 bg-black text-white text-[9px] font-semibold flex items-center justify-center rounded-full leading-none">
+                    {totalItems}
+                  </span>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* ================= MOBILE & TABLET HEADER (< 1024px) ================= */}
+          <div className="flex lg:hidden relative items-center justify-between h-14 sm:h-16">
             {/* Mobile Menu Trigger & Left Side on Mobile */}
-            <div className="flex items-center lg:hidden z-20 shrink-0">
+            <div className="flex items-center z-20 shrink-0">
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(true)}
@@ -57,28 +121,15 @@ export function Header() {
               </button>
             </div>
 
-            {/* Brand Logo: True Horizontal Center on Mobile, Left-aligned on Desktop */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 lg:static lg:transform-none flex items-center justify-center z-10 pointer-events-auto">
+            {/* Brand Logo: True Horizontal Center on Mobile */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex items-center justify-center z-10 pointer-events-auto">
               <Link
                 href="/"
-                className="text-[17.5px] min-[360px]:text-[18px] min-[390px]:text-[18.5px] sm:text-xl lg:text-2xl font-black tracking-[0.11em] min-[360px]:tracking-[0.14em] sm:tracking-[0.18em] lg:tracking-[0.22em] uppercase text-black hover:opacity-80 transition-opacity select-none font-sans whitespace-nowrap"
+                className="text-[17.5px] min-[360px]:text-[18px] min-[390px]:text-[18.5px] sm:text-xl font-black tracking-[0.11em] min-[360px]:tracking-[0.14em] sm:tracking-[0.18em] uppercase text-black hover:opacity-80 transition-opacity select-none font-sans whitespace-nowrap"
               >
                 SHILLSTORE
               </Link>
             </div>
-
-            {/* Center: Desktop Minimal Menu */}
-            <nav className="hidden lg:flex items-center gap-8 xl:gap-10 text-[11px] tracking-[0.2em] font-medium uppercase text-neutral-700">
-              {navLinks.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="py-2 hover:text-black transition-colors relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1px] after:bg-black after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-200"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
 
             {/* Right: Clean Minimal Icons SEARCH / ACCOUNT / CART */}
             <div className="flex items-center gap-0 min-[360px]:gap-0.5 sm:gap-2 text-neutral-800 z-20 shrink-0">
