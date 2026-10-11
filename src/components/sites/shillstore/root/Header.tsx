@@ -41,14 +41,14 @@ export function Header() {
             : 'bg-white border-b border-neutral-100'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-3 sm:px-8 lg:px-12">
-          <div className="flex items-center justify-between h-14 sm:h-20">
+        <div className="max-w-7xl mx-auto px-2.5 sm:px-8 lg:px-12">
+          <div className="relative flex items-center justify-between h-14 sm:h-20">
             {/* Mobile Menu Trigger & Left Side on Mobile */}
-            <div className="flex items-center lg:hidden">
+            <div className="flex items-center lg:hidden z-20 shrink-0">
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="p-2 -ml-1.5 text-neutral-900 hover:text-black focus:outline-none min-w-[38px] min-h-[38px] flex items-center justify-center cursor-pointer"
+                className="p-1.5 -ml-1 text-neutral-900 hover:text-black focus:outline-none min-w-[34px] min-h-[34px] flex items-center justify-center cursor-pointer"
                 aria-label="Open Navigation Menu"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,11 +57,11 @@ export function Header() {
               </button>
             </div>
 
-            {/* Left/Center: Brand Logo SHILLSTORE */}
-            <div className="flex items-center">
+            {/* Brand Logo: True Horizontal Center on Mobile, Left-aligned on Desktop */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 lg:static lg:transform-none flex items-center justify-center z-10 pointer-events-auto">
               <Link
                 href="/"
-                className="text-base xs:text-lg sm:text-xl md:text-2xl font-black tracking-[0.18em] sm:tracking-[0.22em] uppercase text-black hover:opacity-80 transition-opacity select-none font-sans"
+                className="text-[17.5px] min-[360px]:text-[18px] min-[390px]:text-[18.5px] sm:text-xl lg:text-2xl font-black tracking-[0.11em] min-[360px]:tracking-[0.14em] sm:tracking-[0.18em] lg:tracking-[0.22em] uppercase text-black hover:opacity-80 transition-opacity select-none font-sans whitespace-nowrap"
               >
                 SHILLSTORE
               </Link>
@@ -81,36 +81,36 @@ export function Header() {
             </nav>
 
             {/* Right: Clean Minimal Icons SEARCH / ACCOUNT / CART */}
-            <div className="flex items-center gap-0.5 sm:gap-2 text-neutral-800">
+            <div className="flex items-center gap-0 min-[360px]:gap-0.5 sm:gap-2 text-neutral-800 z-20 shrink-0">
               {/* Search Icon (Kaca Pembesar) */}
               <button
                 type="button"
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 hover:text-black transition-colors cursor-pointer flex items-center justify-center min-w-[36px] min-h-[36px]"
+                className="p-1.5 sm:p-2 hover:text-black transition-colors cursor-pointer flex items-center justify-center min-w-[30px] min-[360px]:min-w-[34px] sm:min-w-[36px] min-h-[34px] sm:min-h-[36px]"
                 aria-label="Cari Produk"
               >
-                <Search className="w-[18px] h-[18px] sm:w-5 sm:h-5 stroke-[1.5]" />
+                <Search className="w-[17px] h-[17px] min-[360px]:w-[18px] min-[360px]:h-[18px] sm:w-5 sm:h-5 stroke-[1.5]" />
               </button>
 
               {/* Account Icon (Profil Pengguna) */}
               <Link
                 href="/account"
-                className="p-2 hover:text-black transition-colors flex items-center justify-center min-w-[36px] min-h-[36px]"
+                className="p-1.5 sm:p-2 hover:text-black transition-colors flex items-center justify-center min-w-[30px] min-[360px]:min-w-[34px] sm:min-w-[36px] min-h-[34px] sm:min-h-[36px]"
                 aria-label="Akun Pengguna"
               >
-                <User className="w-[18px] h-[18px] sm:w-5 sm:h-5 stroke-[1.5]" />
+                <User className="w-[17px] h-[17px] min-[360px]:w-[18px] min-[360px]:h-[18px] sm:w-5 sm:h-5 stroke-[1.5]" />
               </Link>
 
               {/* Cart Icon (Keranjang Belanja) */}
               <button
                 type="button"
                 onClick={() => setIsCartOpen(true)}
-                className="relative p-2 hover:text-black transition-colors cursor-pointer flex items-center justify-center min-w-[36px] min-h-[36px]"
+                className="relative p-1.5 sm:p-2 hover:text-black transition-colors cursor-pointer flex items-center justify-center min-w-[30px] min-[360px]:min-w-[34px] sm:min-w-[36px] min-h-[34px] sm:min-h-[36px]"
                 aria-label={`Keranjang Belanja (${totalItems})`}
               >
-                <ShoppingCart className="w-[18px] h-[18px] sm:w-5 sm:h-5 stroke-[1.5]" />
+                <ShoppingCart className="w-[17px] h-[17px] min-[360px]:w-[18px] min-[360px]:h-[18px] sm:w-5 sm:h-5 stroke-[1.5]" />
                 {totalItems > 0 && (
-                  <span className="absolute top-1 right-0.5 min-w-3.5 h-3.5 px-0.5 sm:min-w-4 sm:h-4 bg-black text-white text-[8px] sm:text-[9px] font-semibold flex items-center justify-center rounded-full leading-none">
+                  <span className="absolute top-0.5 right-0 min-w-3.5 h-3.5 px-0.5 sm:min-w-4 sm:h-4 bg-black text-white text-[8px] sm:text-[9px] font-semibold flex items-center justify-center rounded-full leading-none">
                     {totalItems}
                   </span>
                 )}
