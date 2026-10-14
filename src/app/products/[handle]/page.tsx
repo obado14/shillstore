@@ -486,7 +486,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
                 alt={product.title}
                 fill
                 priority
-                className="object-contain p-6 sm:p-10 transition-opacity duration-300"
+                className={isShoes ? "object-cover transition-opacity duration-300" : "object-contain p-6 sm:p-10 transition-opacity duration-300"}
                 sizes="(max-width: 1024px) 100vw, 55vw"
               />
             </div>
@@ -511,7 +511,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
                       src={img}
                       alt=""
                       fill
-                      className="object-contain p-1.5"
+                      className={isShoes ? "object-cover" : "object-contain p-1.5"}
                       sizes="80px"
                     />
                   </button>

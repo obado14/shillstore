@@ -15,10 +15,9 @@ export default function ShoesPage() {
 
   const shoesSubcategories = [
     { id: 'ALL', label: 'ALL SHOES' },
-    { id: 'CASUAL', label: 'CASUAL SNEAKERS' },
-    { id: 'RETRO', label: 'RETRO SNEAKERS' },
-    { id: 'CANVAS', label: 'CANVAS SNEAKERS' },
-    { id: 'SPORTY', label: 'SPORTY SNEAKERS' },
+    { id: 'CASUAL', label: 'MODEL 1 (CASUAL LOW)' },
+    { id: 'RUNNER', label: 'MODEL 2 (RUNNER)' },
+    { id: 'CANVAS', label: 'MODEL 3 (HIGH CANVAS)' },
   ];
 
   // Filter & sort shoe products
@@ -26,13 +25,11 @@ export default function ShoesPage() {
     let list = productsData.filter((p) => p.category === 'Sepatu');
 
     if (activeCategory === 'CASUAL') {
-      list = list.filter((p) => p.subcategory === 'Casual Sneakers');
-    } else if (activeCategory === 'RETRO') {
-      list = list.filter((p) => p.subcategory === 'Retro Sneakers');
+      list = list.filter((p) => p.subcategory === 'Casual Low');
+    } else if (activeCategory === 'RUNNER') {
+      list = list.filter((p) => p.subcategory === 'Runner');
     } else if (activeCategory === 'CANVAS') {
-      list = list.filter((p) => p.subcategory === 'Canvas Sneakers');
-    } else if (activeCategory === 'SPORTY') {
-      list = list.filter((p) => p.subcategory === 'Sporty Sneakers');
+      list = list.filter((p) => p.subcategory === 'High Canvas');
     }
 
     // Sort products
