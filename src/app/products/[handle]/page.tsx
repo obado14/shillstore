@@ -207,13 +207,16 @@ function ProductDetailContent({ handle }: { handle: string }) {
   };
 
   const isPerfume = product.category === 'Parfum';
+  const isShoes = product.category === 'Sepatu' || product.category === 'Shoes';
   const foundPerfumeKey = Object.keys(perfumeProfiles).find(
     (key) => product.id.includes(key.replace('shillstore-', '')) || handle.includes(key.replace('shillstore-', ''))
   );
   const perfumeInfo = foundPerfumeKey ? perfumeProfiles[foundPerfumeKey] : perfumeProfiles['shillstore-noir'];
 
-  const sizes = product.sizes || (isPerfume ? ['100ml'] : ['S', 'M', 'L', 'XL', 'XXL']);
+  const sizes = product.sizes || (isPerfume ? ['100ml'] : isShoes ? ['39', '40', '41', '42', '43', '44'] : ['S', 'M', 'L', 'XL', 'XXL']);
+  const colors = product.colors || (isShoes ? ['Triple White', 'Black'] : []);
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
+  const [selectedColor, setSelectedColor] = useState(colors[0] || '');
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<'desc' | 'size' | 'shipping'>('desc');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -569,6 +572,34 @@ function ProductDetailContent({ handle }: { handle: string }) {
               )}
             </div>
 
+            {/* Color / Variant Selector */}
+            {colors.length > 0 && (
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-2.5">
+                  <span className="text-[11px] uppercase tracking-[0.16em] font-medium text-neutral-700">
+                    Warna: <span className="text-black font-semibold">{selectedColor}</span>
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {colors.map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      onClick={() => setSelectedColor(c)}
+                      className={`h-9 px-3.5 text-xs font-medium border transition-colors cursor-pointer ${
+                        selectedColor === c
+                          ? 'border-black bg-black text-white'
+                          : 'border-neutral-200 text-neutral-800 bg-white hover:border-black'
+                      }`}
+                    >
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Size / Variant Selector */}
             <div className="mb-6">
               <div className="flex justify-between items-center mb-2.5">
@@ -580,7 +611,7 @@ function ProductDetailContent({ handle }: { handle: string }) {
                   onClick={() => setActiveTab('size')}
                   className="text-[11px] uppercase tracking-[0.14em] text-neutral-500 hover:text-black transition-colors font-medium border-b border-neutral-200 hover:border-black cursor-pointer pb-0.5"
                 >
-                  {isPerfume ? 'Fragrance Notes' : 'Panduan Ukuran'}
+                  {isPerfume ? 'Fragrance Notes' : isShoes ? 'Panduan Ukuran Sepatu' : 'Panduan Ukuran'}
                 </button>
               </div>
 
@@ -728,6 +759,30 @@ function ProductDetailContent({ handle }: { handle: string }) {
                           </div>
                         </div>
                       </>
+                    ) : isShoes ? (
+                      <>
+                        <p>
+                          Sneaker kasual kontemporer dari SHILL, dirancang dengan siluet clean dan konstruksi premium untuk kenyamanan melangkah seharian. Memadukan estetika minimalis modern dengan daya tahan tinggi untuk melengkapi rotasi gaya sehari-hari.
+                        </p>
+                        <div className="grid grid-cols-2 gap-y-2.5 text-xs pt-3 border-t border-neutral-100">
+                          <div>
+                            <span className="text-neutral-400 block">Upper</span>
+                            <span className="text-neutral-900 font-medium">Premium Leather &amp; Breathable Canvas</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Insole</span>
+                            <span className="text-neutral-900 font-medium">Cushioned EVA Foam Comfort</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Outsole</span>
+                            <span className="text-neutral-900 font-medium">Anti-Slip Vulcanized Rubber Cupsole</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Konstruksi</span>
+                            <span className="text-neutral-900 font-medium">Side-Stitched Durable Assembly</span>
+                          </div>
+                        </div>
+                      </>
                     ) : (
                       <>
                         <p>
@@ -740,11 +795,11 @@ function ProductDetailContent({ handle }: { handle: string }) {
                           </div>
                           <div>
                             <span className="text-neutral-400 block">Fitting</span>
-                            <span className="text-neutral-900 font-medium">Regular & Relaxed Unisex</span>
+                            <span className="text-neutral-900 font-medium">Regular &amp; Relaxed Unisex</span>
                           </div>
                           <div>
                             <span className="text-neutral-400 block">Jahitan</span>
-                            <span className="text-neutral-900 font-medium">Standar Ekspor Rapi & Kuat</span>
+                            <span className="text-neutral-900 font-medium">Standar Ekspor Rapi &amp; Kuat</span>
                           </div>
                           <div>
                             <span className="text-neutral-400 block">Perawatan</span>
@@ -780,6 +835,66 @@ function ProductDetailContent({ handle }: { handle: string }) {
                             </span>
                             <span className="text-neutral-900 font-medium">{perfumeInfo.base}</span>
                           </div>
+                        </div>
+                      </div>
+                    ) : isShoes ? (
+                      <div className="space-y-3">
+                        <p className="text-neutral-500">Panduan ukuran sepatu standar (EU / Panjang Kaki):</p>
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-left border-collapse text-xs">
+                            <thead>
+                              <tr className="border-b border-neutral-200 text-[10px] uppercase tracking-wider text-neutral-400">
+                                <th className="py-2 pr-4 font-semibold">Ukuran (EU)</th>
+                                <th className="py-2 px-4 font-semibold">Panjang Kaki (cm)</th>
+                                <th className="py-2 px-4 font-semibold">US Men</th>
+                                <th className="py-2 pl-4 font-semibold">UK</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-neutral-100 text-neutral-700">
+                              <tr>
+                                <td className="py-2 pr-4 font-semibold text-neutral-900">38</td>
+                                <td className="py-2 px-4">24.0 cm</td>
+                                <td className="py-2 px-4">6.0</td>
+                                <td className="py-2 pl-4">5.5</td>
+                              </tr>
+                              <tr>
+                                <td className="py-2 pr-4 font-semibold text-neutral-900">39</td>
+                                <td className="py-2 px-4">24.5 cm</td>
+                                <td className="py-2 px-4">6.5</td>
+                                <td className="py-2 pl-4">6.0</td>
+                              </tr>
+                              <tr>
+                                <td className="py-2 pr-4 font-semibold text-neutral-900">40</td>
+                                <td className="py-2 px-4">25.0 cm</td>
+                                <td className="py-2 px-4">7.0</td>
+                                <td className="py-2 pl-4">6.5</td>
+                              </tr>
+                              <tr>
+                                <td className="py-2 pr-4 font-semibold text-neutral-900">41</td>
+                                <td className="py-2 px-4">26.0 cm</td>
+                                <td className="py-2 px-4">8.0</td>
+                                <td className="py-2 pl-4">7.5</td>
+                              </tr>
+                              <tr>
+                                <td className="py-2 pr-4 font-semibold text-neutral-900">42</td>
+                                <td className="py-2 px-4">26.5 cm</td>
+                                <td className="py-2 px-4">8.5</td>
+                                <td className="py-2 pl-4">8.0</td>
+                              </tr>
+                              <tr>
+                                <td className="py-2 pr-4 font-semibold text-neutral-900">43</td>
+                                <td className="py-2 px-4">27.5 cm</td>
+                                <td className="py-2 px-4">9.5</td>
+                                <td className="py-2 pl-4">9.0</td>
+                              </tr>
+                              <tr>
+                                <td className="py-2 pr-4 font-semibold text-neutral-900">44</td>
+                                <td className="py-2 px-4">28.0 cm</td>
+                                <td className="py-2 px-4">10.0</td>
+                                <td className="py-2 pl-4">9.5</td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
                       </div>
                     ) : (

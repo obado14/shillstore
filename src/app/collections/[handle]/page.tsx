@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, use } from 'react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
@@ -23,6 +23,10 @@ export default function CollectionPage({
 function CollectionContent({ handle }: { handle: string }) {
   if (['all-product', 'shill-x-jkt48', 'shill-x-mpl', 'ms-glow'].includes(handle)) {
     notFound();
+  }
+
+  if (handle === 'shoes' || handle === 'sepatu') {
+    redirect('/shoes');
   }
 
   const isSalePage = handle === 'sale';
@@ -122,8 +126,8 @@ function CollectionContent({ handle }: { handle: string }) {
     let list = [...productsData];
 
     if (isSalePage) {
-      // Strictly ONLY products with a genuine sale price!
-      list = list.filter((p) => p.compareAtPrice && p.compareAtPrice > p.price);
+      // Strictly ONLY products with a genuine sale price (excluding shoes so SALE page remains unchanged)!
+      list = list.filter((p) => p.compareAtPrice && p.compareAtPrice > p.price && p.category !== 'Sepatu');
 
       if (activeCategory === 'CLOTHING') {
         list = list.filter(
@@ -138,7 +142,7 @@ function CollectionContent({ handle }: { handle: string }) {
       }
     } else if (isWomenPage) {
       // Base WOMEN collection includes apparel, tops, shirts, outerwear, trousers, and accessories
-      list = list.filter((p) => p.category !== 'Parfum');
+      list = list.filter((p) => p.category !== 'Parfum' && p.category !== 'Sepatu');
 
       if (activeCategory === 'TOPS') {
         list = list.filter((p) => p.category === 'Kaos');
@@ -153,7 +157,7 @@ function CollectionContent({ handle }: { handle: string }) {
       }
     } else if (isMenPage) {
       // Base MEN collection includes apparel, pants, jackets, and accessories
-      list = list.filter((p) => p.category !== 'Parfum');
+      list = list.filter((p) => p.category !== 'Parfum' && p.category !== 'Sepatu');
 
       if (activeCategory === 'T-SHIRTS') {
         list = list.filter((p) => p.category === 'Kaos');

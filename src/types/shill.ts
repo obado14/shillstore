@@ -11,6 +11,7 @@ export interface Product {
   link: string;
   rating?: number;
   reviewCount?: number;
+  subcategory?: string;
   colors?: string[];
   sizes?: string[];
   isNew?: boolean;

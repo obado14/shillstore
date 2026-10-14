@@ -22,6 +22,7 @@ export function Header() {
     { label: 'NEW IN', href: '/collections' },
     { label: 'MEN', href: '/collections/men' },
     { label: 'WOMEN', href: '/collections/women' },
+    { label: 'SHOES', href: '/shoes' },
     { label: 'ACCESSORIES', href: '/collections/accessories' },
     { label: 'SALE', href: '/collections/sale' },
   ];
@@ -55,7 +56,7 @@ export function Header() {
             </div>
 
             {/* Center: Desktop Navigation Menu */}
-            <nav className="flex items-center gap-8 xl:gap-10 text-[11px] tracking-[0.2em] font-medium uppercase text-neutral-700">
+            <nav className="flex items-center gap-6 xl:gap-8 text-[11px] tracking-[0.18em] xl:tracking-[0.2em] font-medium uppercase text-neutral-700">
               {navLinks.map((item) => (
                 <Link
                   key={item.label}

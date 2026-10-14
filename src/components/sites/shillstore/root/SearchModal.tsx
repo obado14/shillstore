@@ -24,12 +24,14 @@ export function SearchModal() {
 
   if (!isSearchOpen) return null;
 
-  const popularKeywords = ['Kaos Oversize', 'Chino Pants', 'Kemeja Rayon', 'Celana Cargo', 'Jaket Parka', 'Parfum'];
+  const popularKeywords = ['Kaos Oversize', 'Chino Pants', 'Kemeja Rayon', 'Celana Cargo', 'Sepatu Sneakers', 'Jaket Parka', 'Parfum'];
 
   const filteredProducts = query.trim()
     ? productsData.filter((p) =>
         p.title.toLowerCase().includes(query.toLowerCase()) ||
-        p.category.toLowerCase().includes(query.toLowerCase())
+        p.category.toLowerCase().includes(query.toLowerCase()) ||
+        (p.subcategory && p.subcategory.toLowerCase().includes(query.toLowerCase())) ||
+        (p.category === 'Sepatu' && (query.toLowerCase().includes('shoe') || query.toLowerCase().includes('sepatu') || query.toLowerCase().includes('sneaker')))
       )
     : [];
 

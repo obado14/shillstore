@@ -1261,6 +1261,270 @@ export const productsData: Product[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     colors: ['Dark Green'],
     isNew: true
+  },
+
+  // ==========================================
+  // SHILL FOOTWEAR / SNEAKERS COLLECTION (12 Products)
+  // ==========================================
+
+  // Casual Sneakers (3 Products)
+  {
+    id: 'shill-shoes-court-minimal-white',
+    title: 'Shill Court Minimal Leather Sneaker Triple White',
+    category: 'Sepatu',
+    subcategory: 'Casual Sneakers',
+    price: 489000,
+    formattedPrice: 'Rp 489.000',
+    compareAtPrice: 699000,
+    formattedCompareAtPrice: 'Rp 699.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/shoes/casual-court-white.jpg',
+      '/images/shoes/casual-court-white-2.jpg'
+    ],
+    link: '/products/shill-court-minimal-leather-sneaker-white',
+    rating: 5.0,
+    reviewCount: 142,
+    sizes: ['39', '40', '41', '42', '43', '44'],
+    colors: ['Triple White', 'Off-White', 'Black'],
+    isNew: true
+  },
+  {
+    id: 'shill-shoes-low-trainer-black',
+    title: 'Shill Urban Low Trainer Monochrome Black',
+    category: 'Sepatu',
+    subcategory: 'Casual Sneakers',
+    price: 459000,
+    formattedPrice: 'Rp 459.000',
+    compareAtPrice: 649000,
+    formattedCompareAtPrice: 'Rp 649.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/shoes/casual-low-trainer.jpg',
+      '/images/shoes/casual-low-trainer-2.jpg'
+    ],
+    link: '/products/shill-urban-low-trainer-monochrome-black',
+    rating: 4.9,
+    reviewCount: 118,
+    sizes: ['39', '40', '41', '42', '43', '44'],
+    colors: ['Monochrome Black', 'Charcoal', 'White'],
+    isNew: true
+  },
+  {
+    id: 'shill-shoes-city-stride-beige',
+    title: 'Shill City Stride Casual Low Chalk Beige',
+    category: 'Sepatu',
+    subcategory: 'Casual Sneakers',
+    price: 479000,
+    formattedPrice: 'Rp 479.000',
+    compareAtPrice: 679000,
+    formattedCompareAtPrice: 'Rp 679.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/shoes/casual-city-stride.jpg',
+      '/images/shoes/casual-city-stride-2.jpg'
+    ],
+    link: '/products/shill-city-stride-casual-low-beige',
+    rating: 5.0,
+    reviewCount: 96,
+    sizes: ['39', '40', '41', '42', '43', '44'],
+    colors: ['Chalk Beige', 'Sand', 'Triple White'],
+    isNew: true
+  },
+
+  // Retro Sneakers (3 Products)
+  {
+    id: 'shill-shoes-retro-court-classic',
+    title: 'Shill Heritage 84 Retro Court Vintage Cream',
+    category: 'Sepatu',
+    subcategory: 'Retro Sneakers',
+    price: 529000,
+    formattedPrice: 'Rp 529.000',
+    compareAtPrice: 749000,
+    formattedCompareAtPrice: 'Rp 749.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/shoes/retro-court-classic.jpg',
+      '/images/shoes/retro-court-classic-2.jpg'
+    ],
+    link: '/products/shill-heritage-84-retro-court-vintage-cream',
+    rating: 5.0,
+    reviewCount: 164,
+    sizes: ['39', '40', '41', '42', '43', '44'],
+    colors: ['Vintage Cream', 'Forest Green', 'Navy'],
+    isNew: true
+  },
+  {
+    id: 'shill-shoes-retro-runner-grey',
+    title: 'Shill Retro Runner 90s Heather Grey',
+    category: 'Sepatu',
+    subcategory: 'Retro Sneakers',
+    price: 549000,
+    formattedPrice: 'Rp 549.000',
+    compareAtPrice: 799000,
+    formattedCompareAtPrice: 'Rp 799.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/shoes/retro-runner-grey.jpg',
+      '/images/shoes/retro-runner-grey-2.jpg'
+    ],
+    link: '/products/shill-retro-runner-90s-heather-grey',
+    rating: 4.9,
+    reviewCount: 135,
+    sizes: ['39', '40', '41', '42', '43', '44'],
+    colors: ['Heather Grey', 'Off-White', 'Triple Black'],
+    isNew: true
+  },
+  {
+    id: 'shill-shoes-terrace-vintage-white',
+    title: 'Shill Terrace Vintage Court White Navy',
+    category: 'Sepatu',
+    subcategory: 'Retro Sneakers',
+    price: 499000,
+    formattedPrice: 'Rp 499.000',
+    compareAtPrice: 699000,
+    formattedCompareAtPrice: 'Rp 699.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/shoes/retro-terrace-vintage.jpg',
+      '/images/shoes/retro-terrace-vintage-2.jpg'
+    ],
+    link: '/products/shill-terrace-vintage-court-white-navy',
+    rating: 5.0,
+    reviewCount: 122,
+    sizes: ['39', '40', '41', '42', '43', '44'],
+    colors: ['White Navy', 'White Green', 'Triple White'],
+    isNew: true
+  },
+
+  // Canvas Sneakers (3 Products)
+  {
+    id: 'shill-shoes-canvas-low-raw',
+    title: 'Shill Standard Canvas Low Raw Natural',
+    category: 'Sepatu',
+    subcategory: 'Canvas Sneakers',
+    price: 329000,
+    formattedPrice: 'Rp 329.000',
+    compareAtPrice: 459000,
+    formattedCompareAtPrice: 'Rp 459.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/shoes/canvas-low-raw.jpg',
+      '/images/shoes/canvas-low-raw-2.jpg'
+    ],
+    link: '/products/shill-standard-canvas-low-raw-natural',
+    rating: 5.0,
+    reviewCount: 180,
+    sizes: ['38', '39', '40', '41', '42', '43', '44'],
+    colors: ['Raw Natural', 'Pitch Black', 'Navy'],
+    isNew: true
+  },
+  {
+    id: 'shill-shoes-canvas-high-black',
+    title: 'Shill Heavyweight Canvas Hi-Top Jet Black',
+    category: 'Sepatu',
+    subcategory: 'Canvas Sneakers',
+    price: 369000,
+    formattedPrice: 'Rp 369.000',
+    compareAtPrice: 499000,
+    formattedCompareAtPrice: 'Rp 499.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/shoes/canvas-high-black.jpg',
+      '/images/shoes/canvas-high-black-2.jpg'
+    ],
+    link: '/products/shill-heavyweight-canvas-hi-top-jet-black',
+    rating: 4.9,
+    reviewCount: 147,
+    sizes: ['38', '39', '40', '41', '42', '43', '44'],
+    colors: ['Jet Black', 'Chalk White', 'Olive Green'],
+    isNew: true
+  },
+  {
+    id: 'shill-shoes-canvas-deck-slipon',
+    title: 'Shill Deck Slip-On Canvas Pure Black',
+    category: 'Sepatu',
+    subcategory: 'Canvas Sneakers',
+    price: 299000,
+    formattedPrice: 'Rp 299.000',
+    compareAtPrice: 429000,
+    formattedCompareAtPrice: 'Rp 429.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/shoes/canvas-deck-slipon.jpg',
+      '/images/shoes/canvas-deck-slipon-2.jpg'
+    ],
+    link: '/products/shill-deck-slip-on-canvas-pure-black',
+    rating: 4.8,
+    reviewCount: 92,
+    sizes: ['38', '39', '40', '41', '42', '43', '44'],
+    colors: ['Pure Black', 'Vintage Navy', 'Eggshell'],
+    isNew: true
+  },
+
+  // Sporty Sneakers (3 Products)
+  {
+    id: 'shill-shoes-sporty-aero-cloud',
+    title: 'Shill AeroForm Cloud Runner Scarlet Red',
+    category: 'Sepatu',
+    subcategory: 'Sporty Sneakers',
+    price: 589000,
+    formattedPrice: 'Rp 589.000',
+    compareAtPrice: 829000,
+    formattedCompareAtPrice: 'Rp 829.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/shoes/sporty-aero-cloud.jpg',
+      '/images/shoes/sporty-aero-cloud-2.jpg'
+    ],
+    link: '/products/shill-aeroform-cloud-runner-scarlet-red',
+    rating: 5.0,
+    reviewCount: 153,
+    sizes: ['39', '40', '41', '42', '43', '44'],
+    colors: ['Scarlet Red', 'Triple White', 'Stealth Black'],
+    isNew: true
+  },
+  {
+    id: 'shill-shoes-sporty-stride-tech',
+    title: 'Shill SpeedTech Kinetic Trainer Pristine White',
+    category: 'Sepatu',
+    subcategory: 'Sporty Sneakers',
+    price: 569000,
+    formattedPrice: 'Rp 569.000',
+    compareAtPrice: 799000,
+    formattedCompareAtPrice: 'Rp 799.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/shoes/sporty-stride-tech.jpg',
+      '/images/shoes/sporty-stride-tech-2.jpg'
+    ],
+    link: '/products/shill-speedtech-kinetic-trainer-pristine-white',
+    rating: 4.9,
+    reviewCount: 139,
+    sizes: ['39', '40', '41', '42', '43', '44'],
+    colors: ['Pristine White', 'Carbon Black', 'Cool Grey'],
+    isNew: true
+  },
+  {
+    id: 'shill-shoes-sporty-orbit-trail',
+    title: 'Shill Orbit Technical Trail Stone Volt',
+    category: 'Sepatu',
+    subcategory: 'Sporty Sneakers',
+    price: 619000,
+    formattedPrice: 'Rp 619.000',
+    compareAtPrice: 889000,
+    formattedCompareAtPrice: 'Rp 889.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/shoes/sporty-orbit-trail.jpg',
+      '/images/shoes/sporty-orbit-trail-2.jpg'
+    ],
+    link: '/products/shill-orbit-technical-trail-stone-volt',
+    rating: 5.0,
+    reviewCount: 114,
+    sizes: ['39', '40', '41', '42', '43', '44'],
+    colors: ['Stone Volt', 'Earth Moss', 'Phantom Black'],
+    isNew: true
   }
 ];
 
@@ -1301,6 +1565,7 @@ export const collectionsList = [
   { handle: 'all-shirt', title: 'Kemeja Pria & Wanita', description: 'Koleksi kemeja lengan pendek rayon, oxford shirt, dan flannel trendi.' },
   { handle: 'flight-jacket', title: 'Jaket & Outerwear', description: 'Parka jacket, coach jacket, varsity, dan windbreaker untuk petualangan harianmu.' },
   { handle: 'category-pants-chino-pants', title: 'Celana / Pants', description: 'Chino pants, cargo pants, jogger pants, dan short pants berfitur flexi-fit.' },
+  { handle: 'shoes', title: 'SHOES', description: 'Everyday footwear, engineered for modern movement.' },
   { handle: 'accessories', title: 'ACCESSORIES', description: 'Everyday essentials, made to complete your look.' },
   { handle: 'perfume', title: 'Parfum Series', description: 'Aroma wewangian segar dan berkelas menemani setiap kegiatanmu.' },
   { handle: 'atasan', title: 'Kategori Atasan', description: 'Koleksi lengkap pakaian atasan kasual: Kaos, Kemeja, Hoodie, dan Jaket.' },
