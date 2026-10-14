@@ -108,30 +108,31 @@ export function EditorialProductCard({
       </Link>
 
       {/* Product Details (Minimal Editorial Catalog Style) */}
-      <div className="mt-3 flex flex-col gap-0.5">
+      <div className="mt-3 sm:mt-3.5 flex flex-col gap-1">
         <Link
           href={product.link}
-          className="text-xs sm:text-sm font-medium text-neutral-900 tracking-tight hover:text-neutral-500 transition-colors line-clamp-1"
+          className="text-[13px] sm:text-[15px] font-medium text-neutral-900 tracking-normal hover:text-neutral-500 transition-colors line-clamp-1 leading-snug"
+          title={product.title}
         >
           {product.title}
         </Link>
 
         {/* Price & Discount Information */}
-        <div className="flex items-baseline gap-2 mt-0.5 flex-wrap">
+        <div className="flex items-baseline gap-2 flex-wrap">
           <span
-            className={`text-xs sm:text-sm ${
-              showDiscount ? 'font-semibold text-neutral-900' : 'text-neutral-600 font-normal'
+            className={`text-[13px] sm:text-[15px] ${
+              showDiscount ? 'font-semibold text-neutral-900' : 'text-neutral-800 font-medium'
             }`}
           >
             {product.formattedPrice}
           </span>
           {hasDiscount && (
-            <span className="text-[11px] sm:text-xs text-neutral-400 line-through font-normal">
+            <span className="text-xs sm:text-[13px] text-neutral-400 line-through font-normal">
               {product.formattedCompareAtPrice}
             </span>
           )}
           {showDiscount && discountPercent && (
-            <span className="text-[10px] font-semibold tracking-wider text-red-600 bg-red-50/90 px-1.5 py-0.2">
+            <span className="text-[10px] font-semibold tracking-wider text-red-600 bg-red-50/90 px-1.5 py-0.5">
               -{discountPercent}%
             </span>
           )}
@@ -139,17 +140,17 @@ export function EditorialProductCard({
 
         {/* Available Color / Variant indicator if present */}
         {product.colors && product.colors.length > 0 && (
-          <span className="text-[11px] text-neutral-400 font-normal mt-0.5">
+          <span className="text-xs sm:text-[12px] text-neutral-500 font-normal truncate">
             {product.colors.join(' / ')}
           </span>
         )}
 
         {/* Mobile Quick Add Button */}
-        <div className="mt-2 block sm:hidden">
+        <div className="mt-1.5 block sm:hidden">
           <button
             type="button"
             onClick={handleQuickAdd}
-            className="w-full py-2 border border-neutral-300 text-neutral-900 text-[10px] font-semibold uppercase tracking-[0.18em] active:bg-black active:text-white transition-colors cursor-pointer"
+            className="w-full py-2 border border-neutral-300 text-neutral-900 text-[11px] font-semibold uppercase tracking-[0.18em] active:bg-black active:text-white transition-colors cursor-pointer"
           >
             {isAdding ? 'Added' : 'Add to Bag'}
           </button>

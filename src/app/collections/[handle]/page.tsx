@@ -3,6 +3,7 @@
 import React, { useState, useMemo, use } from 'react';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
+import { Search, X } from 'lucide-react';
 import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
@@ -35,6 +36,23 @@ function CollectionContent({ handle }: { handle: string }) {
   const isAccessoriesPage = handle === 'accessories' || handle === 'aksesoris';
   const [activeCategory, setActiveCategory] = useState<string>('ALL');
   const [sortBy, setSortBy] = useState<string>('featured');
+  const [visibleCount, setVisibleCount] = useState<number>(16);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const handleCategoryChange = (catId: string) => {
+    setActiveCategory(catId);
+    setVisibleCount(16);
+  };
+
+  const handleSortChange = (newSort: string) => {
+    setSortBy(newSort);
+    setVisibleCount(16);
+  };
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setVisibleCount(16);
+  };
 
   const saleSubcategories = [
     { id: 'ALL', label: 'ALL SALE' },
@@ -59,6 +77,20 @@ function CollectionContent({ handle }: { handle: string }) {
     { id: 'BOTTOMS', label: 'BOTTOMS' },
     { id: 'ACCESSORIES', label: 'ACCESSORIES' },
   ];
+
+  // Dynamic counts for MEN categories
+  const menCounts = useMemo(() => {
+    if (!isMenPage) return {} as Record<string, number>;
+    const base = productsData.filter((p) => p.category !== 'Parfum' && p.category !== 'Sepatu');
+    return {
+      ALL: base.length,
+      'T-SHIRTS': base.filter((p) => p.category === 'Kaos').length,
+      SHIRTS: base.filter((p) => p.category === 'Kemeja').length,
+      OUTERWEAR: base.filter((p) => p.category === 'Jaket').length,
+      PANTS: base.filter((p) => p.category === 'Celana').length,
+      ACCESSORIES: base.filter((p) => p.category === 'Aksesoris').length,
+    };
+  }, [isMenPage]);
 
   // Collection metadata
   const collectionInfo = useMemo(() => {
@@ -92,8 +124,8 @@ function CollectionContent({ handle }: { handle: string }) {
     if (isMenPage) {
       return {
         title: 'MEN',
-        subtitle: 'Everyday pieces, made for your style.',
-        description: 'Discover versatile essentials crafted for movement, durability, and daily street style.',
+        subtitle: 'Essential silhouettes and contemporary street style, crafted for daily wear.',
+        description: 'Explore heavy cotton t-shirts, structured shirts, technical outerwear, and tailored chinos from SHILL.',
         breadcrumb: 'MEN',
       };
     }
@@ -121,7 +153,7 @@ function CollectionContent({ handle }: { handle: string }) {
     };
   }, [handle, isAccessoriesPage, isSalePage, isMenPage, isWomenPage]);
 
-  // Filter products based on handle and active subcategory
+  // Filter products based on handle, active subcategory, and optional search query
   const filteredProducts = useMemo(() => {
     let list = [...productsData];
 
@@ -187,6 +219,18 @@ function CollectionContent({ handle }: { handle: string }) {
       });
     }
 
+    // In-catalog search filter if query exists
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      list = list.filter(
+        (p) =>
+          p.title.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q) ||
+          p.subcategory?.toLowerCase().includes(q) ||
+          p.colors?.some((c) => c.toLowerCase().includes(q))
+      );
+    }
+
     // Sort products
     if (sortBy === 'price-low') {
       list.sort((a, b) => a.price - b.price);
@@ -203,7 +247,7 @@ function CollectionContent({ handle }: { handle: string }) {
     }
 
     return list;
-  }, [handle, isSalePage, isMenPage, isWomenPage, activeCategory, sortBy]);
+  }, [handle, isSalePage, isMenPage, isWomenPage, activeCategory, sortBy, searchQuery]);
 
   const activeSubcategories = isSalePage
     ? saleSubcategories
@@ -213,6 +257,16 @@ function CollectionContent({ handle }: { handle: string }) {
     ? menSubcategories
     : null;
 
+  // Pagination / Load more slice
+  const visibleProducts = useMemo(() => {
+    return filteredProducts.slice(0, visibleCount);
+  }, [filteredProducts, visibleCount]);
+
+  const hasMore = visibleCount < filteredProducts.length;
+  const progressPercent = filteredProducts.length > 0
+    ? Math.min(100, Math.round((Math.min(visibleCount, filteredProducts.length) / filteredProducts.length) * 100))
+    : 0;
+
   return (
     <div className="min-h-screen flex flex-col bg-white text-neutral-900 font-sans selection:bg-black selection:text-white">
       {/* Global Minimal Header */}
@@ -221,9 +275,9 @@ function CollectionContent({ handle }: { handle: string }) {
       {/* Main Editorial Container */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-12">
         {/* 1. Page Header (Clean, spacious, pure typography, no cards) */}
-        <div className="pt-12 sm:pt-16 pb-6 sm:pb-8">
+        <div className="pt-10 sm:pt-16 pb-5 sm:pb-8">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-neutral-400 mb-4 sm:mb-6">
+          <nav className="flex items-center gap-2 text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-neutral-400 mb-3 sm:mb-6">
             <Link href="/" className="hover:text-black transition-colors">
               HOME
             </Link>
@@ -233,7 +287,7 @@ function CollectionContent({ handle }: { handle: string }) {
 
           {/* Heading & Subtitle */}
           <div className="max-w-3xl">
-            <h1 className="text-3xl sm:text-5xl font-light text-neutral-900 tracking-tight leading-[1.08] mb-3">
+            <h1 className="text-3xl sm:text-5xl font-light text-neutral-900 tracking-tight leading-[1.08] mb-2 sm:mb-3">
               {collectionInfo.title}
             </h1>
             <p className="text-sm sm:text-base text-neutral-700 font-normal leading-relaxed">
@@ -247,38 +301,82 @@ function CollectionContent({ handle }: { handle: string }) {
           </div>
         </div>
 
-        {/* 2. Category Navigation (Subtle text links with underline) */}
+        {/* 2. Category Navigation (Subtle text links with underline & dynamic counts) */}
         {activeSubcategories && (
           <div className="flex items-center gap-6 sm:gap-8 overflow-x-auto scrollbar-none py-3 border-b border-neutral-100 text-xs uppercase tracking-[0.18em]">
-            {activeSubcategories.map((sub) => (
-              <button
-                key={sub.id}
-                type="button"
-                onClick={() => setActiveCategory(sub.id)}
-                className={`py-1 shrink-0 transition-colors cursor-pointer ${
-                  activeCategory === sub.id
-                    ? 'font-bold text-black border-b-2 border-black -mb-[1px]'
-                    : 'text-neutral-400 hover:text-black font-medium'
-                }`}
-              >
-                {sub.label}
-              </button>
-            ))}
+            {activeSubcategories.map((sub) => {
+              const count = isMenPage ? menCounts[sub.id] : undefined;
+              return (
+                <button
+                  key={sub.id}
+                  type="button"
+                  onClick={() => handleCategoryChange(sub.id)}
+                  className={`py-1 shrink-0 transition-colors cursor-pointer flex items-center gap-1.5 ${
+                    activeCategory === sub.id
+                      ? 'font-bold text-black border-b-2 border-black -mb-[1px]'
+                      : 'text-neutral-400 hover:text-black font-medium'
+                  }`}
+                >
+                  <span>{sub.label}</span>
+                  {count !== undefined && count > 0 && (
+                    <span
+                      className={`text-[10px] font-normal ${
+                        activeCategory === sub.id ? 'text-black' : 'text-neutral-400'
+                      }`}
+                    >
+                      ({count})
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         )}
 
-        {/* 3. Product Toolbar (Minimal typography, product count on left, Sort on right - hidden when empty) */}
-        {filteredProducts.length > 0 && (
-          <div className="flex flex-row items-center justify-between py-4 mb-8 sm:mb-12 border-b border-neutral-150 text-[11px] uppercase tracking-[0.18em]">
-            <span className="font-medium text-neutral-500">
+        {/* 3. Product Toolbar (Product count, in-catalog search, and sort dropdown) */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between py-4 mb-6 sm:mb-10 border-b border-neutral-150 gap-3 text-[11px] uppercase tracking-[0.18em]">
+          {/* Left: Product count & search active indicator */}
+          <div className="flex items-center gap-3">
+            <span className="font-semibold text-neutral-900">
               {filteredProducts.length} {isSalePage ? 'ITEMS ON SALE' : 'PRODUCTS'}
             </span>
+            {searchQuery && (
+              <span className="text-neutral-400 normal-case tracking-normal">
+                matching &ldquo;{searchQuery}&rdquo;
+              </span>
+            )}
+          </div>
 
-            <div className="flex items-center gap-3">
-              <span className="text-neutral-400 hidden sm:inline">SORT BY:</span>
+          {/* Right: In-Catalog Search & Sort dropdown */}
+          <div className="flex items-center gap-3 sm:gap-5 justify-between sm:justify-end">
+            {/* Quick in-catalog filter search */}
+            <div className="relative flex items-center">
+              <Search className="w-3.5 h-3.5 text-neutral-400 absolute left-2.5 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                placeholder="Filter catalog..."
+                className="pl-8 pr-7 py-1.5 text-xs bg-neutral-50 hover:bg-neutral-100/70 border border-neutral-200 rounded-none text-neutral-900 placeholder:text-neutral-400 placeholder:normal-case placeholder:tracking-normal focus:outline-none focus:border-black focus:bg-white transition-all w-36 sm:w-48 tracking-normal"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => handleSearchChange('')}
+                  className="absolute right-2 p-0.5 text-neutral-400 hover:text-black cursor-pointer"
+                  aria-label="Clear filter"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="text-neutral-400 hidden sm:inline">SORT:</span>
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => handleSortChange(e.target.value)}
                 className="bg-transparent text-[11px] uppercase tracking-[0.18em] font-semibold text-neutral-900 focus:outline-none cursor-pointer pr-1"
               >
                 <option value="featured">Featured</option>
@@ -289,37 +387,51 @@ function CollectionContent({ handle }: { handle: string }) {
               </select>
             </div>
           </div>
-        )}
+        </div>
 
-        {/* 4. Product Catalog Grid (Desktop 4 col, Tablet 3 col, Mobile 2 col) or Editorial Coming Soon */}
+        {/* 4. Product Catalog Grid or Editorial States */}
         {filteredProducts.length === 0 ? (
-          isAccessoriesPage ? (
+          isMenPage && activeCategory === 'ACCESSORIES' ? (
+            /* Men's Accessories Coming Soon */
+            <div className="py-20 sm:py-28 text-center max-w-xl mx-auto px-4">
+              <div className="w-10 h-[1px] bg-neutral-300 mx-auto mb-8" />
+              <span className="block text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-medium mb-3">
+                MEN / ACCESSORIES
+              </span>
+              <div className="inline-block text-[11px] font-semibold tracking-[0.2em] uppercase text-neutral-900 border border-neutral-200 px-4 py-1.5 mb-5">
+                COMING SOON
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-light text-neutral-900 tracking-tight mb-3">
+                Men&apos;s Accessories
+              </h2>
+              <p className="text-sm text-neutral-500 font-normal leading-relaxed mb-8">
+                Everyday caps, cross-body bags, and leather accessories are currently being crafted for our upcoming drop.
+              </p>
+              <button
+                type="button"
+                onClick={() => handleCategoryChange('ALL')}
+                className="px-8 py-3.5 bg-black text-white text-xs font-semibold uppercase tracking-[0.2em] hover:bg-neutral-800 transition-colors cursor-pointer"
+              >
+                View All Men&apos;s Products
+              </button>
+              <div className="w-10 h-[1px] bg-neutral-200 mx-auto mt-12" />
+            </div>
+          ) : isAccessoriesPage ? (
             /* Intentional Editorial Coming Soon for Accessories */
             <div className="py-20 sm:py-28 lg:py-36 text-center max-w-2xl mx-auto">
-              {/* Subtle top hairline divider */}
               <div className="w-12 h-[1px] bg-neutral-300 mx-auto mb-10" />
-
-              {/* Small editorial detail text */}
               <span className="block text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-medium mb-4">
                 SHILLSTORE / ACCESSORIES
               </span>
-
-              {/* Eyebrow badge: COMING SOON */}
               <div className="inline-block text-[11px] sm:text-xs font-semibold tracking-[0.2em] uppercase text-neutral-900 border border-neutral-200 px-4 py-1.5 mb-6">
                 COMING SOON
               </div>
-
-              {/* Headline */}
               <h2 className="text-2xl sm:text-4xl font-light text-neutral-900 tracking-tight leading-tight mb-4">
                 Accessories are on the way.
               </h2>
-
-              {/* Body description */}
               <p className="text-sm sm:text-base text-neutral-500 font-normal leading-relaxed max-w-lg mx-auto mb-10 sm:mb-12">
                 Bag, caps, wallets, and everyday essentials are coming soon.
               </p>
-
-              {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
                 <Link
                   href="/"
@@ -334,9 +446,24 @@ function CollectionContent({ handle }: { handle: string }) {
                   EXPLORE NEW IN
                 </Link>
               </div>
-
-              {/* Subtle bottom hairline divider */}
               <div className="w-12 h-[1px] bg-neutral-200 mx-auto mt-14 sm:mt-16" />
+            </div>
+          ) : searchQuery ? (
+            /* In-catalog Search yielded no results */
+            <div className="py-20 text-center max-w-md mx-auto">
+              <h3 className="text-base font-medium text-neutral-900 mb-2">
+                No products matching &ldquo;{searchQuery}&rdquo;
+              </h3>
+              <p className="text-xs text-neutral-500 mb-6">
+                Try searching for different keywords or clear your filter.
+              </p>
+              <button
+                type="button"
+                onClick={() => handleSearchChange('')}
+                className="px-6 py-3 border border-black text-xs font-semibold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-colors cursor-pointer"
+              >
+                Clear Filter
+              </button>
             </div>
           ) : (
             <div className="py-24 text-center">
@@ -351,7 +478,7 @@ function CollectionContent({ handle }: { handle: string }) {
               {isSalePage ? (
                 <button
                   type="button"
-                  onClick={() => setActiveCategory('ALL')}
+                  onClick={() => handleCategoryChange('ALL')}
                   className="inline-block px-8 py-3.5 border border-black text-xs font-semibold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-colors cursor-pointer"
                 >
                   View All Sale
@@ -367,17 +494,58 @@ function CollectionContent({ handle }: { handle: string }) {
             </div>
           )
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 sm:gap-x-6 sm:gap-y-14 mb-16 sm:mb-28">
-            {filteredProducts.map((product, idx) => (
-              <EditorialProductCard
-                key={product.id}
-                product={product}
-                priority={idx < 4}
-                aspectRatio="square"
-                showDiscount={isSalePage}
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-3.5 gap-y-7 sm:gap-x-6 sm:gap-y-12 lg:gap-x-7 lg:gap-y-14 mb-12 sm:mb-16">
+              {visibleProducts.map((product, idx) => (
+                <EditorialProductCard
+                  key={product.id}
+                  product={product}
+                  priority={idx < 4}
+                  aspectRatio="square"
+                  showDiscount={isSalePage}
+                />
+              ))}
+            </div>
+
+            {/* Load More & Progress Indicator Section */}
+            <div className="flex flex-col items-center justify-center pt-4 pb-20 sm:pb-28 text-center border-t border-neutral-100">
+              <p className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-medium mb-3">
+                Showing {Math.min(visibleCount, filteredProducts.length)} of {filteredProducts.length} {isSalePage ? 'items on sale' : 'products'}
+              </p>
+
+              {/* Progress Bar */}
+              <div className="w-48 sm:w-64 h-[2px] bg-neutral-200 overflow-hidden mb-6">
+                <div
+                  className="h-full bg-black transition-all duration-300 ease-out"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+
+              {/* Load More Button or All Caught Up */}
+              {hasMore ? (
+                <button
+                  type="button"
+                  onClick={() => setVisibleCount((prev) => Math.min(prev + 16, filteredProducts.length))}
+                  className="px-10 py-3.5 border border-black bg-white hover:bg-black hover:text-white text-black text-xs font-semibold uppercase tracking-[0.22em] transition-all duration-200 cursor-pointer shadow-xs active:scale-98"
+                >
+                  Load More Products
+                </button>
+              ) : (
+                <div className="flex flex-col items-center gap-2">
+                  <span className="text-xs text-neutral-400 tracking-wider">
+                    You have viewed all {filteredProducts.length} products
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    className="text-[11px] uppercase tracking-[0.2em] font-semibold text-neutral-900 hover:text-neutral-500 transition-colors mt-2 underline underline-offset-4 cursor-pointer"
+                  >
+                    Back to Top ↑
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
         )}
       </main>
 
