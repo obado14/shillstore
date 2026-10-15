@@ -108,6 +108,14 @@ function calculateBearing(lat1: number, lng1: number, lat2: number, lng2: number
   return (bearing + 360) % 360;
 }
 
+// Initial bearing of the first road segment departing from warehouse
+export const INITIAL_ROUTE_BEARING = calculateBearing(
+  JAKARTA_DELIVERY_WAYPOINTS[0].lat,
+  JAKARTA_DELIVERY_WAYPOINTS[0].lng,
+  JAKARTA_DELIVERY_WAYPOINTS[1].lat,
+  JAKARTA_DELIVERY_WAYPOINTS[1].lng
+);
+
 // Normalize angle difference to avoid 360-degree wrapping glitch
 function getShortestAngleDiff(target: number, current: number): number {
   let diff = (target - current) % 360;
@@ -247,7 +255,7 @@ export function LiveCourierMap({
   const isPlayingRef = useRef<boolean>(true);
   const lastRafTimeRef = useRef<number | null>(null);
   const rafIdRef = useRef<number | null>(null);
-  const smoothedAngleRef = useRef<number>(0);
+  const smoothedAngleRef = useRef<number>(INITIAL_ROUTE_BEARING);
   const lastTelemetryUpdateRef = useRef<number>(0);
 
   // Keep callback ref fresh
@@ -433,7 +441,21 @@ export function LiveCourierMap({
 
         lat = pA.lat + (pB.lat - pA.lat) * localFrac;
         lng = pA.lng + (pB.lng - pA.lng) * localFrac;
-        targetBearing = calculateBearing(pA.lat, pA.lng, pB.lat, pB.lng);
+
+        // Base bearing along the current road segment
+        const currentSegmentBearing = calculateBearing(pA.lat, pA.lng, pB.lat, pB.lng);
+
+        // Turn anticipation: blend heading smoothly into next street in the last 25% of the segment
+        if (localFrac > 0.75 && segIdx + 1 < JAKARTA_DELIVERY_WAYPOINTS.length - 1) {
+          const pC = JAKARTA_DELIVERY_WAYPOINTS[segIdx + 2];
+          const nextSegmentBearing = calculateBearing(pB.lat, pB.lng, pC.lat, pC.lng);
+          const blend = (localFrac - 0.75) / 0.25;
+          const diff = getShortestAngleDiff(nextSegmentBearing, currentSegmentBearing);
+          targetBearing = (currentSegmentBearing + diff * blend + 360) % 360;
+        } else {
+          targetBearing = currentSegmentBearing;
+        }
+
         currentStreetName = localFrac > 0.5 ? pB.street : pA.street;
 
         if (isVehicleMoving) {
@@ -442,9 +464,11 @@ export function LiveCourierMap({
 
         traveledPoints.push([lat, lng]);
       } else {
+        const prev = JAKARTA_DELIVERY_WAYPOINTS[JAKARTA_DELIVERY_WAYPOINTS.length - 2];
         const last = JAKARTA_DELIVERY_WAYPOINTS[JAKARTA_DELIVERY_WAYPOINTS.length - 1];
         lat = last.lat;
         lng = last.lng;
+        targetBearing = calculateBearing(prev.lat, prev.lng, last.lat, last.lng);
         currentStreetName = last.street;
         traveledPoints.push([lat, lng]);
       }
@@ -517,22 +541,58 @@ export function LiveCourierMap({
 
       currentTileLayerRef.current = tileLayer;
 
-      // 2. Full Planned Route Polyline (dashed gray)
+      // 2a. Full Planned Route Polyline Casing (High contrast shadow for visibility on any map tile)
       const latLngPoints = JAKARTA_DELIVERY_WAYPOINTS.map((w) => [w.lat, w.lng] as [number, number]);
-      const plannedLine = L.polyline(latLngPoints, {
-        color: '#71717A',
-        weight: 5,
-        opacity: 0.5,
-        dashArray: '8, 8',
+      L.polyline(latLngPoints, {
+        color: '#1E293B',
+        weight: 8,
+        opacity: 0.3,
         lineCap: 'round',
+        lineJoin: 'round',
+      }).addTo(map);
+
+      // 2b. Full Planned Route Polyline (Vivid Royal Blue - Clearly visible before courier departs)
+      const plannedLine = L.polyline(latLngPoints, {
+        color: '#2563EB',
+        weight: 5,
+        opacity: 0.9,
+        lineCap: 'round',
+        lineJoin: 'round',
       }).addTo(map);
       plannedPolylineRef.current = plannedLine;
 
-      // 3. Traveled Route Polyline (high-contrast solid dark/emerald line)
+      // 2c. Waypoint Turn Milestone Nodes on the Planned Route (Visible before & during trip)
+      const turnWaypoints = [
+        { lat: -6.2910, lng: 106.8125, label: 'Simpang Ampera' },
+        { lat: -6.2730, lng: 106.8170, label: 'Belokan Kemang Timur' },
+        { lat: -6.2690, lng: 106.8140, label: 'Kawasan Kemang Raya' },
+        { lat: -6.2575, lng: 106.8185, label: 'Kelokan Bangka' },
+        { lat: -6.2435, lng: 106.8145, label: 'Simpang Santa / Wolter' },
+        { lat: -6.2360, lng: 106.8020, label: 'Senopati' },
+        { lat: -6.2395, lng: 106.7975, label: 'Taman Barito' },
+      ];
+
+      turnWaypoints.forEach((wp) => {
+        const nodeIcon = L.divIcon({
+          className: 'custom-turn-node',
+          iconSize: [12, 12],
+          iconAnchor: [6, 6],
+          html: `
+            <div class="w-3 h-3 rounded-full bg-blue-600 border-2 border-white shadow-sm flex items-center justify-center">
+              <div class="w-1 h-1 rounded-full bg-white"></div>
+            </div>
+          `,
+        });
+        L.marker([wp.lat, wp.lng], { icon: nodeIcon, zIndexOffset: 25 })
+          .bindTooltip(`Belokan: ${wp.label}`, { direction: 'top', offset: [0, -6], opacity: 0.9 })
+          .addTo(map);
+      });
+
+      // 3. Traveled Route Polyline (Solid Emerald Green - Active travel progress overlay)
       const traveledLine = L.polyline([[JAKARTA_DELIVERY_WAYPOINTS[0].lat, JAKARTA_DELIVERY_WAYPOINTS[0].lng]], {
         color: '#10B981',
         weight: 6,
-        opacity: 0.9,
+        opacity: 1.0,
         lineCap: 'round',
         lineJoin: 'round',
       }).addTo(map);
@@ -587,7 +647,8 @@ export function LiveCourierMap({
         zIndexOffset: 10,
       }).addTo(map);
 
-      // 6. Live Moving Courier Marker (Custom HTML divIcon with heading rotation)
+      // 6. Live Moving Courier Marker (Symmetrical True-North Arrow, pre-rotated to initial street heading)
+      const initialAngle = Math.round(INITIAL_ROUTE_BEARING);
       const courierIcon = L.divIcon({
         className: 'custom-courier-marker',
         iconSize: [44, 44],
@@ -595,20 +656,22 @@ export function LiveCourierMap({
         html: `
           <div id="courier-vehicle-wrapper" class="relative flex flex-col items-center">
             <!-- Pulsing Concentric Radar Rings -->
-            <div class="absolute -inset-2.5 rounded-full bg-emerald-400/35 animate-ping pointer-events-none"></div>
-            <div class="absolute -inset-1 rounded-full bg-blue-500/30 animate-pulse pointer-events-none"></div>
+            <div class="absolute -inset-3 rounded-full bg-emerald-400/25 animate-ping pointer-events-none"></div>
+            <div class="absolute -inset-1.5 rounded-full bg-emerald-500/30 animate-pulse pointer-events-none"></div>
 
-            <!-- Floating Courier Label -->
-            <div class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-neutral-950 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-[2px] shadow-xl border border-neutral-700 flex items-center gap-1.5 z-20">
+            <!-- Floating Courier Label (Never rotates, stays horizontal) -->
+            <div class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-neutral-950 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-[2px] shadow-xl border border-neutral-700 flex items-center gap-1.5 z-20 pointer-events-none">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
               <span>Ahmad (Kurir)</span>
               <span class="text-neutral-400 font-mono text-[8px]">${courierName}</span>
             </div>
 
-            <!-- Motorcycle Icon with Heading Heading Angle -->
-            <div id="courier-heading-rotator" class="w-11 h-11 rounded-full bg-neutral-950 border-2 border-white text-white flex items-center justify-center shadow-2xl z-10 transition-transform duration-100 ease-linear">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="white" class="translate-x-[0.5px]">
-                <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+            <!-- Heading Rotator (Pre-rotated to initial angle, smoothly tracks bearing) -->
+            <div id="courier-heading-rotator" style="transform: rotate(${initialAngle}deg);" class="w-11 h-11 rounded-full bg-neutral-950 border-[2.5px] border-white text-white flex items-center justify-center shadow-2xl z-10 transition-transform duration-75 ease-linear will-change-transform">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" class="filter drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                <!-- Symmetrical Navigation Arrowhead pointing straight UP (0° True North) -->
+                <polygon points="12 2, 20.5 21, 12 16.5, 3.5 21" fill="#10B981" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" />
+                <circle cx="12" cy="11.5" r="2.2" fill="#FFFFFF" />
               </svg>
             </div>
           </div>
@@ -749,6 +812,11 @@ export function LiveCourierMap({
     if (traveledPolylineRef.current) {
       traveledPolylineRef.current.setLatLngs(result.traveledPoints);
     }
+    const rotator = document.getElementById('courier-heading-rotator');
+    if (rotator) {
+      smoothedAngleRef.current = result.targetBearing;
+      rotator.style.transform = `rotate(${result.targetBearing}deg)`;
+    }
 
     setTelemetry(result.telemetry);
     onProgressUpdateRef.current?.(result.telemetry);
@@ -775,6 +843,11 @@ export function LiveCourierMap({
     }
     if (traveledPolylineRef.current) {
       traveledPolylineRef.current.setLatLngs(result.traveledPoints);
+    }
+    const rotator = document.getElementById('courier-heading-rotator');
+    if (rotator) {
+      smoothedAngleRef.current = INITIAL_ROUTE_BEARING;
+      rotator.style.transform = `rotate(${INITIAL_ROUTE_BEARING}deg)`;
     }
     if (leafletMapRef.current && plannedPolylineRef.current) {
       leafletMapRef.current.fitBounds(plannedPolylineRef.current.getBounds(), { padding: [45, 45] });
@@ -987,6 +1060,29 @@ export function LiveCourierMap({
                 title="Geser timeline perjalanan kurir"
               />
             </div>
+          </div>
+        </div>
+
+        {/* FLOATING ROUTE LEGEND (Bottom Left): Clearly explains route colors and stops to customer */}
+        <div className="absolute bottom-3 left-3 z-[400] hidden sm:flex items-center gap-2.5 bg-white/95 backdrop-blur-md px-3 py-1.5 border border-neutral-200 rounded-[2px] shadow-md text-[10px] font-medium text-neutral-700 pointer-events-none">
+          <div className="flex items-center gap-1.5">
+            <span className="w-3.5 h-1.5 bg-blue-600 rounded-full"></span>
+            <span className="font-semibold text-neutral-900">Rute Tujuan (Lengkap)</span>
+          </div>
+          <span className="text-neutral-300">•</span>
+          <div className="flex items-center gap-1.5">
+            <span className="w-3.5 h-1.5 bg-emerald-500 rounded-full"></span>
+            <span>Jejak Kurir</span>
+          </div>
+          <span className="text-neutral-300">•</span>
+          <div className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-black"></span>
+            <span>Gudang</span>
+          </div>
+          <span className="text-neutral-300">•</span>
+          <div className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
+            <span>Alamat Anda</span>
           </div>
         </div>
 
