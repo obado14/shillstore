@@ -8,7 +8,7 @@ import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
 import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
-import { GoogleMapsTracker } from '@/components/sites/shillstore/tracking/GoogleMapsTracker';
+import { LiveCourierMap } from '@/components/sites/shillstore/tracking/LiveCourierMap';
 import {
   getOrderByTrackingOrId,
   getOrders,
@@ -573,18 +573,16 @@ function DeliveryTrackingContent() {
               </div>
             </div>
 
-            {/* 4. GOOGLE MAPS SECTION: LOKASI PENGIRIMAN & TUJUAN */}
-            <GoogleMapsTracker
+            {/* 4. LIVE ANIMATED COURIER MAP & TELEMETRY */}
+            <LiveCourierMap
+              orderNumber={order.orderNumber}
+              recipientName={order.customer.fullName}
               address={order.customer.address}
               city={order.customer.city}
               province={order.customer.province}
               postalCode={order.customer.postalCode}
-              recipientName={order.customer.fullName}
-              coordinates={order.destinationCoordinates}
-              courierCoordinates={order.courierCoordinates}
-              isLiveTracking={order.isLiveTracking}
               courierName={order.courierName}
-              orderNumber={order.orderNumber}
+              trackingNumber={order.trackingNumber}
             />
 
             {/* 5. 2-COLUMN SECTION: RIWAYAT PERJALANAN PAKET + SIMULASI/SUMMARY */}
