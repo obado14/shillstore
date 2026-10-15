@@ -36,6 +36,7 @@ import {
   RefreshCw,
   AlertCircle,
   FileText,
+  Sparkles,
 } from 'lucide-react';
 
 export default function DeliveryTrackingPage() {
@@ -748,22 +749,47 @@ function DeliveryTrackingContent() {
                   <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-neutral-150">
                     <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-neutral-900 flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      TELEMETRI OTOMATIS KURIR
+                      TELEMETRI OPENSTREETMAP
                     </span>
                     <span className="text-[9px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded font-mono font-bold uppercase">
-                      LIVE AUTO-SYNC
+                      GPS REAL-TIME
                     </span>
                   </div>
 
-                  <p className="text-[11px] text-neutral-500 leading-relaxed mb-4">
-                    Pelacakan dan tahapan pengiriman bergerak 100% otomatis mengikuti sensor posisi kurir di peta secara real-time tanpa perlu tindakan manual.
-                  </p>
+                  {/* Active Milestone Action & Pause Status Banner */}
+                  <div className="mb-4 p-3 bg-neutral-50 border border-neutral-200 rounded-[2px]">
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <span className="text-xs font-bold text-neutral-900 flex items-center gap-1.5 truncate">
+                        <Sparkles className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span className="truncate">{liveTelemetry ? liveTelemetry.phaseTitle : currentMainStage.title}</span>
+                      </span>
+                      <span className="text-[9px] font-mono px-1.5 py-0.5 bg-white border border-neutral-200 text-neutral-700 font-semibold rounded shrink-0">
+                        {liveTelemetry ? liveTelemetry.phaseBadge : 'Proses'}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-neutral-600 leading-relaxed">
+                      {liveTelemetry ? liveTelemetry.phaseActionNote : 'Pesanan sedang diproses di fulfillment center'}
+                    </p>
+                  </div>
+
+                  {/* Realtime Street Location & Speed */}
+                  <div className="mb-4 p-2.5 bg-white border border-neutral-200 rounded-[2px] flex items-center justify-between text-xs shadow-2xs">
+                    <div className="flex items-center gap-2 min-w-0 pr-2">
+                      <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span className="truncate text-neutral-800 text-[11px] font-medium">
+                        {liveTelemetry?.currentStreetName || 'Gudang SHILLSTORE (TB Simatupang)'}
+                      </span>
+                    </div>
+                    <span className="font-mono font-bold text-neutral-900 shrink-0 text-xs bg-neutral-100 px-2 py-0.5 rounded border border-neutral-200">
+                      {liveTelemetry?.isVehicleMoving ? `${liveTelemetry.courierSpeedKmH} km/h` : 'Standby (0 km/h)'}
+                    </span>
+                  </div>
 
                   {/* Realtime stats grid */}
                   <div className="grid grid-cols-2 gap-2 mb-4 text-center">
                     <div className="bg-[#FAFAF9] p-2.5 rounded-[2px] border border-neutral-200">
                       <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">
-                        Status Terkini
+                        Status Tahap
                       </span>
                       <span className="font-bold text-neutral-900 text-xs sm:text-[13px] block mt-0.5 truncate">
                         {isDelivered ? 'Terkirim ✓' : currentMainStage.title}
@@ -775,7 +801,7 @@ function DeliveryTrackingContent() {
                         Sisa Jarak &amp; Waktu
                       </span>
                       <span className="font-bold text-neutral-900 text-xs sm:text-[13px] block mt-0.5">
-                        {isDelivered ? 'Tiba di Lokasi' : `${liveTelemetry?.remainingKm ?? '2.4'} km • ${liveTelemetry?.remainingMinutes ?? 6} mnt`}
+                        {isDelivered ? 'Tiba di Lokasi' : `${liveTelemetry?.remainingKm ?? '4.8'} km • ${liveTelemetry?.remainingMinutes ?? 12} mnt`}
                       </span>
                     </div>
                   </div>
@@ -797,10 +823,18 @@ function DeliveryTrackingContent() {
                     </div>
                     <span
                       className={`px-2 py-0.5 text-[10px] font-bold rounded shrink-0 ${
-                        isDelivered ? 'bg-emerald-100 text-emerald-800' : 'bg-neutral-900 text-white'
+                        isDelivered
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : liveTelemetry?.isVehicleMoving
+                          ? 'bg-emerald-600 text-white'
+                          : 'bg-neutral-900 text-white'
                       }`}
                     >
-                      {isDelivered ? 'Tiba di Lokasi' : 'Aktif Berkendara'}
+                      {isDelivered
+                        ? 'Tiba di Lokasi'
+                        : liveTelemetry?.isVehicleMoving
+                        ? 'Aktif Melaju'
+                        : 'Standby / Jeda'}
                     </span>
                   </div>
 
@@ -808,7 +842,7 @@ function DeliveryTrackingContent() {
                   <div className="pt-3 border-t border-neutral-150 flex items-start gap-2 text-[11px] text-neutral-500 leading-snug">
                     <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                     <span>
-                      Paket dilindungi Asuransi Pengiriman Penuh &amp; Garansi 100% Produk Original SHILLSTORE.
+                      Rute pengiriman disinkronkan secara presisi dengan data jalan OpenStreetMap Jakarta Selatan.
                     </span>
                   </div>
                 </div>

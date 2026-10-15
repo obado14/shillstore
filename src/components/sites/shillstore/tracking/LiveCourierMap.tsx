@@ -9,13 +9,18 @@ import {
   RotateCcw,
   Navigation,
   Phone,
-  MessageCircle,
   Truck,
   ShieldCheck,
   CheckCircle2,
   Clock,
   Sparkles,
+  Layers,
+  Compass,
+  Package,
+  Activity,
+  Zap,
 } from 'lucide-react';
+import type * as LeafletType from 'leaflet';
 
 export interface LiveTelemetryData {
   progress: number; // 0.0 - 1.0
@@ -24,78 +29,21 @@ export interface LiveTelemetryData {
   stageKey: 'processing' | 'packed' | 'in_transit' | 'out_for_delivery' | 'delivered';
   stageTitle: string;
   stageDescription: string;
+  phaseId: 'ORDER_CONFIRMED' | 'PACKING' | 'HANDOVER' | 'IN_TRANSIT' | 'OUT_FOR_DELIVERY' | 'DELIVERED';
+  phaseTitle: string;
+  phaseBadge: string;
+  phaseActionNote: string;
   remainingKm: string;
   remainingMinutes: number;
   isCompleted: boolean;
   courierSpeedKmH: number;
+  currentStreetName: string;
   currentCheckpointTitle: string;
   currentCheckpointLocation: string;
+  isVehicleMoving: boolean;
 }
 
-export function getTelemetryFromProgress(
-  t: number,
-  isFinished = false
-): LiveTelemetryData {
-  const clamped = Math.max(0, Math.min(1, t));
-  const remainingPct = 1 - clamped;
-  const km = Math.max(0, +(remainingPct * 4.8).toFixed(1));
-  const mins = Math.max(0, Math.round(remainingPct * 12));
-  const pct = Math.round(clamped * 100);
-
-  let stageIndex = 0;
-  let stageKey: LiveTelemetryData['stageKey'] = 'processing';
-  let stageTitle = 'Pesanan Diproses';
-  let stageDescription = 'Pesanan diverifikasi & disiapkan di fulfillment warehouse';
-  let currentCheckpointTitle = 'Pesanan Dikonfirmasi & Diproses';
-  let currentCheckpointLocation = 'SHILLSTORE Fulfillment Center, Jakarta Selatan';
-
-  if (isFinished || clamped >= 0.999) {
-    stageIndex = 4;
-    stageKey = 'delivered';
-    stageTitle = 'Terkirim';
-    stageDescription = 'Paket telah berhasil diterima oleh penerima di lokasi tujuan';
-    currentCheckpointTitle = 'Paket Berhasil Diterima';
-    currentCheckpointLocation = 'Alamat Penerima (Tujuan Akhir)';
-  } else if (clamped >= 0.70) {
-    stageIndex = 3;
-    stageKey = 'out_for_delivery';
-    stageTitle = 'Sedang Diantar';
-    stageDescription = 'Kurir sedang dalam perjalanan menuju alamat pengantaran';
-    currentCheckpointTitle = 'Kurir Menuju Alamat Penerima';
-    currentCheckpointLocation = 'Jl. Kyai Maja - Mendekati Wilayah Penerima';
-  } else if (clamped >= 0.35) {
-    stageIndex = 2;
-    stageKey = 'in_transit';
-    stageTitle = 'Dalam Pengiriman';
-    stageDescription = 'Paket sedang transit antarkota menuju hub logistik tujuan';
-    currentCheckpointTitle = 'Paket Dalam Transit Menuju Hub Tujuan';
-    currentCheckpointLocation = 'Hub Logistik Transit Blok M';
-  } else if (clamped >= 0.15) {
-    stageIndex = 1;
-    stageKey = 'packed';
-    stageTitle = 'Dikemas';
-    stageDescription = 'Paket telah selesai dibungkus dan diserahkan ke kurir ekspedisi';
-    currentCheckpointTitle = 'Paket Telah Dikemas & Diberi Label Resi';
-    currentCheckpointLocation = 'Sorting Hub TB Simatupang';
-  }
-
-  return {
-    progress: clamped,
-    progressPct: pct,
-    stageIndex,
-    stageKey,
-    stageTitle,
-    stageDescription,
-    remainingKm: isFinished || clamped >= 0.999 ? '0.0' : km.toFixed(1),
-    remainingMinutes: isFinished || clamped >= 0.999 ? 0 : Math.max(1, mins),
-    isCompleted: isFinished || clamped >= 0.999,
-    courierSpeedKmH: isFinished || clamped >= 0.999 ? 0 : 38,
-    currentCheckpointTitle,
-    currentCheckpointLocation,
-  };
-}
-
-interface LiveCourierMapProps {
+export interface LiveCourierMapProps {
   orderNumber: string;
   recipientName: string;
   address: string;
@@ -107,6 +55,35 @@ interface LiveCourierMapProps {
   onProgressUpdate?: (data: LiveTelemetryData) => void;
 }
 
+// Real Jakarta Selatan Road Waypoints (OpenStreetMap Geographic Coordinates)
+// From: SHILLSTORE Central Warehouse (Jl. TB Simatupang) -> Fatmawati -> Panglima Polim -> Blok M -> Recipient (Kebayoran Baru)
+export const JAKARTA_DELIVERY_WAYPOINTS = [
+  { lat: -6.2941, lng: 106.8042, street: 'Fulfillment Center SHILLSTORE, Jl. TB Simatupang', speed: 0 },
+  { lat: -6.2934, lng: 106.8010, street: 'Gerbang Logistik Jl. TB Simatupang', speed: 24 },
+  { lat: -6.2925, lng: 106.7975, street: 'Simpang Susun Fatmawati Raya', speed: 36 },
+  { lat: -6.2860, lng: 106.7971, street: 'Jl. RS Fatmawati Raya (Cilandak)', speed: 44 },
+  { lat: -6.2785, lng: 106.7970, street: 'Stasiun MRT Cipete Raya', speed: 46 },
+  { lat: -6.2690, lng: 106.7968, street: 'Stasiun MRT Haji Nawi', speed: 45 },
+  { lat: -6.2580, lng: 106.7975, street: 'Blok A MRT • Jl. Panglima Polim', speed: 40 },
+  { lat: -6.2495, lng: 106.7988, street: 'Jl. Panglima Polim Raya (Kebayoran Baru)', speed: 38 },
+  { lat: -6.2440, lng: 106.8005, street: 'Kawasan Melawai • Blok M Plaza', speed: 32 },
+  { lat: -6.2425, lng: 106.8014, street: 'Masuk Jl. Melati (Kompleks Perumahan)', speed: 20 },
+  { lat: -6.2415, lng: 106.8020, street: 'Jl. Melati No. 12 (Rumah Penerima)', speed: 0 },
+];
+
+// Helper to compute bearing angle between two lat/lng points
+function calculateBearing(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const phi1 = (lat1 * Math.PI) / 180;
+  const phi2 = (lat2 * Math.PI) / 180;
+
+  const y = Math.sin(dLng) * Math.cos(phi2);
+  const x = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dLng);
+
+  let bearing = (Math.atan2(y, x) * 180) / Math.PI;
+  return (bearing + 360) % 360;
+}
+
 // Normalize angle difference to avoid 360-degree wrapping glitch
 function getShortestAngleDiff(target: number, current: number): number {
   let diff = (target - current) % 360;
@@ -114,6 +91,41 @@ function getShortestAngleDiff(target: number, current: number): number {
   if (diff < -180) diff += 360;
   return diff;
 }
+
+// Distance between two points in meters
+function getDistanceMeters(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371e3;
+  const phi1 = (lat1 * Math.PI) / 180;
+  const phi2 = (lat2 * Math.PI) / 180;
+  const deltaPhi = ((lat2 - lat1) * Math.PI) / 180;
+  const deltaLambda = ((lng2 - lng1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+    Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c;
+}
+
+// Process Timeline Definitions (Realistic Pauses & Milestones)
+// Total 1x Cycle: 30 seconds
+const PHASE_DURATIONS = {
+  ORDER_CONFIRMED: 3000, // 3.0s: Pesanan Diproses (verifikasi & persiapan rak gudang)
+  PACKING: 3500,         // 3.5s: Sedang Dikemas (QC, bubble wrap, kardus resmi)
+  HANDOVER: 2500,        // 2.5s: Jeda: Kurir terima paket & muat ke bagasi motor
+  IN_TRANSIT: 12000,     // 12.0s: Aktif melaju di rute jalan raya OpenStreetMap
+  OUT_FOR_DELIVERY: 4000,// 4.0s: Memasuki perumahan penerima (< 300m)
+  DELIVERED: 5000,       // 5.0s: Paket diterima & perayaan serah terima
+};
+
+const TOTAL_CYCLE_MS =
+  PHASE_DURATIONS.ORDER_CONFIRMED +
+  PHASE_DURATIONS.PACKING +
+  PHASE_DURATIONS.HANDOVER +
+  PHASE_DURATIONS.IN_TRANSIT +
+  PHASE_DURATIONS.OUT_FOR_DELIVERY +
+  PHASE_DURATIONS.DELIVERED;
 
 export function LiveCourierMap({
   orderNumber,
@@ -126,47 +138,61 @@ export function LiveCourierMap({
   trackingNumber = 'SCP-10293817',
   onProgressUpdate,
 }: LiveCourierMapProps) {
-  // Mode: 'live-animation' | 'google-maps'
-  const [mapMode, setMapMode] = useState<'live-animation' | 'google-maps'>('live-animation');
+  // Map Container & Leaflet References
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
+  const leafletMapRef = useRef<LeafletType.Map | null>(null);
+  const courierMarkerRef = useRef<LeafletType.Marker | null>(null);
+  const plannedPolylineRef = useRef<LeafletType.Polyline | null>(null);
+  const traveledPolylineRef = useRef<LeafletType.Polyline | null>(null);
+  const courierIconElementRef = useRef<HTMLDivElement | null>(null);
 
-  // Animation states
+  // Map Modes & Options
+  const [tileProvider, setTileProvider] = useState<'voyager' | 'osm' | 'positron'>('voyager');
+  const [autoPan, setAutoPan] = useState(false);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [mapLoaded, setMapLoaded] = useState(false);
+
+  // Playback Control States
   const [isPlaying, setIsPlaying] = useState(true);
   const [speedMultiplier, setSpeedMultiplier] = useState<number>(1);
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [contactModalOpen, setContactModalOpen] = useState(false);
 
-  // Throttled telemetry for React state (updates ~4 times per second)
-  const [telemetry, setTelemetry] = useState({
-    remainingKm: '3.6',
-    remainingMinutes: 9,
-    progressPct: 15,
+  // Live Telemetry State for Header & HUD
+  const [telemetry, setTelemetry] = useState<LiveTelemetryData>({
+    progress: 0.05,
+    progressPct: 5,
+    stageIndex: 0,
+    stageKey: 'processing',
+    stageTitle: 'Pesanan Diproses',
+    stageDescription: 'Pesanan diverifikasi & masuk antrean fulfillment center',
+    phaseId: 'ORDER_CONFIRMED',
+    phaseTitle: 'Pesanan Dikonfirmasi & Diproses',
+    phaseBadge: 'Memverifikasi Pembayaran',
+    phaseActionNote: 'Staf gudang sedang mengambil produk dari rak persediaan (Fulfillment Center)',
+    remainingKm: '4.8',
+    remainingMinutes: 14,
+    isCompleted: false,
+    courierSpeedKmH: 0,
+    currentStreetName: 'Gudang SHILLSTORE (TB Simatupang)',
+    currentCheckpointTitle: 'Pesanan Dikonfirmasi & Diproses',
+    currentCheckpointLocation: 'SHILLSTORE Fulfillment Center, Jakarta Selatan',
+    isVehicleMoving: false,
   });
 
-  // DOM Refs for direct 60 FPS GPU updates (no React re-render lag)
-  const pathRef = useRef<SVGPathElement | null>(null);
-  const traveledPathRef = useRef<SVGPathElement | null>(null);
-  const markerRef = useRef<HTMLDivElement | null>(null);
-  const iconRotateRef = useRef<HTMLDivElement | null>(null);
-  const sliderRef = useRef<HTMLInputElement | null>(null);
-
-  // Animation internal mutable variables
-  const progressRef = useRef<number>(0.06); // Start near beginning in Stage 0
+  // Animation Mutable Refs for 60 FPS Fluidity
+  const elapsedCycleMsRef = useRef<number>(200); // Start slightly into phase 1
   const speedRef = useRef<number>(1);
   const isPlayingRef = useRef<boolean>(true);
-  const isCompletedRef = useRef<boolean>(false);
-  const smoothedAngleRef = useRef<number>(20);
-  const lastTimeRef = useRef<number | null>(null);
+  const lastRafTimeRef = useRef<number | null>(null);
   const rafIdRef = useRef<number | null>(null);
+  const smoothedAngleRef = useRef<number>(0);
   const lastTelemetryUpdateRef = useRef<number>(0);
-  const loopTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Keep callback ref updated to prevent unnecessary re-render triggers
+  // Keep callback ref fresh
   const onProgressUpdateRef = useRef(onProgressUpdate);
   useEffect(() => {
     onProgressUpdateRef.current = onProgressUpdate;
   }, [onProgressUpdate]);
 
-  // Keep refs in sync with states
   useEffect(() => {
     speedRef.current = speedMultiplier;
   }, [speedMultiplier]);
@@ -175,679 +201,840 @@ export function LiveCourierMap({
     isPlayingRef.current = isPlaying;
   }, [isPlaying]);
 
-  // Smooth SVG Path definition (ViewBox: 0 0 1000 560)
-  // Continuous cubic Bezier curves without sharp corners:
-  // Warehouse (110, 440) -> Simatupang -> Fatmawati -> Blok A -> Panglima Polim -> Blok M -> Kyai Maja -> Alamat Penerima (880, 130)
-  const routePathD =
-    'M 110,440 C 170,440 215,415 260,390 C 310,360 345,330 380,295 C 420,255 460,245 510,245 C 570,245 625,230 675,200 C 725,170 765,155 805,145 C 840,135 860,132 880,130';
+  // Precompute cumulative road distances for accurate waypoint interpolation
+  const roadDistancesRef = useRef<{ total: number; segments: number[]; cumulative: number[] }>({
+    total: 0,
+    segments: [],
+    cumulative: [0],
+  });
 
-  // Apply position to DOM elements directly for 60 FPS smoothness
-  const updateVisualPosition = useCallback((t: number) => {
-    const path = pathRef.current;
-    if (!path) return;
+  useEffect(() => {
+    let sum = 0;
+    const segs: number[] = [];
+    const cum: number[] = [0];
 
-    try {
-      const totalLen = path.getTotalLength();
-      if (totalLen <= 0) return;
-
-      const currentDist = Math.max(0, Math.min(1, t)) * totalLen;
-      const pt = path.getPointAtLength(currentDist);
-
-      // Tangent for smooth heading angle
-      const lookAheadDist = Math.min(totalLen, currentDist + 3);
-      const ptAhead = path.getPointAtLength(lookAheadDist);
-      const dx = ptAhead.x - pt.x;
-      const dy = ptAhead.y - pt.y;
-
-      let targetAngle = 0;
-      if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) {
-        targetAngle = (Math.atan2(dy, dx) * 180) / Math.PI;
-      }
-
-      // Smooth angle interpolation (vehicle leaning into turn)
-      const angleDiff = getShortestAngleDiff(targetAngle, smoothedAngleRef.current);
-      smoothedAngleRef.current += angleDiff * 0.18;
-
-      // Convert viewBox (1000 x 560) to percentage
-      const leftPct = (pt.x / 1000) * 100;
-      const topPct = (pt.y / 560) * 100;
-
-      // Direct DOM updates (no CSS transition delay to prevent stutter)
-      if (markerRef.current) {
-        markerRef.current.style.left = `${leftPct}%`;
-        markerRef.current.style.top = `${topPct}%`;
-      }
-
-      if (iconRotateRef.current) {
-        iconRotateRef.current.style.transform = `rotate(${smoothedAngleRef.current}deg)`;
-      }
-
-      if (traveledPathRef.current) {
-        traveledPathRef.current.style.strokeDashoffset = `${totalLen * (1 - t)}`;
-      }
-
-      if (sliderRef.current) {
-        sliderRef.current.value = String(t);
-      }
-    } catch {
-      // SVG geometry might not be available before first paint
+    for (let i = 0; i < JAKARTA_DELIVERY_WAYPOINTS.length - 1; i++) {
+      const p1 = JAKARTA_DELIVERY_WAYPOINTS[i];
+      const p2 = JAKARTA_DELIVERY_WAYPOINTS[i + 1];
+      const d = getDistanceMeters(p1.lat, p1.lng, p2.lat, p2.lng);
+      segs.push(d);
+      sum += d;
+      cum.push(sum);
     }
+
+    roadDistancesRef.current = { total: sum, segments: segs, cumulative: cum };
   }, []);
 
-  // Main 60 FPS Animation Loop
-  useEffect(() => {
-    // Total duration of route at 1x speed: 14 seconds (lively, realistic, smooth)
-    const BASE_DURATION_MS = 14000;
+  // Compute position and telemetry given cycle timestamp in ms (0 to TOTAL_CYCLE_MS)
+  const computeTelemetryAtTime = useCallback((timeMs: number): {
+    telemetry: LiveTelemetryData;
+    lat: number;
+    lng: number;
+    targetBearing: number;
+    traveledPoints: [number, number][];
+  } => {
+    const tClamped = Math.max(0, Math.min(TOTAL_CYCLE_MS, timeMs));
+    const { total, cumulative } = roadDistancesRef.current;
 
-    const tick = (now: number) => {
-      if (lastTimeRef.current === null) {
-        lastTimeRef.current = now;
+    const tPhase1 = PHASE_DURATIONS.ORDER_CONFIRMED;
+    const tPhase2 = tPhase1 + PHASE_DURATIONS.PACKING;
+    const tPhase3 = tPhase2 + PHASE_DURATIONS.HANDOVER;
+    const tPhase4 = tPhase3 + PHASE_DURATIONS.IN_TRANSIT;
+    const tPhase5 = tPhase4 + PHASE_DURATIONS.OUT_FOR_DELIVERY;
+
+    let phaseId: LiveTelemetryData['phaseId'] = 'ORDER_CONFIRMED';
+    let stageIndex = 0;
+    let stageKey: LiveTelemetryData['stageKey'] = 'processing';
+    let stageTitle = 'Pesanan Diproses';
+    let stageDescription = 'Pesanan diverifikasi & masuk antrean fulfillment center';
+    let phaseTitle = 'Pesanan Dikonfirmasi & Diproses';
+    let phaseBadge = 'Verifikasi Pembayaran';
+    let phaseActionNote = 'Staf gudang sedang memverifikasi nota pesanan & mengambil item dari rak';
+    let courierSpeedKmH = 0;
+    let isVehicleMoving = false;
+    let progressRatio = 0.05;
+    let driveFraction = 0; // 0 to 1 along the road
+    let isCompleted = false;
+
+    if (tClamped < tPhase1) {
+      // 1. ORDER_CONFIRMED (Warehouse Idle)
+      phaseId = 'ORDER_CONFIRMED';
+      stageIndex = 0;
+      stageKey = 'processing';
+      stageTitle = 'Pesanan Diproses';
+      stageDescription = 'Pesanan diverifikasi & disiapkan staf gudang';
+      phaseTitle = 'Pesanan Dikonfirmasi & Diproses';
+      phaseBadge = 'Tahap 1: Verifikasi';
+      phaseActionNote = 'Sistem memverifikasi bukti pembayaran. Staf gudang menyiapkan paket di rak persediaan.';
+      courierSpeedKmH = 0;
+      isVehicleMoving = false;
+      driveFraction = 0;
+      progressRatio = (tClamped / tPhase1) * 0.15;
+    } else if (tClamped < tPhase2) {
+      // 2. PACKING (Warehouse Packing & QC)
+      phaseId = 'PACKING';
+      stageIndex = 1;
+      stageKey = 'packed';
+      stageTitle = 'Dikemas';
+      stageDescription = 'Quality check produk & pembungkusan rapi';
+      phaseTitle = 'Sedang Dikemas (Quality Check)';
+      phaseBadge = 'Tahap 2: Sedang Dikemas';
+      phaseActionNote = 'Pemeriksaan jahitan & kualitas, pelapisan bubble wrap tebal, dan penyegelan kotak SHILLSTORE.';
+      courierSpeedKmH = 0;
+      isVehicleMoving = false;
+      driveFraction = 0;
+      progressRatio = 0.15 + ((tClamped - tPhase1) / PHASE_DURATIONS.PACKING) * 0.12;
+    } else if (tClamped < tPhase3) {
+      // 3. HANDOVER (Pause: Courier Pickup & Engine Start)
+      phaseId = 'HANDOVER';
+      stageIndex = 1;
+      stageKey = 'packed';
+      stageTitle = 'Dikemas & Siap Berangkat';
+      stageDescription = 'Paket diserahterimakan ke kurir armada';
+      phaseTitle = 'Penyerahan Paket ke Kurir Ekspedisi';
+      phaseBadge = 'Jeda: Muat ke Motor';
+      phaseActionNote = `Kurir (${courierName} • Ahmad Fauzi) menempel label resi #${trackingNumber} & memuat paket ke box pengaman motor.`;
+      courierSpeedKmH = 0;
+      isVehicleMoving = false;
+      driveFraction = 0;
+      progressRatio = 0.27 + ((tClamped - tPhase2) / PHASE_DURATIONS.HANDOVER) * 0.08;
+    } else if (tClamped < tPhase4) {
+      // 4. IN_TRANSIT (Driving along OpenStreetMap route from 0% to 80%)
+      phaseId = 'IN_TRANSIT';
+      stageIndex = 2;
+      stageKey = 'in_transit';
+      stageTitle = 'Dalam Pengiriman';
+      stageDescription = 'Paket melaju di jalur arteri kota Jakarta Selatan';
+      phaseTitle = 'Dalam Perjalanan Antar-Hub / Jalan Raya';
+      phaseBadge = 'Melaju di Jalan Raya';
+      phaseActionNote = 'Kurir bergerak melintasi rute utama Jl. TB Simatupang & Jl. RS Fatmawati Raya.';
+      isVehicleMoving = true;
+      const tInPhase = tClamped - tPhase3;
+      driveFraction = (tInPhase / PHASE_DURATIONS.IN_TRANSIT) * 0.8;
+      progressRatio = 0.35 + (tInPhase / PHASE_DURATIONS.IN_TRANSIT) * 0.45;
+    } else if (tClamped < tPhase5) {
+      // 5. OUT_FOR_DELIVERY (Driving in neighborhood from 80% to 100%)
+      phaseId = 'OUT_FOR_DELIVERY';
+      stageIndex = 3;
+      stageKey = 'out_for_delivery';
+      stageTitle = 'Sedang Diantar';
+      stageDescription = 'Kurir memasuki kawasan perumahan penerima';
+      phaseTitle = 'Sedang Diantar ke Alamat Tujuan';
+      phaseBadge = 'Mendekati Rumah Penerima';
+      phaseActionNote = 'Kurir memperlambat kecepatan dan mencari nomor rumah tujuan (radius < 300 meter).';
+      isVehicleMoving = true;
+      const tInPhase = tClamped - tPhase4;
+      driveFraction = 0.8 + (tInPhase / PHASE_DURATIONS.OUT_FOR_DELIVERY) * 0.2;
+      progressRatio = 0.8 + (tInPhase / PHASE_DURATIONS.OUT_FOR_DELIVERY) * 0.19;
+    } else {
+      // 6. DELIVERED (Arrived at Destination House)
+      phaseId = 'DELIVERED';
+      stageIndex = 4;
+      stageKey = 'delivered';
+      stageTitle = 'Terkirim';
+      stageDescription = 'Paket berhasil diterima oleh penerima';
+      phaseTitle = 'Paket Berhasil Diterima (Terkirim)';
+      phaseBadge = '✓ Paket Telah Sampai';
+      phaseActionNote = `Paket telah diterima dengan baik oleh ${recipientName} di alamat tujuan. Pengiriman selesai!`;
+      courierSpeedKmH = 0;
+      isVehicleMoving = false;
+      driveFraction = 1.0;
+      progressRatio = 1.0;
+      isCompleted = true;
+    }
+
+    // Determine exact lat, lng, bearing, and street along waypoints using driveFraction
+    let lat = JAKARTA_DELIVERY_WAYPOINTS[0].lat;
+    let lng = JAKARTA_DELIVERY_WAYPOINTS[0].lng;
+    let targetBearing = 0;
+    let currentStreetName = JAKARTA_DELIVERY_WAYPOINTS[0].street;
+    const traveledPoints: [number, number][] = [[lat, lng]];
+
+    if (driveFraction > 0 && total > 0) {
+      const targetDist = Math.min(total, driveFraction * total);
+
+      let segIdx = 0;
+      while (segIdx < cumulative.length - 1 && cumulative[segIdx + 1] < targetDist) {
+        traveledPoints.push([JAKARTA_DELIVERY_WAYPOINTS[segIdx + 1].lat, JAKARTA_DELIVERY_WAYPOINTS[segIdx + 1].lng]);
+        segIdx++;
       }
 
-      const delta = now - lastTimeRef.current;
-      lastTimeRef.current = now;
+      if (segIdx < JAKARTA_DELIVERY_WAYPOINTS.length - 1) {
+        const segStartDist = cumulative[segIdx];
+        const segLen = roadDistancesRef.current.segments[segIdx];
+        const localDist = targetDist - segStartDist;
+        const localFrac = segLen > 0 ? localDist / segLen : 0;
 
-      if (isPlayingRef.current && !isCompletedRef.current) {
-        const increment = (delta / BASE_DURATION_MS) * speedRef.current;
-        let newProgress = progressRef.current + increment;
+        const pA = JAKARTA_DELIVERY_WAYPOINTS[segIdx];
+        const pB = JAKARTA_DELIVERY_WAYPOINTS[segIdx + 1];
 
-        if (newProgress >= 1) {
-          newProgress = 1;
-          isCompletedRef.current = true;
-          setIsCompleted(true);
-          updateVisualPosition(1);
+        lat = pA.lat + (pB.lat - pA.lat) * localFrac;
+        lng = pA.lng + (pB.lng - pA.lng) * localFrac;
+        targetBearing = calculateBearing(pA.lat, pA.lng, pB.lat, pB.lng);
+        currentStreetName = localFrac > 0.5 ? pB.street : pA.street;
 
-          const completedData = getTelemetryFromProgress(1, true);
-          setTelemetry({
-            remainingKm: '0.0',
-            remainingMinutes: 0,
-            progressPct: 100,
-          });
-          onProgressUpdateRef.current?.(completedData);
-
-          // Auto-replay after 2.8 seconds pause so the user sees "Terkirim" clearly, then loops smoothly
-          if (loopTimeoutRef.current) clearTimeout(loopTimeoutRef.current);
-          loopTimeoutRef.current = setTimeout(() => {
-            progressRef.current = 0;
-            isCompletedRef.current = false;
-            setIsCompleted(false);
-            updateVisualPosition(0);
-
-            const resetData = getTelemetryFromProgress(0, false);
-            setTelemetry({
-              remainingKm: resetData.remainingKm,
-              remainingMinutes: resetData.remainingMinutes,
-              progressPct: 0,
-            });
-            onProgressUpdateRef.current?.(resetData);
-          }, 2800);
-        } else {
-          progressRef.current = newProgress;
-          updateVisualPosition(newProgress);
+        if (isVehicleMoving) {
+          courierSpeedKmH = Math.round(pA.speed + (pB.speed - pA.speed) * localFrac);
         }
 
-        // Throttled Telemetry Update (every 180ms) for synchronized UI progression
+        traveledPoints.push([lat, lng]);
+      } else {
+        const last = JAKARTA_DELIVERY_WAYPOINTS[JAKARTA_DELIVERY_WAYPOINTS.length - 1];
+        lat = last.lat;
+        lng = last.lng;
+        currentStreetName = last.street;
+        traveledPoints.push([lat, lng]);
+      }
+    } else {
+      const pA = JAKARTA_DELIVERY_WAYPOINTS[0];
+      const pB = JAKARTA_DELIVERY_WAYPOINTS[1];
+      targetBearing = calculateBearing(pA.lat, pA.lng, pB.lat, pB.lng);
+    }
+
+    const remainingFraction = Math.max(0, 1 - driveFraction);
+    const remKm = isCompleted ? '0.0' : Math.max(0.1, +(remainingFraction * 4.8).toFixed(1)).toFixed(1);
+    const remMins = isCompleted ? 0 : Math.max(1, Math.round(remainingFraction * 14));
+
+    const finalTelemetry: LiveTelemetryData = {
+      progress: Math.min(1, Math.max(0, progressRatio)),
+      progressPct: Math.round(progressRatio * 100),
+      stageIndex,
+      stageKey,
+      stageTitle,
+      stageDescription,
+      phaseId,
+      phaseTitle,
+      phaseBadge,
+      phaseActionNote,
+      remainingKm: remKm,
+      remainingMinutes: remMins,
+      isCompleted,
+      courierSpeedKmH,
+      currentStreetName,
+      currentCheckpointTitle: phaseTitle,
+      currentCheckpointLocation: currentStreetName,
+      isVehicleMoving,
+    };
+
+    return {
+      telemetry: finalTelemetry,
+      lat,
+      lng,
+      targetBearing,
+      traveledPoints,
+    };
+  }, [recipientName, courierName, trackingNumber]);
+
+  // Initialize Leaflet Map (Client-Side Only via dynamic import)
+  useEffect(() => {
+    let isCancelled = false;
+
+    async function initLeaflet() {
+      if (!mapContainerRef.current) return;
+      // Prevent multiple initializations on hot reload
+      if ((mapContainerRef.current as any)._leaflet_id) return;
+
+      const L = (await import('leaflet')).default;
+      if (isCancelled || !mapContainerRef.current) return;
+
+      // Base Map Centered in South Jakarta
+      const map = L.map(mapContainerRef.current, {
+        zoomControl: false,
+        attributionControl: false,
+        scrollWheelZoom: false, // Prevent interfering with page scroll
+      }).setView([-6.2678, 106.8005], 13);
+
+      leafletMapRef.current = map;
+
+      // 1. Tile Layers: CartoDB Voyager (Modern OSM), Standard OSM, or Positron
+      const tileUrls = {
+        voyager: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        osm: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        positron: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+      };
+
+      const tileLayer = L.tileLayer(tileUrls[tileProvider], {
+        maxZoom: 19,
+        subdomains: 'abcd',
+      }).addTo(map);
+
+      // 2. Full Planned Route Polyline (dashed gray)
+      const latLngPoints = JAKARTA_DELIVERY_WAYPOINTS.map((w) => [w.lat, w.lng] as [number, number]);
+      const plannedLine = L.polyline(latLngPoints, {
+        color: '#71717A',
+        weight: 5,
+        opacity: 0.5,
+        dashArray: '8, 8',
+        lineCap: 'round',
+      }).addTo(map);
+      plannedPolylineRef.current = plannedLine;
+
+      // 3. Traveled Route Polyline (high-contrast solid dark/emerald line)
+      const traveledLine = L.polyline([[JAKARTA_DELIVERY_WAYPOINTS[0].lat, JAKARTA_DELIVERY_WAYPOINTS[0].lng]], {
+        color: '#10B981',
+        weight: 6,
+        opacity: 0.9,
+        lineCap: 'round',
+        lineJoin: 'round',
+      }).addTo(map);
+      traveledPolylineRef.current = traveledLine;
+
+      // 4. Warehouse Origin Pin (Custom HTML divIcon)
+      const warehouseIcon = L.divIcon({
+        className: 'custom-warehouse-pin',
+        iconSize: [36, 36],
+        iconAnchor: [18, 18],
+        html: `
+          <div class="relative flex items-center justify-center">
+            <div class="w-9 h-9 rounded-full bg-black border-2 border-white shadow-xl flex items-center justify-center text-white ring-4 ring-neutral-200">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 8 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+              </svg>
+            </div>
+            <div class="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap bg-neutral-900 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow">
+              Gudang SHILLSTORE
+            </div>
+          </div>
+        `,
+      });
+
+      L.marker([JAKARTA_DELIVERY_WAYPOINTS[0].lat, JAKARTA_DELIVERY_WAYPOINTS[0].lng], {
+        icon: warehouseIcon,
+        zIndexOffset: 10,
+      }).addTo(map);
+
+      // 5. Recipient Destination Pin (Custom HTML divIcon)
+      const lastWp = JAKARTA_DELIVERY_WAYPOINTS[JAKARTA_DELIVERY_WAYPOINTS.length - 1];
+      const destinationIcon = L.divIcon({
+        className: 'custom-destination-pin',
+        iconSize: [36, 36],
+        iconAnchor: [18, 18],
+        html: `
+          <div class="relative flex items-center justify-center">
+            <div class="w-9 h-9 rounded-full bg-emerald-600 border-2 border-white shadow-xl flex items-center justify-center text-white ring-4 ring-emerald-200">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              </svg>
+            </div>
+            <div class="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap bg-emerald-700 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow">
+              Tujuan: ${recipientName.split(' ')[0]}
+            </div>
+          </div>
+        `,
+      });
+
+      L.marker([lastWp.lat, lastWp.lng], {
+        icon: destinationIcon,
+        zIndexOffset: 10,
+      }).addTo(map);
+
+      // 6. Live Moving Courier Marker (Custom HTML divIcon with heading rotation)
+      const courierIcon = L.divIcon({
+        className: 'custom-courier-marker',
+        iconSize: [44, 44],
+        iconAnchor: [22, 22],
+        html: `
+          <div id="courier-vehicle-wrapper" class="relative flex flex-col items-center">
+            <!-- Pulsing Concentric Radar Rings -->
+            <div class="absolute -inset-2.5 rounded-full bg-emerald-400/35 animate-ping pointer-events-none"></div>
+            <div class="absolute -inset-1 rounded-full bg-blue-500/30 animate-pulse pointer-events-none"></div>
+
+            <!-- Floating Courier Label -->
+            <div class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-neutral-950 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-[2px] shadow-xl border border-neutral-700 flex items-center gap-1.5 z-20">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>Ahmad (Kurir)</span>
+              <span class="text-neutral-400 font-mono text-[8px]">${courierName}</span>
+            </div>
+
+            <!-- Motorcycle Icon with Heading Heading Angle -->
+            <div id="courier-heading-rotator" class="w-11 h-11 rounded-full bg-neutral-950 border-2 border-white text-white flex items-center justify-center shadow-2xl z-10 transition-transform duration-100 ease-linear">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white" class="translate-x-[0.5px]">
+                <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+              </svg>
+            </div>
+          </div>
+        `,
+      });
+
+      const courierMarker = L.marker([JAKARTA_DELIVERY_WAYPOINTS[0].lat, JAKARTA_DELIVERY_WAYPOINTS[0].lng], {
+        icon: courierIcon,
+        zIndexOffset: 100,
+      }).addTo(map);
+
+      courierMarkerRef.current = courierMarker;
+
+      // Fit map bounds to encompass the entire delivery route nicely with padding
+      map.fitBounds(plannedLine.getBounds(), {
+        padding: [45, 45],
+        maxZoom: 14,
+      });
+
+      setMapLoaded(true);
+    }
+
+    initLeaflet();
+
+    return () => {
+      isCancelled = true;
+      if (leafletMapRef.current) {
+        leafletMapRef.current.remove();
+        leafletMapRef.current = null;
+      }
+    };
+  }, [tileProvider, recipientName, courierName]);
+
+  // Main 60 FPS RequestAnimationFrame Animation Loop
+  useEffect(() => {
+    const tick = (now: number) => {
+      if (lastRafTimeRef.current === null) {
+        lastRafTimeRef.current = now;
+      }
+
+      const delta = now - lastRafTimeRef.current;
+      lastRafTimeRef.current = now;
+
+      if (isPlayingRef.current) {
+        // Advance cycle clock by delta * speed
+        elapsedCycleMsRef.current += delta * speedRef.current;
+
+        // Auto-loop seamlessly when full cycle is completed
+        if (elapsedCycleMsRef.current >= TOTAL_CYCLE_MS) {
+          elapsedCycleMsRef.current = 0;
+        }
+
+        const result = computeTelemetryAtTime(elapsedCycleMsRef.current);
+
+        // Update Leaflet map marker & traveled polyline directly (no React re-render lag)
+        if (courierMarkerRef.current) {
+          courierMarkerRef.current.setLatLng([result.lat, result.lng]);
+
+          // Smooth heading interpolation
+          const angleDiff = getShortestAngleDiff(result.targetBearing, smoothedAngleRef.current);
+          smoothedAngleRef.current += angleDiff * 0.15;
+
+          const rotator = document.getElementById('courier-heading-rotator');
+          if (rotator) {
+            rotator.style.transform = `rotate(${smoothedAngleRef.current}deg)`;
+          }
+        }
+
+        if (traveledPolylineRef.current) {
+          traveledPolylineRef.current.setLatLngs(result.traveledPoints);
+        }
+
+        // Auto-Pan camera if enabled
+        if (autoPan && leafletMapRef.current && result.telemetry.isVehicleMoving) {
+          leafletMapRef.current.panTo([result.lat, result.lng], { animate: false });
+        }
+
+        // Throttle React State updates to ~5 times per second (every 180ms) for snappy UI without lag
         if (now - lastTelemetryUpdateRef.current > 180) {
           lastTelemetryUpdateRef.current = now;
-          const liveData = getTelemetryFromProgress(newProgress, false);
-
-          setTelemetry({
-            remainingKm: liveData.remainingKm,
-            remainingMinutes: liveData.remainingMinutes,
-            progressPct: liveData.progressPct,
-          });
-
-          onProgressUpdateRef.current?.(liveData);
+          setTelemetry(result.telemetry);
+          onProgressUpdateRef.current?.(result.telemetry);
         }
       }
 
       rafIdRef.current = requestAnimationFrame(tick);
     };
 
-    // Auto-start immediately on mount without needing any user click!
     rafIdRef.current = requestAnimationFrame(tick);
 
     return () => {
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
-      if (loopTimeoutRef.current) clearTimeout(loopTimeoutRef.current);
-      lastTimeRef.current = null;
+      lastRafTimeRef.current = null;
     };
-  }, [updateVisualPosition]);
+  }, [computeTelemetryAtTime, autoPan]);
 
-  // Initial draw once SVG path is rendered and broadcast initial stage
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      updateVisualPosition(progressRef.current);
-      const initialData = getTelemetryFromProgress(progressRef.current, false);
-      setTelemetry({
-        remainingKm: initialData.remainingKm,
-        remainingMinutes: initialData.remainingMinutes,
-        progressPct: initialData.progressPct,
-      });
-      onProgressUpdateRef.current?.(initialData);
-    }, 60);
-    return () => clearTimeout(timer);
-  }, [updateVisualPosition]);
+  // Handle Manual Scrubber Slider
+  const handleScrub = (val: number) => {
+    const targetMs = val * TOTAL_CYCLE_MS;
+    elapsedCycleMsRef.current = targetMs;
 
-  // Controls: Play / Pause toggle
-  const togglePlayPause = () => {
-    if (isCompletedRef.current) {
-      handleReplay();
-      return;
+    const result = computeTelemetryAtTime(targetMs);
+
+    if (courierMarkerRef.current) {
+      courierMarkerRef.current.setLatLng([result.lat, result.lng]);
     }
+    if (traveledPolylineRef.current) {
+      traveledPolylineRef.current.setLatLngs(result.traveledPoints);
+    }
+
+    setTelemetry(result.telemetry);
+    onProgressUpdateRef.current?.(result.telemetry);
+  };
+
+  // Play / Pause Toggle
+  const togglePlayPause = () => {
     const next = !isPlaying;
     setIsPlaying(next);
     isPlayingRef.current = next;
-    lastTimeRef.current = null; // Prevent delta leap
+    lastRafTimeRef.current = null;
   };
 
-  // Controls: Replay from beginning
+  // Replay from Beginning
   const handleReplay = () => {
-    if (loopTimeoutRef.current) clearTimeout(loopTimeoutRef.current);
-    progressRef.current = 0;
-    isCompletedRef.current = false;
-    setIsCompleted(false);
+    elapsedCycleMsRef.current = 0;
     setIsPlaying(true);
     isPlayingRef.current = true;
-    lastTimeRef.current = null;
-    updateVisualPosition(0);
+    lastRafTimeRef.current = null;
 
-    const resetData = getTelemetryFromProgress(0, false);
-    setTelemetry({
-      remainingKm: resetData.remainingKm,
-      remainingMinutes: resetData.remainingMinutes,
-      progressPct: 0,
-    });
-    onProgressUpdateRef.current?.(resetData);
+    const result = computeTelemetryAtTime(0);
+    if (courierMarkerRef.current) {
+      courierMarkerRef.current.setLatLng([result.lat, result.lng]);
+    }
+    if (traveledPolylineRef.current) {
+      traveledPolylineRef.current.setLatLngs(result.traveledPoints);
+    }
+    if (leafletMapRef.current && plannedPolylineRef.current) {
+      leafletMapRef.current.fitBounds(plannedPolylineRef.current.getBounds(), { padding: [45, 45] });
+    }
+
+    setTelemetry(result.telemetry);
+    onProgressUpdateRef.current?.(result.telemetry);
   };
 
-  // Controls: Scrub slider manually
-  const handleScrub = (val: number) => {
-    progressRef.current = val;
-    const done = val >= 1;
-    isCompletedRef.current = done;
-    setIsCompleted(done);
-    updateVisualPosition(val);
-
-    const scrubData = getTelemetryFromProgress(val, done);
-    setTelemetry({
-      remainingKm: scrubData.remainingKm,
-      remainingMinutes: scrubData.remainingMinutes,
-      progressPct: scrubData.progressPct,
-    });
-    onProgressUpdateRef.current?.(scrubData);
+  // Recenter Map to Entire Route
+  const handleFitRouteBounds = () => {
+    setAutoPan(false);
+    if (leafletMapRef.current && plannedPolylineRef.current) {
+      leafletMapRef.current.fitBounds(plannedPolylineRef.current.getBounds(), { padding: [45, 45] });
+    }
   };
 
-  // Google Maps external link
+  // Google Maps External URL
   const fullAddressQuery = `${address}, ${city}, ${province}${postalCode ? ` ${postalCode}` : ''}, Indonesia`;
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddressQuery)}`;
 
-  // Google Maps Embed URL
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  const embedUrl = apiKey
-    ? `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${encodeURIComponent(fullAddressQuery)}`
-    : `https://maps.google.com/maps?q=${encodeURIComponent(fullAddressQuery)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
-
   return (
     <div className="w-full bg-white border border-neutral-200 rounded-[2px] overflow-hidden mb-8 shadow-xs">
-      {/* 1. HEADER SECTION: TITLE, BADGE & TAB TOGGLE */}
-      <div className="p-4 sm:p-5 border-b border-neutral-150 flex flex-wrap items-center justify-between gap-3 bg-[#FAFAF9]/80">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-neutral-900 text-white flex items-center justify-center shrink-0">
-            <MapPin className="w-4 h-4 text-white" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-xs sm:text-[13px] font-semibold tracking-[0.16em] uppercase text-neutral-900">
-                Peta Pelacakan Pengiriman
-              </h3>
-              <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[9px] font-bold uppercase tracking-wider rounded-[2px] flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                Live Otomatis 🛵
-              </span>
+      {/* 1. MAP HEADER & REAL-TIME LOGISTICS BANNER */}
+      <div className="p-4 sm:p-5 border-b border-neutral-150 bg-[#FAFAF9]/90">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center shrink-0">
+              <Compass className="w-4 h-4 text-white" />
             </div>
-            <p className="text-[11px] text-neutral-500 truncate max-w-md mt-0.5">
-              Tujuan: {address}, {city} • Penerima: {recipientName}
-            </p>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-xs sm:text-[13px] font-semibold tracking-[0.16em] uppercase text-neutral-900">
+                  Simulasi Pengiriman OpenStreetMap
+                </h3>
+                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[9px] font-bold uppercase tracking-wider rounded-[2px] flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                  Live GPS Akurat 🛵
+                </span>
+              </div>
+              <p className="text-[11px] text-neutral-500 truncate max-w-lg mt-0.5">
+                Rute Asli Jakarta Selatan: TB Simatupang → Fatmawati → Panglima Polim → Kebayoran Baru
+              </p>
+            </div>
+          </div>
+
+          {/* Map Layer Mode & External Google Maps Button */}
+          <div className="flex items-center gap-2">
+            {/* Tile Layer Selector */}
+            <div className="inline-flex p-0.5 bg-neutral-200 rounded-[2px] text-[10px] font-semibold uppercase tracking-wider">
+              <button
+                type="button"
+                onClick={() => setTileProvider('voyager')}
+                className={`px-2.5 py-1 rounded-[2px] transition-colors cursor-pointer ${
+                  tileProvider === 'voyager' ? 'bg-black text-white shadow-2xs' : 'text-neutral-600 hover:text-black'
+                }`}
+                title="Peta OpenStreetMap Modern dengan detail gedung & landmark (CARTO Voyager)"
+              >
+                OSM Voyager
+              </button>
+              <button
+                type="button"
+                onClick={() => setTileProvider('osm')}
+                className={`px-2.5 py-1 rounded-[2px] transition-colors cursor-pointer ${
+                  tileProvider === 'osm' ? 'bg-black text-white shadow-2xs' : 'text-neutral-600 hover:text-black'
+                }`}
+                title="Peta OpenStreetMap Standar Resmi"
+              >
+                OSM Standar
+              </button>
+            </div>
+
+            <a
+              href={googleMapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 border border-neutral-300 hover:border-black hover:bg-neutral-900 hover:text-white text-neutral-800 rounded-[2px] transition-colors flex items-center justify-center cursor-pointer"
+              title="Buka Koordinat di Google Maps"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
           </div>
         </div>
 
-        {/* Tab Mode & Google Maps External Button */}
-        <div className="flex items-center gap-2 shrink-0">
-          <div className="inline-flex p-0.5 bg-neutral-200 rounded-[2px] text-[10px] font-semibold uppercase tracking-wider">
-            <button
-              type="button"
-              onClick={() => setMapMode('live-animation')}
-              className={`px-3 py-1.5 rounded-[2px] transition-colors cursor-pointer ${
-                mapMode === 'live-animation'
-                  ? 'bg-black text-white shadow-2xs'
-                  : 'text-neutral-600 hover:text-black'
-              }`}
-            >
-              Peta Bergerak 🛵
-            </button>
-            <button
-              type="button"
-              onClick={() => setMapMode('google-maps')}
-              className={`px-3 py-1.5 rounded-[2px] transition-colors cursor-pointer ${
-                mapMode === 'google-maps'
-                  ? 'bg-black text-white shadow-2xs'
-                  : 'text-neutral-600 hover:text-black'
-              }`}
-            >
-              Google Maps
-            </button>
+        {/* 2. REAL-TIME MILESTONE & JEDA PROCESS BANNER */}
+        <div className="bg-white border border-neutral-200 p-3 sm:p-3.5 rounded-[2px] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-2xs">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-neutral-900 truncate">
+                  {telemetry.phaseTitle}
+                </span>
+                <span className="px-2 py-0.5 bg-neutral-100 border border-neutral-200 text-neutral-700 text-[9px] font-mono font-semibold uppercase tracking-wider rounded">
+                  {telemetry.phaseBadge}
+                </span>
+              </div>
+              <p className="text-[11px] text-neutral-500 mt-0.5 truncate">
+                {telemetry.phaseActionNote}
+              </p>
+            </div>
           </div>
 
-          <a
-            href={googleMapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 border border-neutral-300 hover:border-black hover:bg-neutral-900 hover:text-white text-neutral-800 rounded-[2px] transition-colors flex items-center justify-center"
-            title="Buka Langsung di Google Maps"
-          >
-            <ExternalLink className="w-4 h-4" />
-          </a>
+          <div className="flex items-center gap-3 shrink-0 self-start sm:self-auto text-xs font-mono">
+            <div className="flex items-center gap-1.5 text-neutral-600">
+              <Activity className="w-3.5 h-3.5 text-neutral-400" />
+              <span>{telemetry.isVehicleMoving ? `${telemetry.courierSpeedKmH} km/jam` : 'Standby (0 km/jam)'}</span>
+            </div>
+            <span className="text-neutral-300">•</span>
+            <div className="flex items-center gap-1.5 text-neutral-900 font-bold">
+              <Clock className="w-3.5 h-3.5 text-neutral-500" />
+              <span>{telemetry.isCompleted ? 'Tiba di Lokasi' : `${telemetry.remainingMinutes} mnt (${telemetry.remainingKm} km)`}</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* 2. MAP DISPLAY CANVAS */}
-      <div className="relative w-full h-[380px] sm:h-[460px] bg-[#EEF2EF] overflow-hidden select-none">
-        {mapMode === 'google-maps' ? (
-          /* GOOGLE MAPS EMBED IFRAME */
-          <iframe
-            title={`Google Maps Lokasi Pengiriman #${orderNumber}`}
-            src={embedUrl}
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            loading="lazy"
-            allowFullScreen
-            referrerPolicy="no-referrer-when-downgrade"
-            className="w-full h-full"
-          />
-        ) : (
-          /* LIVE ANIMATED VECTOR MAP */
-          <div className="relative w-full h-full">
-            {/* SVG MAP: ROADS, LANDMARKS, AND ROUTE PATH (ViewBox: 0 0 1000 560) */}
-            <svg
-              className="absolute inset-0 w-full h-full pointer-events-none"
-              viewBox="0 0 1000 560"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                {/* Subtle City Grid Texture */}
-                <pattern id="subtleGrid" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E7E4" strokeWidth="0.8" />
-                </pattern>
-                {/* Road Glow Filter */}
-                <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="3" result="blur" />
-                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-              </defs>
+      {/* 3. OPENSTREETMAP DISPLAY CANVAS */}
+      <div className="relative w-full h-[400px] sm:h-[480px] bg-[#EEF2EF] overflow-hidden select-none">
+        {/* Leaflet Mount Container */}
+        <div ref={mapContainerRef} className="w-full h-full z-0" />
 
-              {/* Background Base */}
-              <rect width="1000" height="560" fill="#F0F4F1" />
-              <rect width="1000" height="560" fill="url(#subtleGrid)" opacity="0.65" />
-
-              {/* Green Parks / Open Areas */}
-              <rect x="40" y="50" width="180" height="120" rx="12" fill="#D7E8DC" opacity="0.8" />
-              <rect x="680" y="320" width="260" height="170" rx="16" fill="#D7E8DC" opacity="0.8" />
-              <rect x="360" y="40" width="160" height="90" rx="10" fill="#D7E8DC" opacity="0.75" />
-
-              {/* Water Canal / River Accent */}
-              <path
-                d="M 0,220 Q 250,260 500,200 T 1000,240"
-                fill="none"
-                stroke="#CDE0E7"
-                strokeWidth="14"
-                opacity="0.6"
-              />
-
-              {/* Main City Arterial Roads (Soft White with Outline) */}
-              <g strokeLinecap="round" strokeLinejoin="round">
-                {/* Horizontal Artery 1 */}
-                <path d="M 0,160 Q 500,190 1000,140" fill="none" stroke="#FFFFFF" strokeWidth="22" />
-                <path d="M 0,160 Q 500,190 1000,140" fill="none" stroke="#CCD5D0" strokeWidth="1.2" />
-
-                {/* Horizontal Artery 2 (Simatupang) */}
-                <path d="M 0,440 L 1000,440" fill="none" stroke="#FFFFFF" strokeWidth="24" />
-                <path d="M 0,440 L 1000,440" fill="none" stroke="#CCD5D0" strokeWidth="1.2" />
-
-                {/* Diagonal Arteries */}
-                <path d="M 180,560 L 320,0" fill="none" stroke="#FFFFFF" strokeWidth="18" />
-                <path d="M 180,560 L 320,0" fill="none" stroke="#CCD5D0" strokeWidth="1" />
-
-                <path d="M 520,560 L 640,0" fill="none" stroke="#FFFFFF" strokeWidth="18" />
-                <path d="M 520,560 L 640,0" fill="none" stroke="#CCD5D0" strokeWidth="1" />
-
-                <path d="M 760,560 L 920,0" fill="none" stroke="#FFFFFF" strokeWidth="18" />
-                <path d="M 760,560 L 920,0" fill="none" stroke="#CCD5D0" strokeWidth="1" />
-
-                {/* Secondary Cross Streets */}
-                <path d="M 260,390 L 500,245" fill="none" stroke="#FFFFFF" strokeWidth="14" />
-                <path d="M 380,295 L 680,440" fill="none" stroke="#FFFFFF" strokeWidth="12" />
-                <path d="M 500,245 L 800,140" fill="none" stroke="#FFFFFF" strokeWidth="14" />
-              </g>
-
-              {/* Street Names */}
-              <g fill="#7E8E85" fontSize="13" fontWeight="600" letterSpacing="0.08em">
-                <text x="60" y="110" fill="#5F7568" fontSize="14">
-                  TAMAN AYODHYA
-                </text>
-                <text x="730" y="410" fill="#5F7568" fontSize="14">
-                  TAMAN KEBAYORAN
-                </text>
-                <text x="40" y="430">
-                  JL. TB SIMATUPANG
-                </text>
-                <text x="210" y="370">
-                  JL. RS FATMAWATI
-                </text>
-                <text x="400" y="275">
-                  JL. PANGLIMA POLIM
-                </text>
-                <text x="630" y="180">
-                  BUNDARAN BLOK M
-                </text>
-                <text x="760" y="125">
-                  JL. KYAI MAJA
-                </text>
-              </g>
-
-              {/* ACTIVE DELIVERY ROUTE PATH */}
-              {/* 1. Route Road Base (Wide White) */}
-              <path
-                d={routePathD}
-                fill="none"
-                stroke="#FFFFFF"
-                strokeWidth="18"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                opacity="0.95"
-              />
-
-              {/* 2. Dotted Planned Route (Slate Dash) */}
-              <path
-                ref={pathRef}
-                d={routePathD}
-                fill="none"
-                stroke="#94A3B8"
-                strokeWidth="5"
-                strokeDasharray="9 9"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-
-              {/* 3. Traveled Route Dynamic Highlight (Pure Black Solid) */}
-              <path
-                ref={traveledPathRef}
-                d={routePathD}
-                fill="none"
-                stroke="#111111"
-                strokeWidth="6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="1400"
-                strokeDashoffset="1400"
-              />
-            </svg>
-
-            {/* ORIGIN PIN: WAREHOUSE SHILLSTORE */}
-            <div
-              className="absolute z-10 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none"
-              style={{ left: '11%', top: '78.5%' }}
-            >
-              <div className="bg-neutral-900 text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-[2px] shadow-sm mb-1 whitespace-nowrap">
-                Gudang SHILLSTORE
-              </div>
-              <div className="w-8 h-8 rounded-full bg-neutral-900 border-2 border-white text-white flex items-center justify-center shadow-lg">
-                <Truck className="w-4 h-4" />
-              </div>
-            </div>
-
-            {/* DESTINATION PIN: CUSTOMER HOUSE */}
-            <div
-              className="absolute z-10 -translate-x-1/2 -translate-y-full flex flex-col items-center pointer-events-none"
-              style={{ left: '88%', top: '23.2%' }}
-            >
-              <div className="bg-emerald-600 text-white text-[9px] uppercase tracking-wider font-bold px-2.5 py-0.5 rounded-[2px] shadow-md mb-1 whitespace-nowrap flex items-center gap-1">
-                <MapPin className="w-3 h-3" />
-                <span>Tujuan: {recipientName}</span>
-              </div>
-              <div className="w-8 h-8 rounded-full bg-emerald-600 border-2 border-white text-white flex items-center justify-center shadow-xl ring-4 ring-emerald-200">
-                <MapPin className="w-4 h-4 fill-white text-white" />
-              </div>
-            </div>
-
-            {/* LIVE MOVING COURIER MARKER (MOTORCYCLE SCOOTER) */}
-            {/* Note: NO CSS transition delays here to maintain true 60 FPS GPU fluidity */}
-            <div
-              ref={markerRef}
-              className="absolute z-20 -translate-x-1/2 -translate-y-1/2 pointer-events-none will-change-[left,top]"
-              style={{ left: '15%', top: '75%' }}
-            >
-              {/* Radar pulse concentric waves */}
-              <div className="absolute -inset-3.5 rounded-full bg-blue-500/25 animate-ping pointer-events-none" />
-              <div className="absolute -inset-2 rounded-full bg-emerald-500/35 animate-pulse pointer-events-none" />
-
-              {/* Courier Vehicle Marker */}
-              <div className="relative flex flex-col items-center">
-                {/* Floating Courier Name Bubble */}
-                <div className="bg-neutral-950 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-[2px] shadow-xl mb-1.5 whitespace-nowrap flex items-center gap-1.5 border border-neutral-700">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Ahmad (Kurir)</span>
-                  <span className="text-neutral-400 font-mono text-[8px]">{courierName}</span>
-                </div>
-
-                {/* Motorcycle Circle with Direction Heading Rotation */}
-                <div
-                  ref={iconRotateRef}
-                  className="w-10 h-10 rounded-full bg-neutral-950 border-2 border-white text-white flex items-center justify-center shadow-2xl will-change-transform"
-                  title="Posisi Kurir Mitra"
-                >
-                  {/* High-contrast forward navigation arrow / bike direction */}
-                  <Navigation className="w-5 h-5 text-white fill-white translate-x-[1px]" />
-                </div>
-              </div>
-            </div>
-
-            {/* FLOATING HUD OVERLAY: COURIER DRIVER & TELEMETRY CARD */}
-            <div className="absolute top-3 left-3 right-3 sm:right-auto sm:max-w-sm z-30 pointer-events-auto">
-              <div className="bg-white/95 backdrop-blur-md border border-neutral-200 p-3.5 sm:p-4 rounded-[2px] shadow-lg text-xs">
-                {/* Courier Profile */}
-                <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-neutral-150">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center text-xs font-bold shrink-0">
-                      AF
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-neutral-900 text-[13px]">
-                          Ahmad Fauzi
-                        </span>
-                        <span className="text-[10px] text-amber-600 font-semibold">★ 4.9</span>
-                      </div>
-                      <span className="text-[10px] text-neutral-500 font-mono block">
-                        Honda Vario 160 • B 4821 SDE
-                      </span>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setContactModalOpen(true)}
-                    className="p-2 border border-neutral-300 hover:border-black rounded-[2px] text-neutral-800 hover:bg-neutral-900 hover:text-white transition-colors cursor-pointer"
-                    title="Hubungi Kurir"
-                  >
-                    <Phone className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-
-                {/* Realtime Telemetry Stats */}
-                <div className="grid grid-cols-2 gap-2 text-center py-1">
-                  <div className="bg-neutral-50 p-2 rounded-[2px] border border-neutral-150">
-                    <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">
-                      Estimasi Tiba
-                    </span>
-                    <span className="font-bold text-neutral-900 text-xs sm:text-[13px] flex items-center justify-center gap-1 mt-0.5">
-                      <Clock className="w-3 h-3 text-neutral-500" />
-                      {isCompleted ? 'Telah Sampai' : `${telemetry.remainingMinutes} Menit Lagi`}
-                    </span>
-                  </div>
-
-                  <div className="bg-neutral-50 p-2 rounded-[2px] border border-neutral-150">
-                    <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">
-                      Sisa Jarak
-                    </span>
-                    <span className="font-bold text-neutral-900 text-xs sm:text-[13px] block mt-0.5">
-                      {isCompleted ? '0.0 km' : `${telemetry.remainingKm} km`}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Interactive Progress Scrubbing Slider */}
-                <div className="mt-2.5 pt-2 border-t border-neutral-100">
-                  <div className="flex items-center justify-between text-[10px] text-neutral-400 mb-1">
-                    <span className="flex items-center gap-1 font-medium text-neutral-600">
-                      <Sparkles className="w-3 h-3 text-emerald-600" />
-                      Status Perjalanan
-                    </span>
-                    <span className="font-mono font-bold text-neutral-900">
-                      {isCompleted ? '100%' : `${telemetry.progressPct}%`}
-                    </span>
-                  </div>
-                  <input
-                    ref={sliderRef}
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.001"
-                    defaultValue="0.15"
-                    onChange={(e) => handleScrub(parseFloat(e.target.value))}
-                    className="w-full accent-black cursor-pointer h-1.5 bg-neutral-200 rounded-lg"
-                    title="Geser posisi rute kurir"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* FLOATING BOTTOM CONTROLS: Play / Pause / Replay / Speed Multiplier */}
-            <div className="absolute bottom-3 right-3 z-30 flex items-center gap-1.5 bg-white/95 backdrop-blur-md p-1.5 border border-neutral-300 rounded-[2px] shadow-md text-xs">
-              {/* Play / Pause Toggle */}
-              <button
-                type="button"
-                onClick={togglePlayPause}
-                className="px-2.5 py-1.5 bg-neutral-950 hover:bg-black text-white text-[11px] font-semibold uppercase tracking-wider rounded-[2px] flex items-center gap-1 transition-colors cursor-pointer"
-              >
-                {isCompleted ? (
-                  <>
-                    <RotateCcw className="w-3 h-3" />
-                    <span>Ulangi</span>
-                  </>
-                ) : isPlaying ? (
-                  <>
-                    <Pause className="w-3 h-3" />
-                    <span>Jeda</span>
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-3 h-3" />
-                    <span>Lanjut</span>
-                  </>
-                )}
-              </button>
-
-              {/* Speed Buttons */}
-              <div className="flex items-center border border-neutral-200 rounded-[2px] overflow-hidden">
-                {[1, 2, 4].map((spd) => (
-                  <button
-                    key={spd}
-                    type="button"
-                    onClick={() => setSpeedMultiplier(spd)}
-                    className={`px-2 py-1 text-[10px] font-mono font-semibold cursor-pointer transition-colors ${
-                      speedMultiplier === spd
-                        ? 'bg-neutral-900 text-white'
-                        : 'bg-white text-neutral-600 hover:bg-neutral-100'
-                    }`}
-                  >
-                    {spd}x
-                  </button>
-                ))}
-              </div>
-
-              {/* Reset Replay */}
-              <button
-                type="button"
-                onClick={handleReplay}
-                className="p-1.5 hover:bg-neutral-100 text-neutral-700 rounded-[2px] cursor-pointer"
-                title="Reset Kurir ke Titik Awal"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-              </button>
-            </div>
+        {/* Loading Indicator */}
+        {!mapLoaded && (
+          <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center text-xs text-neutral-500 font-mono">
+            Memuat Peta OpenStreetMap Jakarta Selatan...
           </div>
         )}
-      </div>
 
-      {/* 3. TRANSPARENCY NOTICE & COURIER STATUS */}
-      <div className="p-3.5 sm:p-4 bg-[#FAFAF9] border-t border-neutral-150 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[11px] text-neutral-600">
-        <div className="flex items-start sm:items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-neutral-800 shrink-0 mt-0.5 sm:mt-0" />
-          <p>
-            {isCompleted ? (
-              <strong className="text-emerald-700 font-semibold flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5" /> Paket telah tiba di alamat penerima! Memulai kembali simulasi...
-              </strong>
-            ) : (
-              <span>
-                <strong className="text-neutral-900 font-semibold">Simulasi Pergerakan Kurir Aktif:</strong> Kurir mitra ({courierName}) otomatis bergerak di sepanjang rute pengantaran menuju {city}.
-              </span>
-            )}
-          </p>
+        {/* FLOATING HUD (Top Left): Telemetri Kurir & Profil Driver */}
+        <div className="absolute top-3 left-3 right-3 sm:right-auto sm:max-w-sm z-[400] pointer-events-auto">
+          <div className="bg-white/95 backdrop-blur-md border border-neutral-200 p-3.5 rounded-[2px] shadow-lg text-xs">
+            {/* Driver Profile */}
+            <div className="flex items-center justify-between pb-2 mb-2 border-b border-neutral-150">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-neutral-900 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                  AF
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-neutral-900 text-xs">
+                      Ahmad Fauzi
+                    </span>
+                    <span className="text-[10px] text-amber-600 font-semibold">★ 4.9</span>
+                  </div>
+                  <span className="text-[10px] text-neutral-500 font-mono block">
+                    {courierName} • Honda Vario 160 (B 4821 SDE)
+                  </span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setContactModalOpen(true)}
+                className="p-1.5 border border-neutral-300 hover:border-black rounded-[2px] text-neutral-800 hover:bg-neutral-900 hover:text-white transition-colors cursor-pointer"
+                title="Hubungi Kurir"
+              >
+                <Phone className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Current Street & Telemetry Stats */}
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-1.5 text-[11px] text-neutral-700 bg-neutral-50 px-2 py-1 rounded border border-neutral-150 truncate">
+                <MapPin className="w-3 h-3 text-emerald-600 shrink-0" />
+                <span className="truncate font-medium">{telemetry.currentStreetName}</span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-center pt-1">
+                <div className="bg-neutral-50 p-1.5 rounded-[2px] border border-neutral-150">
+                  <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">
+                    Kecepatan
+                  </span>
+                  <span className="font-bold text-neutral-900 text-xs sm:text-[13px] block mt-0.5">
+                    {telemetry.courierSpeedKmH} km/jam
+                  </span>
+                </div>
+
+                <div className="bg-neutral-50 p-1.5 rounded-[2px] border border-neutral-150">
+                  <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">
+                    Sisa Jarak
+                  </span>
+                  <span className="font-bold text-neutral-900 text-xs sm:text-[13px] block mt-0.5">
+                    {telemetry.isCompleted ? '0.0 km' : `${telemetry.remainingKm} km`}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Interactive Progress Scrubbing Slider */}
+            <div className="mt-2.5 pt-2 border-t border-neutral-100">
+              <div className="flex items-center justify-between text-[10px] text-neutral-400 mb-1">
+                <span className="flex items-center gap-1 font-medium text-neutral-600">
+                  <Sparkles className="w-3 h-3 text-emerald-600" />
+                  Progress Pengiriman
+                </span>
+                <span className="font-mono font-bold text-neutral-900">
+                  {telemetry.progressPct}%
+                </span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.001"
+                value={telemetry.progress}
+                onChange={(e) => handleScrub(parseFloat(e.target.value))}
+                className="w-full accent-black cursor-pointer h-1.5 bg-neutral-200 rounded-lg"
+                title="Geser timeline perjalanan kurir"
+              />
+            </div>
+          </div>
         </div>
 
-        <span className="text-neutral-400 font-mono text-[10px] shrink-0">
-          Resi: {trackingNumber}
+        {/* FLOATING CONTROLS (Bottom Right): Play/Pause, Speed, Camera, Replay */}
+        <div className="absolute bottom-3 right-3 z-[400] flex flex-wrap items-center gap-1.5 bg-white/95 backdrop-blur-md p-1.5 border border-neutral-300 rounded-[2px] shadow-md text-xs">
+          {/* Play / Pause Toggle */}
+          <button
+            type="button"
+            onClick={togglePlayPause}
+            className="px-2.5 py-1.5 bg-neutral-950 hover:bg-black text-white text-[11px] font-semibold uppercase tracking-wider rounded-[2px] flex items-center gap-1 transition-colors cursor-pointer"
+          >
+            {telemetry.isCompleted ? (
+              <>
+                <RotateCcw className="w-3 h-3" />
+                <span>Ulangi</span>
+              </>
+            ) : isPlaying ? (
+              <>
+                <Pause className="w-3 h-3" />
+                <span>Jeda</span>
+              </>
+            ) : (
+              <>
+                <Play className="w-3 h-3" />
+                <span>Lanjut</span>
+              </>
+            )}
+          </button>
+
+          {/* Speed Multiplier Buttons */}
+          <div className="flex items-center border border-neutral-200 rounded-[2px] overflow-hidden">
+            {[1, 2, 4].map((spd) => (
+              <button
+                key={spd}
+                type="button"
+                onClick={() => setSpeedMultiplier(spd)}
+                className={`px-2 py-1 text-[10px] font-mono font-bold transition-colors cursor-pointer ${
+                  speedMultiplier === spd
+                    ? 'bg-neutral-900 text-white'
+                    : 'bg-white hover:bg-neutral-100 text-neutral-600'
+                }`}
+              >
+                {spd}x
+              </button>
+            ))}
+          </div>
+
+          {/* Camera View Mode: Auto-Pan vs Fit Route */}
+          <button
+            type="button"
+            onClick={() => {
+              if (autoPan) {
+                handleFitRouteBounds();
+              } else {
+                setAutoPan(true);
+              }
+            }}
+            className={`px-2 py-1.5 border text-[10px] uppercase font-semibold rounded-[2px] transition-colors cursor-pointer flex items-center gap-1 ${
+              autoPan
+                ? 'bg-emerald-600 text-white border-emerald-600'
+                : 'bg-white hover:bg-neutral-100 text-neutral-700 border-neutral-300'
+            }`}
+            title={autoPan ? 'Kamera mengikuti kurir (Klik untuk melihat seluruh rute)' : 'Klik agar kamera mengikuti kurir'}
+          >
+            <Navigation className="w-3 h-3" />
+            <span>{autoPan ? 'Ikuti Kurir' : 'Rute Penuh'}</span>
+          </button>
+
+          {/* Reset / Replay Button */}
+          <button
+            type="button"
+            onClick={handleReplay}
+            className="p-1.5 border border-neutral-300 hover:border-black text-neutral-700 hover:text-black rounded-[2px] transition-colors cursor-pointer"
+            title="Reset simulasi ke awal"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+
+      {/* 4. FOOTER NOTE */}
+      <div className="px-4 py-2.5 bg-[#FAFAF9] border-t border-neutral-150 flex flex-wrap items-center justify-between text-[11px] text-neutral-500">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <span>Rute logistik diverifikasi berdasarkan data OpenStreetMap &amp; GPS telemetri armada.</span>
+        </div>
+        <span className="text-[10px] font-mono text-neutral-400">
+          OSM CartoDB • Lat: {JAKARTA_DELIVERY_WAYPOINTS[0].lat.toFixed(4)}, Lng: {JAKARTA_DELIVERY_WAYPOINTS[0].lng.toFixed(4)}
         </span>
       </div>
 
-      {/* MODAL: HUBUNGI KURIR */}
+      {/* 5. CONTACT DRIVER MODAL */}
       {contactModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="bg-white max-w-sm w-full p-6 rounded-[2px] shadow-xl border border-neutral-200 animate-in fade-in zoom-in-95 duration-150">
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-neutral-900 mb-1">
-              Hubungi Kurir Pengantar
-            </h4>
-            <p className="text-xs text-neutral-500 mb-4">
-              Kurir mitra ditugaskan untuk mengantar paket pesanan Anda.
-            </p>
-
-            <div className="p-3 bg-neutral-50 rounded-[2px] border border-neutral-200 mb-5 text-xs space-y-1">
-              <p className="font-bold text-neutral-900">Ahmad Fauzi</p>
-              <p className="text-neutral-500 font-mono">0812-9844-1234</p>
-              <p className="text-neutral-400 text-[11px]">Honda Vario 160 • B 4821 SDE</p>
-            </div>
-
-            <div className="space-y-2">
-              <a
-                href={`https://wa.me/6281298441234?text=Halo%20Mas%20Ahmad,%20saya%20penerima%20paket%20SHILLSTORE%20%23${orderNumber}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-2 transition-colors"
-              >
-                <MessageCircle className="w-3.5 h-3.5" />
-                <span>Kirim Pesan WhatsApp</span>
-              </a>
-
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-neutral-200 rounded-[2px] max-w-sm w-full p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-neutral-150">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-900">
+                Hubungi Kurir Pengantar
+              </h4>
               <button
                 type="button"
                 onClick={() => setContactModalOpen(false)}
-                className="w-full py-2.5 border border-neutral-300 hover:border-black text-neutral-800 text-xs font-semibold uppercase tracking-wider rounded-[2px] transition-colors cursor-pointer"
+                className="text-neutral-400 hover:text-black text-sm cursor-pointer"
               >
-                Tutup
+                ✕
               </button>
+            </div>
+
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-full bg-neutral-900 text-white flex items-center justify-center font-bold text-sm">
+                AF
+              </div>
+              <div>
+                <p className="font-bold text-neutral-900 text-sm">Ahmad Fauzi</p>
+                <p className="text-xs text-neutral-500 font-mono">0812-9844-3120</p>
+                <p className="text-[10px] text-neutral-400">Kurir Mitra {courierName}</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-neutral-600 leading-relaxed mb-5">
+              Kurir sedang berkendara mengantarkan paket Anda. Demi keselamatan di jalan, utamakan panggilan singkat atau pesan WhatsApp.
+            </p>
+
+            <div className="grid grid-cols-2 gap-2">
+              <a
+                href="tel:081298443120"
+                className="h-10 bg-[#111111] hover:bg-neutral-800 text-white text-xs font-semibold uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors"
+              >
+                <Phone className="w-3.5 h-3.5" />
+                <span>Telepon</span>
+              </a>
+              <a
+                href="https://wa.me/6281298443120"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-10 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors"
+              >
+                <span>WhatsApp</span>
+              </a>
             </div>
           </div>
         </div>
