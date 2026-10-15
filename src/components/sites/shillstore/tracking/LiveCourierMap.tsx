@@ -17,6 +17,84 @@ import {
   Sparkles,
 } from 'lucide-react';
 
+export interface LiveTelemetryData {
+  progress: number; // 0.0 - 1.0
+  progressPct: number; // 0 - 100
+  stageIndex: number; // 0: Diproses, 1: Dikemas, 2: Dalam Pengiriman, 3: Sedang Diantar, 4: Terkirim
+  stageKey: 'processing' | 'packed' | 'in_transit' | 'out_for_delivery' | 'delivered';
+  stageTitle: string;
+  stageDescription: string;
+  remainingKm: string;
+  remainingMinutes: number;
+  isCompleted: boolean;
+  courierSpeedKmH: number;
+  currentCheckpointTitle: string;
+  currentCheckpointLocation: string;
+}
+
+export function getTelemetryFromProgress(
+  t: number,
+  isFinished = false
+): LiveTelemetryData {
+  const clamped = Math.max(0, Math.min(1, t));
+  const remainingPct = 1 - clamped;
+  const km = Math.max(0, +(remainingPct * 4.8).toFixed(1));
+  const mins = Math.max(0, Math.round(remainingPct * 12));
+  const pct = Math.round(clamped * 100);
+
+  let stageIndex = 0;
+  let stageKey: LiveTelemetryData['stageKey'] = 'processing';
+  let stageTitle = 'Pesanan Diproses';
+  let stageDescription = 'Pesanan diverifikasi & disiapkan di fulfillment warehouse';
+  let currentCheckpointTitle = 'Pesanan Dikonfirmasi & Diproses';
+  let currentCheckpointLocation = 'SHILLSTORE Fulfillment Center, Jakarta Selatan';
+
+  if (isFinished || clamped >= 0.999) {
+    stageIndex = 4;
+    stageKey = 'delivered';
+    stageTitle = 'Terkirim';
+    stageDescription = 'Paket telah berhasil diterima oleh penerima di lokasi tujuan';
+    currentCheckpointTitle = 'Paket Berhasil Diterima';
+    currentCheckpointLocation = 'Alamat Penerima (Tujuan Akhir)';
+  } else if (clamped >= 0.70) {
+    stageIndex = 3;
+    stageKey = 'out_for_delivery';
+    stageTitle = 'Sedang Diantar';
+    stageDescription = 'Kurir sedang dalam perjalanan menuju alamat pengantaran';
+    currentCheckpointTitle = 'Kurir Menuju Alamat Penerima';
+    currentCheckpointLocation = 'Jl. Kyai Maja - Mendekati Wilayah Penerima';
+  } else if (clamped >= 0.35) {
+    stageIndex = 2;
+    stageKey = 'in_transit';
+    stageTitle = 'Dalam Pengiriman';
+    stageDescription = 'Paket sedang transit antarkota menuju hub logistik tujuan';
+    currentCheckpointTitle = 'Paket Dalam Transit Menuju Hub Tujuan';
+    currentCheckpointLocation = 'Hub Logistik Transit Blok M';
+  } else if (clamped >= 0.15) {
+    stageIndex = 1;
+    stageKey = 'packed';
+    stageTitle = 'Dikemas';
+    stageDescription = 'Paket telah selesai dibungkus dan diserahkan ke kurir ekspedisi';
+    currentCheckpointTitle = 'Paket Telah Dikemas & Diberi Label Resi';
+    currentCheckpointLocation = 'Sorting Hub TB Simatupang';
+  }
+
+  return {
+    progress: clamped,
+    progressPct: pct,
+    stageIndex,
+    stageKey,
+    stageTitle,
+    stageDescription,
+    remainingKm: isFinished || clamped >= 0.999 ? '0.0' : km.toFixed(1),
+    remainingMinutes: isFinished || clamped >= 0.999 ? 0 : Math.max(1, mins),
+    isCompleted: isFinished || clamped >= 0.999,
+    courierSpeedKmH: isFinished || clamped >= 0.999 ? 0 : 38,
+    currentCheckpointTitle,
+    currentCheckpointLocation,
+  };
+}
+
 interface LiveCourierMapProps {
   orderNumber: string;
   recipientName: string;
@@ -26,6 +104,7 @@ interface LiveCourierMapProps {
   postalCode?: string;
   courierName?: string;
   trackingNumber?: string;
+  onProgressUpdate?: (data: LiveTelemetryData) => void;
 }
 
 // Normalize angle difference to avoid 360-degree wrapping glitch
@@ -45,6 +124,7 @@ export function LiveCourierMap({
   postalCode,
   courierName = 'SiCepat Express',
   trackingNumber = 'SCP-10293817',
+  onProgressUpdate,
 }: LiveCourierMapProps) {
   // Mode: 'live-animation' | 'google-maps'
   const [mapMode, setMapMode] = useState<'live-animation' | 'google-maps'>('live-animation');
@@ -70,7 +150,7 @@ export function LiveCourierMap({
   const sliderRef = useRef<HTMLInputElement | null>(null);
 
   // Animation internal mutable variables
-  const progressRef = useRef<number>(0.15); // Start at 15% with visible motion
+  const progressRef = useRef<number>(0.06); // Start near beginning in Stage 0
   const speedRef = useRef<number>(1);
   const isPlayingRef = useRef<boolean>(true);
   const isCompletedRef = useRef<boolean>(false);
@@ -79,6 +159,12 @@ export function LiveCourierMap({
   const rafIdRef = useRef<number | null>(null);
   const lastTelemetryUpdateRef = useRef<number>(0);
   const loopTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Keep callback ref updated to prevent unnecessary re-render triggers
+  const onProgressUpdateRef = useRef(onProgressUpdate);
+  useEffect(() => {
+    onProgressUpdateRef.current = onProgressUpdate;
+  }, [onProgressUpdate]);
 
   // Keep refs in sync with states
   useEffect(() => {
@@ -171,31 +257,47 @@ export function LiveCourierMap({
           setIsCompleted(true);
           updateVisualPosition(1);
 
-          // Auto-replay after 2.2 seconds pause so the user never sees a stuck map!
+          const completedData = getTelemetryFromProgress(1, true);
+          setTelemetry({
+            remainingKm: '0.0',
+            remainingMinutes: 0,
+            progressPct: 100,
+          });
+          onProgressUpdateRef.current?.(completedData);
+
+          // Auto-replay after 2.8 seconds pause so the user sees "Terkirim" clearly, then loops smoothly
           if (loopTimeoutRef.current) clearTimeout(loopTimeoutRef.current);
           loopTimeoutRef.current = setTimeout(() => {
             progressRef.current = 0;
             isCompletedRef.current = false;
             setIsCompleted(false);
             updateVisualPosition(0);
-          }, 2200);
+
+            const resetData = getTelemetryFromProgress(0, false);
+            setTelemetry({
+              remainingKm: resetData.remainingKm,
+              remainingMinutes: resetData.remainingMinutes,
+              progressPct: 0,
+            });
+            onProgressUpdateRef.current?.(resetData);
+          }, 2800);
         } else {
           progressRef.current = newProgress;
           updateVisualPosition(newProgress);
         }
 
-        // Throttled Telemetry Update (every 200ms) for UI text stats
-        if (now - lastTelemetryUpdateRef.current > 200) {
+        // Throttled Telemetry Update (every 180ms) for synchronized UI progression
+        if (now - lastTelemetryUpdateRef.current > 180) {
           lastTelemetryUpdateRef.current = now;
-          const remainingPct = 1 - newProgress;
-          const km = Math.max(0.1, +(remainingPct * 4.8).toFixed(1));
-          const mins = Math.max(1, Math.round(remainingPct * 12));
+          const liveData = getTelemetryFromProgress(newProgress, false);
 
           setTelemetry({
-            remainingKm: km.toFixed(1),
-            remainingMinutes: mins,
-            progressPct: Math.round(newProgress * 100),
+            remainingKm: liveData.remainingKm,
+            remainingMinutes: liveData.remainingMinutes,
+            progressPct: liveData.progressPct,
           });
+
+          onProgressUpdateRef.current?.(liveData);
         }
       }
 
@@ -212,11 +314,18 @@ export function LiveCourierMap({
     };
   }, [updateVisualPosition]);
 
-  // Initial draw once SVG path is rendered
+  // Initial draw once SVG path is rendered and broadcast initial stage
   useEffect(() => {
     const timer = setTimeout(() => {
       updateVisualPosition(progressRef.current);
-    }, 50);
+      const initialData = getTelemetryFromProgress(progressRef.current, false);
+      setTelemetry({
+        remainingKm: initialData.remainingKm,
+        remainingMinutes: initialData.remainingMinutes,
+        progressPct: initialData.progressPct,
+      });
+      onProgressUpdateRef.current?.(initialData);
+    }, 60);
     return () => clearTimeout(timer);
   }, [updateVisualPosition]);
 
@@ -242,25 +351,31 @@ export function LiveCourierMap({
     isPlayingRef.current = true;
     lastTimeRef.current = null;
     updateVisualPosition(0);
+
+    const resetData = getTelemetryFromProgress(0, false);
+    setTelemetry({
+      remainingKm: resetData.remainingKm,
+      remainingMinutes: resetData.remainingMinutes,
+      progressPct: 0,
+    });
+    onProgressUpdateRef.current?.(resetData);
   };
 
   // Controls: Scrub slider manually
   const handleScrub = (val: number) => {
     progressRef.current = val;
-    if (val >= 1) {
-      isCompletedRef.current = true;
-      setIsCompleted(true);
-    } else {
-      isCompletedRef.current = false;
-      setIsCompleted(false);
-    }
+    const done = val >= 1;
+    isCompletedRef.current = done;
+    setIsCompleted(done);
     updateVisualPosition(val);
-    const remainingPct = 1 - val;
+
+    const scrubData = getTelemetryFromProgress(val, done);
     setTelemetry({
-      remainingKm: Math.max(0.1, +(remainingPct * 4.8).toFixed(1)).toFixed(1),
-      remainingMinutes: Math.max(1, Math.round(remainingPct * 12)),
-      progressPct: Math.round(val * 100),
+      remainingKm: scrubData.remainingKm,
+      remainingMinutes: scrubData.remainingMinutes,
+      progressPct: scrubData.progressPct,
     });
+    onProgressUpdateRef.current?.(scrubData);
   };
 
   // Google Maps external link

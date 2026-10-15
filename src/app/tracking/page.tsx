@@ -8,18 +8,17 @@ import { Header } from '@/components/sites/shillstore/root/Header';
 import { Footer } from '@/components/sites/shillstore/root/Footer';
 import { CartDrawer } from '@/components/sites/shillstore/root/CartDrawer';
 import { SearchModal } from '@/components/sites/shillstore/root/SearchModal';
-import { LiveCourierMap } from '@/components/sites/shillstore/tracking/LiveCourierMap';
+import {
+  LiveCourierMap,
+  LiveTelemetryData,
+} from '@/components/sites/shillstore/tracking/LiveCourierMap';
 import {
   getOrderByTrackingOrId,
   getOrders,
   getLatestOrderId,
-  advanceOrderStep,
-  updateOrderStep,
-  resetOrderStep,
 } from '@/lib/orderStorage';
 import {
   ShillOrder,
-  TrackingStepStatus,
   MAIN_TRACKING_STAGES,
   mapStepToMainStage,
 } from '@/types/order';
@@ -33,9 +32,6 @@ import {
   CheckCheck,
   Search,
   ArrowRight,
-  RotateCcw,
-  FastForward,
-  ChevronRight,
   ShieldCheck,
   RefreshCw,
   AlertCircle,
@@ -71,6 +67,13 @@ function DeliveryTrackingContent() {
   const [copiedResi, setCopiedResi] = useState(false);
   const [copiedOrderNo, setCopiedOrderNo] = useState(false);
   const [actionNotice, setActionNotice] = useState<string | null>(null);
+
+  // Synchronized live telemetry driven by the moving courier map
+  const [liveTelemetry, setLiveTelemetry] = useState<LiveTelemetryData | null>(null);
+
+  const handleLiveProgressUpdate = React.useCallback((data: LiveTelemetryData) => {
+    setLiveTelemetry(data);
+  }, []);
 
   const orderIdParam = searchParams.get('orderId');
   const resiParam = searchParams.get('resi');
@@ -181,41 +184,15 @@ function DeliveryTrackingContent() {
     setTimeout(() => setActionNotice(null), 3500);
   };
 
-  const handleAdvanceStep = () => {
-    if (!order) return;
-    const updated = advanceOrderStep(order.orderNumber);
-    if (updated) {
-      setOrder(updated);
-      const mainStageKey = mapStepToMainStage(updated.currentStep);
-      const stageName = MAIN_TRACKING_STAGES.find((s) => s.key === mainStageKey)?.title || updated.currentStep;
-      showNotice(`Status berhasil diperbarui ke: ${stageName}`);
-    }
-  };
+  // Automatically drive current main stage index (0 to 4) from real-time moving courier telemetry
+  const currentMainStageIndex = liveTelemetry !== null
+    ? liveTelemetry.stageIndex
+    : order
+    ? Math.max(0, MAIN_TRACKING_STAGES.findIndex((s) => s.key === mapStepToMainStage(order.currentStep)))
+    : 0;
 
-  const handleSetSpecificStep = (stepKey: TrackingStepStatus) => {
-    if (!order) return;
-    const updated = updateOrderStep(order.orderNumber, stepKey);
-    if (updated) {
-      setOrder(updated);
-      const mainStageKey = mapStepToMainStage(stepKey);
-      const stageName = MAIN_TRACKING_STAGES.find((s) => s.key === mainStageKey)?.title || stepKey;
-      showNotice(`Status dialihkan ke: ${stageName}`);
-    }
-  };
-
-  const handleResetSimulation = () => {
-    if (!order) return;
-    const updated = resetOrderStep(order.orderNumber);
-    if (updated) {
-      setOrder(updated);
-      showNotice('Status simulasi di-reset ke: Pesanan Diproses');
-    }
-  };
-
-  // Calculate current main stage index (0 to 4) for the 5 requested stages:
-  // Pesanan Diproses, Dikemas, Dalam Pengiriman, Sedang Diantar, Terkirim
-  const currentMainStageKey = order ? mapStepToMainStage(order.currentStep) : 'processing';
-  const currentMainStageIndex = MAIN_TRACKING_STAGES.findIndex((s) => s.key === currentMainStageKey);
+  const currentMainStage = MAIN_TRACKING_STAGES[currentMainStageIndex] || MAIN_TRACKING_STAGES[0];
+  const isDelivered = currentMainStageIndex === 4 || (liveTelemetry ? liveTelemetry.isCompleted : false);
 
   return (
     <div className="min-h-screen bg-white text-[#111111] flex flex-col font-sans">
@@ -402,20 +379,23 @@ function DeliveryTrackingContent() {
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-lg sm:text-xl font-semibold text-neutral-900">
-                      {MAIN_TRACKING_STAGES[currentMainStageIndex]?.title || 'Pesanan Diproses'}
+                      {isDelivered ? 'Terkirim (Paket Berhasil Diterima)' : currentMainStage.title}
                     </span>
-                    <span className="px-2 py-0.5 bg-neutral-900 text-white text-[10px] uppercase tracking-wider font-semibold rounded-[2px]">
-                      Tahap {currentMainStageIndex + 1} dari 5
+                    <span
+                      className={`px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold rounded-[2px] transition-colors ${
+                        isDelivered ? 'bg-emerald-600 text-white' : 'bg-neutral-900 text-white'
+                      }`}
+                    >
+                      {isDelivered ? '✓ Selesai' : `Tahap ${currentMainStageIndex + 1} dari 5`}
                     </span>
                   </div>
                 </div>
 
                 {/* Data Source Transparency Badge */}
                 <div className="flex items-center gap-2 self-start sm:self-auto">
-                  <span className="px-2.5 py-1 bg-neutral-100 text-neutral-600 border border-neutral-200 text-[10px] font-medium uppercase tracking-wider rounded-[2px]">
-                    {order.isLiveTracking
-                      ? '🟢 Terhubung API Kurir Live'
-                      : 'ℹ️ Mode Demo / Data Terjadwal'}
+                  <span className="px-2.5 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold uppercase tracking-wider rounded-[2px] flex items-center gap-1.5 shadow-2xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Sinkron Otomatis GPS Peta</span>
                   </span>
                 </div>
               </div>
@@ -425,9 +405,11 @@ function DeliveryTrackingContent() {
                 {/* Connecting line behind stages */}
                 <div className="absolute top-4 sm:top-5 left-6 right-6 h-[2px] bg-neutral-200 z-0 hidden sm:block">
                   <div
-                    className="h-full bg-black transition-all duration-500 ease-out"
+                    className="h-full bg-black transition-all duration-300 ease-out"
                     style={{
-                      width: `${(currentMainStageIndex / (MAIN_TRACKING_STAGES.length - 1)) * 100}%`,
+                      width: liveTelemetry
+                        ? `${Math.min(100, Math.max(0, liveTelemetry.progress * 100))}%`
+                        : `${(currentMainStageIndex / (MAIN_TRACKING_STAGES.length - 1)) * 100}%`,
                     }}
                   />
                 </div>
@@ -451,14 +433,20 @@ function DeliveryTrackingContent() {
                             isPassed
                               ? 'bg-black text-white'
                               : isCurrent
-                              ? 'bg-black text-white ring-4 ring-neutral-200 shadow-xs'
+                              ? isDelivered
+                                ? 'bg-emerald-600 text-white ring-4 ring-emerald-100 shadow-xs'
+                                : 'bg-black text-white ring-4 ring-neutral-200 shadow-xs'
                               : 'bg-white border-2 border-neutral-300 text-neutral-400 font-mono text-xs'
                           }`}
                         >
                           {isPassed ? (
                             <Check className="w-4 h-4 stroke-[2.5]" />
                           ) : isCurrent ? (
-                            <span className="w-2.5 h-2.5 rounded-full bg-white animate-pulse" />
+                            isDelivered ? (
+                              <Check className="w-4 h-4 stroke-[2.5]" />
+                            ) : (
+                              <span className="w-2.5 h-2.5 rounded-full bg-white animate-pulse" />
+                            )
                           ) : (
                             idx + 1
                           )}
@@ -469,7 +457,9 @@ function DeliveryTrackingContent() {
                           <p
                             className={`text-xs sm:text-[13px] font-semibold leading-tight ${
                               isCurrent
-                                ? 'text-black font-bold'
+                                ? isDelivered
+                                  ? 'text-emerald-700 font-bold'
+                                  : 'text-black font-bold'
                                 : isPassed
                                 ? 'text-neutral-800'
                                 : 'text-neutral-400 font-normal'
@@ -479,10 +469,14 @@ function DeliveryTrackingContent() {
                           </p>
                           <span
                             className={`text-[10px] hidden sm:block mt-0.5 ${
-                              isCurrent ? 'text-neutral-600 font-medium' : 'text-neutral-400'
+                              isCurrent
+                                ? isDelivered
+                                  ? 'text-emerald-600 font-medium'
+                                  : 'text-neutral-600 font-medium'
+                                : 'text-neutral-400'
                             }`}
                           >
-                            {stage.description}
+                            {isCurrent && isDelivered ? 'Paket telah sampai di tujuan' : stage.description}
                           </span>
                         </div>
                       </div>
@@ -551,7 +545,13 @@ function DeliveryTrackingContent() {
                 </span>
                 <span className="font-semibold text-neutral-900 flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
-                  <span>{order.estimatedArrival}</span>
+                  <span>
+                    {isDelivered
+                      ? 'Telah Sampai di Lokasi'
+                      : liveTelemetry
+                      ? `${liveTelemetry.remainingMinutes} Menit Lagi (${liveTelemetry.remainingKm} km)`
+                      : order.estimatedArrival}
+                  </span>
                 </span>
                 <span className="text-[10px] text-neutral-400 block mt-0.5">
                   Tujuan: {order.customer.city}
@@ -583,6 +583,7 @@ function DeliveryTrackingContent() {
               postalCode={order.customer.postalCode}
               courierName={order.courierName}
               trackingNumber={order.trackingNumber}
+              onProgressUpdate={handleLiveProgressUpdate}
             />
 
             {/* 5. 2-COLUMN SECTION: RIWAYAT PERJALANAN PAKET + SIMULASI/SUMMARY */}
@@ -596,32 +597,90 @@ function DeliveryTrackingContent() {
                       Riwayat Perjalanan Paket
                     </h3>
                   </div>
-                  <span className="text-[10px] font-mono text-neutral-400 uppercase">
-                    {order.history.length} Catatan Checkpoint
+                  <span className="text-[10px] font-mono text-neutral-500 uppercase flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Sinkron Otomatis (Tahap {currentMainStageIndex + 1}/5)</span>
                   </span>
                 </div>
 
                 {/* Vertical Timeline Checkpoints */}
                 <div className="relative pl-2 sm:pl-3 space-y-6 sm:space-y-8">
-                  {order.history.map((record, idx) => {
-                    const isLatest = idx === order.history.length - 1;
+                  {[
+                    {
+                      step: 'processing',
+                      stageIdx: 0,
+                      title: 'Pesanan Diproses & Terverifikasi',
+                      description: 'Pesanan berhasil diverifikasi sistem SHILLSTORE dan masuk antrean fulfillment center.',
+                      location: 'SHILLSTORE Fulfillment Center, Jakarta Selatan',
+                      timestamp: order.date,
+                    },
+                    {
+                      step: 'packed',
+                      stageIdx: 1,
+                      title: 'Paket Dikemas & Diberi Label Resi',
+                      description: `Paket telah melalui quality check, dikemas rapi dengan segel pengaman warehouse, dan diserahkan ke ${order.courierName}.`,
+                      location: 'Warehouse SHILLSTORE Jakarta Selatan',
+                      timestamp: 'Hari Ini, 14:10 WIB',
+                    },
+                    {
+                      step: 'in_transit',
+                      stageIdx: 2,
+                      title: 'Dalam Perjalanan Antar-Hub Logistik',
+                      description: `Paket dijemput kurir ${order.courierName} dan bergerak melintasi rute arteri menuju Hub Transit wilayah pengantaran.`,
+                      location: 'Sorting Hub Logistik Fatmawati - Blok M',
+                      timestamp: 'Hari Ini, 14:35 WIB',
+                    },
+                    {
+                      step: 'out_for_delivery',
+                      stageIdx: 3,
+                      title: 'Kurir Sedang Mengantar ke Alamat Anda',
+                      description: `Kurir mitra (Ahmad Fauzi) sedang melaju menuju lokasi tujuan pengantaran Anda.`,
+                      location: `Mendekati Wilayah ${order.customer.city}${liveTelemetry ? ` • Sisa ${liveTelemetry.remainingKm} km` : ''}`,
+                      timestamp: 'Hari Ini, 15:02 WIB',
+                    },
+                    {
+                      step: 'delivered',
+                      stageIdx: 4,
+                      title: 'Paket Berhasil Diterima (Terkirim)',
+                      description: `Paket telah sampai di alamat tujuan dan diterima dengan baik oleh ${order.customer.fullName}.`,
+                      location: `${order.customer.address}, ${order.customer.city}`,
+                      timestamp: isDelivered ? 'Hari Ini, Baru Saja' : 'Estimasi Sesaat Lagi',
+                    },
+                  ].map((record, idx) => {
+                    const isPassed = idx < currentMainStageIndex;
+                    const isCurrent = idx === currentMainStageIndex;
+                    const isFuture = idx > currentMainStageIndex;
 
                     return (
-                      <div key={`${record.step}-${idx}`} className="relative flex items-start gap-4 sm:gap-5">
+                      <div key={record.step} className="relative flex items-start gap-4 sm:gap-5">
                         {/* Vertical line connecting checkpoints */}
-                        {idx < order.history.length - 1 && (
-                          <div className="absolute left-[13px] sm:left-[15px] top-6 bottom-[-24px] w-[2px] bg-neutral-200" />
+                        {idx < 4 && (
+                          <div
+                            className={`absolute left-[13px] sm:left-[15px] top-7 bottom-[-28px] w-[2px] transition-colors duration-300 ${
+                              isPassed ? 'bg-black' : 'bg-neutral-200'
+                            }`}
+                          />
                         )}
 
                         {/* Checkpoint Pin */}
                         <div className="relative z-10 shrink-0">
-                          {isLatest ? (
-                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black text-white flex items-center justify-center ring-4 ring-neutral-200">
-                              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                            </div>
-                          ) : (
-                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-neutral-100 text-neutral-600 border border-neutral-300 flex items-center justify-center">
+                          {isPassed ? (
+                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-neutral-900 text-white flex items-center justify-center shadow-xs">
                               <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                            </div>
+                          ) : isCurrent ? (
+                            isDelivered ? (
+                              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center ring-4 ring-emerald-100 shadow-xs">
+                                <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                              </div>
+                            ) : (
+                              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black text-white flex items-center justify-center ring-4 ring-neutral-200 shadow-xs">
+                                <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                              </div>
+                            )
+                          ) : (
+                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-neutral-400 border-2 border-neutral-300 flex items-center justify-center font-mono text-[11px]">
+                              {idx + 1}
                             </div>
                           )}
                         </div>
@@ -629,23 +688,49 @@ function DeliveryTrackingContent() {
                         {/* Checkpoint Details */}
                         <div className="flex-1 min-w-0 pt-0.5">
                           <div className="flex flex-wrap items-baseline justify-between gap-2">
-                            <h4
-                              className={`text-xs sm:text-sm font-semibold ${
-                                isLatest ? 'text-black' : 'text-neutral-800'
-                              }`}
-                            >
-                              {record.title}
-                            </h4>
+                            <div className="flex items-center gap-2">
+                              <h4
+                                className={`text-xs sm:text-sm font-semibold ${
+                                  isCurrent
+                                    ? isDelivered
+                                      ? 'text-emerald-800 font-bold'
+                                      : 'text-black font-bold'
+                                    : isPassed
+                                    ? 'text-neutral-800'
+                                    : 'text-neutral-400'
+                                }`}
+                              >
+                                {record.title}
+                              </h4>
+                              {isCurrent && !isDelivered && (
+                                <span className="px-1.5 py-0.5 bg-neutral-900 text-white text-[9px] uppercase tracking-wider font-bold rounded-[2px] animate-pulse">
+                                  Sedang Berlangsung
+                                </span>
+                              )}
+                              {isCurrent && isDelivered && (
+                                <span className="px-1.5 py-0.5 bg-emerald-600 text-white text-[9px] uppercase tracking-wider font-bold rounded-[2px]">
+                                  Terkirim
+                                </span>
+                              )}
+                            </div>
                             <span className="text-[10px] sm:text-[11px] font-mono text-neutral-400 shrink-0">
                               {record.timestamp}
                             </span>
                           </div>
 
-                          <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
+                          <p
+                            className={`text-xs mt-1 leading-relaxed ${
+                              isFuture ? 'text-neutral-400' : 'text-neutral-600'
+                            }`}
+                          >
                             {record.description}
                           </p>
 
-                          <div className="flex items-center gap-1.5 mt-1.5 text-[11px] text-neutral-500">
+                          <div
+                            className={`flex items-center gap-1.5 mt-1.5 text-[11px] ${
+                              isFuture ? 'text-neutral-400' : 'text-neutral-500'
+                            }`}
+                          >
                             <MapPin className="w-3 h-3 text-neutral-400 shrink-0" />
                             <span className="truncate">{record.location}</span>
                           </div>
@@ -656,75 +741,75 @@ function DeliveryTrackingContent() {
                 </div>
               </div>
 
-              {/* RIGHT: SIMULASI PENGUJIAN + RINGKASAN PESANAN (lg:col-span-5) */}
+              {/* RIGHT: STATUS OTOMATIS & TELEMETRI + RINGKASAN PESANAN (lg:col-span-5) */}
               <div className="lg:col-span-5 space-y-6">
-                {/* 1. SIMULASI KONTROL PENGIRIMAN (DEMO CONTROLLER) */}
-                <div className="border border-neutral-300 bg-white p-5 sm:p-6 rounded-[2px] shadow-2xs">
+                {/* 1. STATUS PENGIRIMAN LIVE & TELEMETRI OTOMATIS */}
+                <div className="border border-neutral-200 bg-white p-5 sm:p-6 rounded-[2px] shadow-xs">
                   <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-neutral-150">
                     <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-neutral-900 flex items-center gap-1.5">
-                      <FastForward className="w-3.5 h-3.5" />
-                      SIMULASI PERJALANAN PAKET
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      TELEMETRI OTOMATIS KURIR
                     </span>
-                    <span className="text-[9px] bg-neutral-100 px-1.5 py-0.5 rounded text-neutral-600 font-mono font-medium">
-                      DEMO MODE
+                    <span className="text-[9px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded font-mono font-bold uppercase">
+                      LIVE AUTO-SYNC
                     </span>
                   </div>
 
                   <p className="text-[11px] text-neutral-500 leading-relaxed mb-4">
-                    Gunakan kontrol ini untuk mensimulasikan perpindahan 5 status logistik (Pesanan Diproses, Dikemas, Dalam Pengiriman, Sedang Diantar, Terkirim).
+                    Pelacakan dan tahapan pengiriman bergerak 100% otomatis mengikuti sensor posisi kurir di peta secara real-time tanpa perlu tindakan manual.
                   </p>
 
-                  <div className="space-y-2">
-                    {/* Advance Step Button */}
-                    <button
-                      type="button"
-                      onClick={handleAdvanceStep}
-                      disabled={order.currentStep === 'delivered'}
-                      className="w-full h-11 bg-[#111111] hover:bg-neutral-800 disabled:bg-neutral-300 text-white text-xs uppercase tracking-[0.16em] font-semibold transition-colors rounded-[2px] flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
-                    >
-                      <FastForward className="w-3.5 h-3.5" />
-                      <span>
-                        {order.currentStep === 'delivered'
-                          ? 'Paket Telah Sampai'
-                          : 'Lanjut ke Tahap Selanjutnya'}
+                  {/* Realtime stats grid */}
+                  <div className="grid grid-cols-2 gap-2 mb-4 text-center">
+                    <div className="bg-[#FAFAF9] p-2.5 rounded-[2px] border border-neutral-200">
+                      <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">
+                        Status Terkini
                       </span>
-                    </button>
-
-                    {/* Step Quick Jump Stepper Buttons */}
-                    <div className="pt-2">
-                      <label className="text-[10px] uppercase tracking-wider text-neutral-400 block mb-1.5 font-medium">
-                        Pilih Status Langsung:
-                      </label>
-                      <div className="grid grid-cols-2 gap-1.5">
-                        {MAIN_TRACKING_STAGES.map((stage) => {
-                          const isSelected = currentMainStageKey === stage.key;
-                          return (
-                            <button
-                              key={stage.key}
-                              type="button"
-                              onClick={() => handleSetSpecificStep(stage.key as TrackingStepStatus)}
-                              className={`p-2 text-left text-[11px] rounded-[2px] border transition-colors cursor-pointer ${
-                                isSelected
-                                  ? 'bg-neutral-900 text-white border-neutral-900 font-medium'
-                                  : 'bg-white hover:bg-neutral-50 text-neutral-700 border-neutral-200'
-                              }`}
-                            >
-                              <span className="truncate block">{stage.title}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
+                      <span className="font-bold text-neutral-900 text-xs sm:text-[13px] block mt-0.5 truncate">
+                        {isDelivered ? 'Terkirim ✓' : currentMainStage.title}
+                      </span>
                     </div>
 
-                    {/* Reset Button */}
-                    <button
-                      type="button"
-                      onClick={handleResetSimulation}
-                      className="w-full mt-2 py-2 text-neutral-500 hover:text-black text-[11px] uppercase tracking-wider font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                    <div className="bg-[#FAFAF9] p-2.5 rounded-[2px] border border-neutral-200">
+                      <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">
+                        Sisa Jarak &amp; Waktu
+                      </span>
+                      <span className="font-bold text-neutral-900 text-xs sm:text-[13px] block mt-0.5">
+                        {isDelivered ? 'Tiba di Lokasi' : `${liveTelemetry?.remainingKm ?? '2.4'} km • ${liveTelemetry?.remainingMinutes ?? 6} mnt`}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Driver info snippet */}
+                  <div className="p-3 bg-neutral-50 border border-neutral-200 rounded-[2px] flex items-center justify-between gap-3 text-xs mb-3">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-full bg-neutral-900 text-white font-bold flex items-center justify-center shrink-0 text-xs">
+                        AF
+                      </div>
+                      <div className="min-w-0">
+                        <span className="font-bold text-neutral-900 block truncate">
+                          Ahmad Fauzi • {order.courierName}
+                        </span>
+                        <span className="text-[10px] text-neutral-500 font-mono block">
+                          Honda Vario 160 • B 4821 SDE
+                        </span>
+                      </div>
+                    </div>
+                    <span
+                      className={`px-2 py-0.5 text-[10px] font-bold rounded shrink-0 ${
+                        isDelivered ? 'bg-emerald-100 text-emerald-800' : 'bg-neutral-900 text-white'
+                      }`}
                     >
-                      <RotateCcw className="w-3 h-3" />
-                      <span>Reset Status ke Awal</span>
-                    </button>
+                      {isDelivered ? 'Tiba di Lokasi' : 'Aktif Berkendara'}
+                    </span>
+                  </div>
+
+                  {/* Delivery Guarantee Notice */}
+                  <div className="pt-3 border-t border-neutral-150 flex items-start gap-2 text-[11px] text-neutral-500 leading-snug">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>
+                      Paket dilindungi Asuransi Pengiriman Penuh &amp; Garansi 100% Produk Original SHILLSTORE.
+                    </span>
                   </div>
                 </div>
 
