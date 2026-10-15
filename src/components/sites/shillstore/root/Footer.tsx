@@ -9,8 +9,8 @@ export function Footer() {
       title: 'SHOP',
       links: [
         { label: 'New Arrivals', href: '/collections' },
-        { label: 'Men', href: '/collections/all-t-shirt' },
-        { label: 'Women', href: '/collections/all-shirt' },
+        { label: 'Men', href: '/collections/men' },
+        { label: 'Shoes', href: '/shoes' },
         { label: 'Outerwear', href: '/collections/flight-jacket' },
         { label: 'Trousers & Chinos', href: '/collections/category-pants-chino-pants' },
         { label: 'Accessories', href: '/collections/accessories' },

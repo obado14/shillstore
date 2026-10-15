@@ -22,7 +22,7 @@ export default function CollectionPage({
 }
 
 function CollectionContent({ handle }: { handle: string }) {
-  if (['all-product', 'shill-x-jkt48', 'shill-x-mpl', 'ms-glow'].includes(handle)) {
+  if (['all-product', 'shill-x-jkt48', 'shill-x-mpl', 'ms-glow', 'women'].includes(handle)) {
     notFound();
   }
 
@@ -32,7 +32,6 @@ function CollectionContent({ handle }: { handle: string }) {
 
   const isSalePage = handle === 'sale';
   const isMenPage = handle === 'men';
-  const isWomenPage = handle === 'women';
   const isAccessoriesPage = handle === 'accessories' || handle === 'aksesoris';
   const [activeCategory, setActiveCategory] = useState<string>('ALL');
   const [sortBy, setSortBy] = useState<string>('featured');
@@ -66,15 +65,6 @@ function CollectionContent({ handle }: { handle: string }) {
     { id: 'SHIRTS', label: 'SHIRTS' },
     { id: 'OUTERWEAR', label: 'OUTERWEAR' },
     { id: 'PANTS', label: 'PANTS' },
-    { id: 'ACCESSORIES', label: 'ACCESSORIES' },
-  ];
-
-  const womenSubcategories = [
-    { id: 'ALL', label: 'ALL' },
-    { id: 'TOPS', label: 'TOPS' },
-    { id: 'SHIRTS', label: 'SHIRTS' },
-    { id: 'OUTERWEAR', label: 'OUTERWEAR' },
-    { id: 'BOTTOMS', label: 'BOTTOMS' },
     { id: 'ACCESSORIES', label: 'ACCESSORIES' },
   ];
 
@@ -112,15 +102,6 @@ function CollectionContent({ handle }: { handle: string }) {
       };
     }
 
-    if (isWomenPage) {
-      return {
-        title: 'WOMEN',
-        subtitle: 'Everyday pieces, styled your way.',
-        description: 'Explore shirts, outerwear, trousers, and everyday essentials from SHILL.',
-        breadcrumb: 'WOMEN',
-      };
-    }
-
     if (isMenPage) {
       return {
         title: 'MEN',
@@ -151,7 +132,7 @@ function CollectionContent({ handle }: { handle: string }) {
       description: '',
       breadcrumb: formattedTitle.toUpperCase(),
     };
-  }, [handle, isAccessoriesPage, isSalePage, isMenPage, isWomenPage]);
+  }, [handle, isAccessoriesPage, isSalePage, isMenPage]);
 
   // Filter products based on handle, active subcategory, and optional search query
   const filteredProducts = useMemo(() => {
@@ -169,21 +150,6 @@ function CollectionContent({ handle }: { handle: string }) {
             p.category === 'Jaket' ||
             p.category === 'Celana'
         );
-      } else if (activeCategory === 'ACCESSORIES') {
-        list = list.filter((p) => p.category === 'Aksesoris');
-      }
-    } else if (isWomenPage) {
-      // Base WOMEN collection includes apparel, tops, shirts, outerwear, trousers, and accessories
-      list = list.filter((p) => p.category !== 'Parfum' && p.category !== 'Sepatu');
-
-      if (activeCategory === 'TOPS') {
-        list = list.filter((p) => p.category === 'Kaos');
-      } else if (activeCategory === 'SHIRTS') {
-        list = list.filter((p) => p.category === 'Kemeja');
-      } else if (activeCategory === 'OUTERWEAR') {
-        list = list.filter((p) => p.category === 'Jaket');
-      } else if (activeCategory === 'BOTTOMS') {
-        list = list.filter((p) => p.category === 'Celana');
       } else if (activeCategory === 'ACCESSORIES') {
         list = list.filter((p) => p.category === 'Aksesoris');
       }
@@ -247,12 +213,10 @@ function CollectionContent({ handle }: { handle: string }) {
     }
 
     return list;
-  }, [handle, isSalePage, isMenPage, isWomenPage, activeCategory, sortBy, searchQuery]);
+  }, [handle, isSalePage, isMenPage, activeCategory, sortBy, searchQuery]);
 
   const activeSubcategories = isSalePage
     ? saleSubcategories
-    : isWomenPage
-    ? womenSubcategories
     : isMenPage
     ? menSubcategories
     : null;

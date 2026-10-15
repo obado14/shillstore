@@ -21,7 +21,6 @@ export function Header() {
   const navLinks = [
     { label: 'NEW IN', href: '/collections' },
     { label: 'MEN', href: '/collections/men' },
-    { label: 'WOMEN', href: '/collections/women' },
     { label: 'SHOES', href: '/shoes' },
     { label: 'ACCESSORIES', href: '/collections/accessories' },
     { label: 'SALE', href: '/collections/sale' },
