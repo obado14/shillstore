@@ -1,10 +1,53 @@
 export type TrackingStepStatus =
-  | 'created'        // 1. Pesanan Dibuat
-  | 'paid'           // 2. Pembayaran Berhasil
-  | 'processing'     // 3. Pesanan Diproses
-  | 'handed_over'    // 4. Diserahkan ke Kurir
-  | 'in_transit'     // 5. Dalam Pengiriman
-  | 'delivered';     // 6. Pesanan Sampai
+  | 'created'            // Pesanan Dibuat
+  | 'paid'               // Pembayaran Berhasil
+  | 'processing'         // 1. Pesanan Diproses
+  | 'packed'             // 2. Dikemas
+  | 'handed_over'        // Diserahkan ke Kurir
+  | 'in_transit'         // 3. Dalam Pengiriman
+  | 'out_for_delivery'   // 4. Sedang Diantar
+  | 'delivered';         // 5. Terkirim
+
+export type MainTrackingStageKey =
+  | 'processing'
+  | 'packed'
+  | 'in_transit'
+  | 'out_for_delivery'
+  | 'delivered';
+
+export interface MainTrackingStage {
+  key: MainTrackingStageKey;
+  title: string;
+  description: string;
+}
+
+export const MAIN_TRACKING_STAGES: MainTrackingStage[] = [
+  { key: 'processing', title: 'Pesanan Diproses', description: 'Pesanan terverifikasi sistem' },
+  { key: 'packed', title: 'Dikemas', description: 'Quality check & packaging' },
+  { key: 'in_transit', title: 'Dalam Pengiriman', description: 'Menuju kota tujuan' },
+  { key: 'out_for_delivery', title: 'Sedang Diantar', description: 'Kurir menuju alamat Anda' },
+  { key: 'delivered', title: 'Terkirim', description: 'Paket berhasil diterima' },
+];
+
+export function mapStepToMainStage(step: TrackingStepStatus): MainTrackingStageKey {
+  switch (step) {
+    case 'created':
+    case 'paid':
+    case 'processing':
+      return 'processing';
+    case 'packed':
+      return 'packed';
+    case 'handed_over':
+    case 'in_transit':
+      return 'in_transit';
+    case 'out_for_delivery':
+      return 'out_for_delivery';
+    case 'delivered':
+      return 'delivered';
+    default:
+      return 'processing';
+  }
+}
 
 export interface TrackingStepDefinition {
   key: TrackingStepStatus;
@@ -15,40 +58,34 @@ export interface TrackingStepDefinition {
 
 export const TRACKING_STEPS_ORDER: TrackingStepDefinition[] = [
   {
-    key: 'created',
-    title: 'Pesanan Dibuat',
-    defaultDescription: 'Pesanan berhasil dibuat di sistem SHILLSTORE',
-    defaultLocation: 'SHILLSTORE Online Store',
-  },
-  {
-    key: 'paid',
-    title: 'Pembayaran Berhasil',
-    defaultDescription: 'Pembayaran telah diverifikasi secara otomatis',
-    defaultLocation: 'Payment Gateway SHILLSTORE',
-  },
-  {
     key: 'processing',
     title: 'Pesanan Diproses',
-    defaultDescription: 'Paket sedang dikemas & quality check oleh tim warehouse',
-    defaultLocation: 'Warehouse SHILLSTORE Jakarta Selatan',
+    defaultDescription: 'Pesanan berhasil diverifikasi dan masuk antrean sistem fulfillment SHILLSTORE',
+    defaultLocation: 'SHILLSTORE Online Fulfillment',
   },
   {
-    key: 'handed_over',
-    title: 'Diserahkan ke Kurir',
-    defaultDescription: 'Paket telah di-pickup dan diserahkan ke pihak ekspedisi',
-    defaultLocation: 'Sorting Hub Ekspedisi Jakarta',
+    key: 'packed',
+    title: 'Dikemas',
+    defaultDescription: 'Paket telah selesai diperiksa dan dikemas rapi dengan segel pengaman warehouse',
+    defaultLocation: 'Warehouse SHILLSTORE Jakarta Selatan',
   },
   {
     key: 'in_transit',
     title: 'Dalam Pengiriman',
-    defaultDescription: 'Paket sedang dalam perjalanan menuju alamat tujuan pengiriman',
-    defaultLocation: 'Menuju Hub Tujuan & Alamat Penerima',
+    defaultDescription: 'Paket telah diproses di Sorting Hub ekspedisi dan dalam perjalanan logistik',
+    defaultLocation: 'Hub Ekspedisi & Transit Kota Tujuan',
+  },
+  {
+    key: 'out_for_delivery',
+    title: 'Sedang Diantar',
+    defaultDescription: 'Paket dibawa oleh kurir mitra dan sedang dalam perjalanan menuju alamat penerima',
+    defaultLocation: 'Area Pengantaran Menuju Alamat Penerima',
   },
   {
     key: 'delivered',
-    title: 'Pesanan Sampai',
-    defaultDescription: 'Paket telah sampai dan diterima dengan baik oleh penerima',
-    defaultLocation: 'Alamat Tujuan Pengiriman',
+    title: 'Terkirim',
+    defaultDescription: 'Paket telah sampai di alamat tujuan dan diterima dengan baik oleh penerima',
+    defaultLocation: 'Alamat Tujuan Penerima',
   },
 ];
 
@@ -81,6 +118,12 @@ export interface OrderCustomerDetail {
   notes?: string;
 }
 
+export interface Coordinates {
+  lat: number;
+  lng: number;
+  label?: string;
+}
+
 export interface ShillOrder {
   orderNumber: string;
   date: string;
@@ -100,4 +143,8 @@ export interface ShillOrder {
   paymentStatus: 'paid' | 'unpaid' | 'failed';
   currentStep: TrackingStepStatus;
   history: TrackingHistoryItem[];
+  destinationCoordinates?: Coordinates;
+  courierCoordinates?: Coordinates | null;
+  isLiveTracking?: boolean;
+  trackingDataSource?: string;
 }

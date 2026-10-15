@@ -47,60 +47,54 @@ export const defaultMockOrders: ShillOrder[] = [
     courierId: 'sicepat',
     courierName: 'SiCepat Express',
     trackingNumber: 'SCP-10293817',
-    estimatedArrival: '6 - 7 Oktober 2026',
+    estimatedArrival: '18 - 19 Oktober 2026',
     paymentMethod: 'bca_va',
     paymentMethodName: 'BCA Virtual Account',
     paymentStatus: 'paid',
     currentStep: 'in_transit',
+    destinationCoordinates: {
+      lat: -6.2425,
+      lng: 106.8016,
+      label: 'Jl. Melati No. 12, Kebayoran Baru, Jakarta Selatan',
+    },
+    courierCoordinates: null,
+    isLiveTracking: false,
+    trackingDataSource: 'Simulasi / Database Lokal SHILLSTORE',
     history: [
-      {
-        step: 'created',
-        title: 'Pesanan Dibuat',
-        description: 'Pesanan berhasil dibuat di sistem SHILLSTORE',
-        location: 'SHILLSTORE Online Store',
-        timestamp: '3 Okt 2026, 14:20 WIB',
-      },
-      {
-        step: 'paid',
-        title: 'Pembayaran Berhasil',
-        description: 'Pembayaran Rp 388.000 via BCA Virtual Account telah terverifikasi',
-        location: 'Payment Gateway SHILLSTORE',
-        timestamp: '3 Okt 2026, 14:22 WIB',
-      },
       {
         step: 'processing',
         title: 'Pesanan Diproses',
-        description: 'Paket telah selesai diperiksa dan dikemas rapi dengan segel pengaman',
-        location: 'Warehouse SHILLSTORE Jakarta Selatan',
-        timestamp: '4 Okt 2026, 09:15 WIB',
+        description: 'Pesanan telah diverifikasi secara otomatis dan masuk antrean fulfillment',
+        location: 'SHILLSTORE Online Fulfillment',
+        timestamp: '15 Okt 2026, 14:20 WIB',
       },
       {
-        step: 'handed_over',
-        title: 'Diserahkan ke Kurir',
-        description: 'Paket telah di-pickup oleh SiCepat Express dan diproses di hub transit',
-        location: 'Hub SiCepat Jakarta Selatan',
-        timestamp: '4 Okt 2026, 17:30 WIB',
+        step: 'packed',
+        title: 'Dikemas',
+        description: 'Paket telah selesai diperiksa dan dikemas rapi dengan segel pengaman warehouse',
+        location: 'Warehouse SHILLSTORE Jakarta Selatan',
+        timestamp: '15 Okt 2026, 17:30 WIB',
       },
       {
         step: 'in_transit',
         title: 'Dalam Pengiriman',
-        description: 'Paket sedang dibawa kurir mitra menuju alamat penerima',
-        location: 'Menuju Kebayoran Baru, Jakarta Selatan',
-        timestamp: '5 Okt 2026, 08:45 WIB',
+        description: 'Paket telah di-pickup kurir SiCepat dan sedang bergerak menuju Sorting Hub transit Jakarta Selatan',
+        location: 'Hub SiCepat Express Jakarta Selatan',
+        timestamp: '16 Okt 2026, 09:15 WIB',
       },
     ],
   },
   {
     orderNumber: 'SHILL-892144',
-    date: '28 September 2026, 10:15 WIB',
+    date: '14 Oktober 2026, 10:15 WIB',
     customer: {
-      fullName: 'Budi Santoso',
-      phone: '0812-3456-7890',
-      email: 'budi.santoso@example.com',
+      fullName: 'Rian Pratama',
+      phone: '0813-8899-2211',
+      email: 'rian.pratama@example.com',
       province: 'DKI Jakarta',
-      city: 'Jakarta Selatan',
-      postalCode: '12150',
-      address: 'Jl. Melati No. 12, RT 02 / RW 05, Blok C, Kebayoran Baru',
+      city: 'Jakarta Pusat',
+      postalCode: '10310',
+      address: 'Jl. Teuku Umar No. 8, RT 01 / RW 03, Menteng',
     },
     items: [
       {
@@ -116,79 +110,73 @@ export const defaultMockOrders: ShillOrder[] = [
     shippingCost: 0,
     discount: 0,
     total: 149000,
-    courierId: 'sicepat',
-    courierName: 'SiCepat Express',
-    trackingNumber: 'SCP-99120481',
-    estimatedArrival: '30 September 2026',
+    courierId: 'jnt',
+    courierName: 'J&T Express',
+    trackingNumber: 'JNT-49210988',
+    estimatedArrival: 'Hari Ini (Estimasi 16:00 WIB)',
     paymentMethod: 'qris',
     paymentMethodName: 'QRIS',
     paymentStatus: 'paid',
-    currentStep: 'delivered',
+    currentStep: 'out_for_delivery',
+    destinationCoordinates: {
+      lat: -6.1963,
+      lng: 106.8327,
+      label: 'Jl. Teuku Umar No. 8, Menteng, Jakarta Pusat',
+    },
+    courierCoordinates: null,
+    isLiveTracking: false,
+    trackingDataSource: 'Simulasi / Database Lokal SHILLSTORE',
     history: [
-      {
-        step: 'created',
-        title: 'Pesanan Dibuat',
-        description: 'Pesanan berhasil dibuat di sistem SHILLSTORE',
-        location: 'SHILLSTORE Online Store',
-        timestamp: '28 Sep 2026, 10:15 WIB',
-      },
-      {
-        step: 'paid',
-        title: 'Pembayaran Berhasil',
-        description: 'Pembayaran Rp 149.000 via QRIS berhasil diverifikasi',
-        location: 'Payment Gateway SHILLSTORE',
-        timestamp: '28 Sep 2026, 10:16 WIB',
-      },
       {
         step: 'processing',
         title: 'Pesanan Diproses',
-        description: 'Paket telah selesai dikemas dan siap untuk penjemputan ekspedisi',
-        location: 'Warehouse SHILLSTORE Jakarta Selatan',
-        timestamp: '28 Sep 2026, 13:40 WIB',
+        description: 'Pembayaran via QRIS telah diverifikasi sistem',
+        location: 'SHILLSTORE Online Fulfillment',
+        timestamp: '14 Okt 2026, 10:15 WIB',
       },
       {
-        step: 'handed_over',
-        title: 'Diserahkan ke Kurir',
-        description: 'Paket telah diterima kurir SiCepat',
-        location: 'Hub SiCepat Jakarta Selatan',
-        timestamp: '28 Sep 2026, 16:50 WIB',
+        step: 'packed',
+        title: 'Dikemas',
+        description: 'Paket telah selesai dikemas dan siap di-pickup oleh ekspedisi',
+        location: 'Warehouse SHILLSTORE Jakarta Selatan',
+        timestamp: '14 Okt 2026, 14:00 WIB',
       },
       {
         step: 'in_transit',
         title: 'Dalam Pengiriman',
-        description: 'Paket sedang diantar ke alamat tujuan',
-        location: 'Jakarta Selatan',
-        timestamp: '29 Sep 2026, 09:30 WIB',
+        description: 'Paket tiba di DC Jakarta Pusat dan disortir untuk pengantaran akhir',
+        location: 'DC J&T Express Jakarta Pusat',
+        timestamp: '15 Okt 2026, 08:30 WIB',
       },
       {
-        step: 'delivered',
-        title: 'Pesanan Sampai',
-        description: 'Paket telah diterima langsung oleh Budi Santoso',
-        location: 'Kebayoran Baru, Jakarta Selatan',
-        timestamp: '29 Sep 2026, 13:20 WIB',
+        step: 'out_for_delivery',
+        title: 'Sedang Diantar',
+        description: 'Kurir (Ahmad Fauzi) sedang mengantar paket ke alamat penerima di Menteng',
+        location: 'Menuju Alamat Penerima, Menteng',
+        timestamp: '15 Okt 2026, 11:20 WIB',
       },
     ],
   },
   {
-    orderNumber: 'SHILL-741902',
-    date: '15 September 2026, 19:40 WIB',
+    orderNumber: 'SHILL-761209',
+    date: '10 Oktober 2026, 19:40 WIB',
     customer: {
-      fullName: 'Budi Santoso',
-      phone: '0812-3456-7890',
-      email: 'budi.santoso@example.com',
+      fullName: 'Dian Permata',
+      phone: '0811-2233-4455',
+      email: 'dian.permata@example.com',
       province: 'DKI Jakarta',
       city: 'Jakarta Selatan',
-      postalCode: '12150',
-      address: 'Jl. Melati No. 12, RT 02 / RW 05, Blok C, Kebayoran Baru',
+      postalCode: '12920',
+      address: 'Jl. Rasuna Said Kav. 5, Gedung Menara 2 Lt. 14, Setiabudi',
     },
     items: [
       {
-        id: 'shill-jacket-windbreaker-army-green',
-        title: 'Shill Windbreaker Jacket Army Green',
+        id: 'shill-jacket-windbreaker-black',
+        title: 'Shill Windbreaker Jacket Black',
         price: 349000,
-        image: '/sites/shillstore/root/images/prod-jacket-windbreaker-army-green.jpg',
+        image: '/sites/shillstore/root/images/prod-jacket-windbreaker-black.jpg',
         quantity: 1,
-        size: 'L',
+        size: 'M',
       },
     ],
     subtotal: 349000,
@@ -198,53 +186,54 @@ export const defaultMockOrders: ShillOrder[] = [
     courierId: 'jne',
     courierName: 'JNE Reguler',
     trackingNumber: 'JNE-88120349',
-    estimatedArrival: '18 September 2026',
+    estimatedArrival: '12 Oktober 2026',
     paymentMethod: 'mandiri_va',
     paymentMethodName: 'Mandiri Virtual Account',
     paymentStatus: 'paid',
     currentStep: 'delivered',
+    destinationCoordinates: {
+      lat: -6.2152,
+      lng: 106.8294,
+      label: 'Jl. Rasuna Said Kav. 5, Setiabudi, Jakarta Selatan',
+    },
+    courierCoordinates: null,
+    isLiveTracking: false,
+    trackingDataSource: 'Simulasi / Database Lokal SHILLSTORE',
     history: [
-      {
-        step: 'created',
-        title: 'Pesanan Dibuat',
-        description: 'Pesanan berhasil dibuat di sistem SHILLSTORE',
-        location: 'SHILLSTORE Online Store',
-        timestamp: '15 Sep 2026, 19:40 WIB',
-      },
-      {
-        step: 'paid',
-        title: 'Pembayaran Berhasil',
-        description: 'Pembayaran Rp 349.000 via Mandiri Virtual Account terverifikasi',
-        location: 'Payment Gateway SHILLSTORE',
-        timestamp: '15 Sep 2026, 19:43 WIB',
-      },
       {
         step: 'processing',
         title: 'Pesanan Diproses',
-        description: 'Paket telah selesai diperiksa dan dikemas rapi',
-        location: 'Warehouse SHILLSTORE Jakarta Selatan',
-        timestamp: '16 Sep 2026, 10:00 WIB',
+        description: 'Pesanan masuk dan pembayaran Mandiri VA berhasil',
+        location: 'SHILLSTORE Online Fulfillment',
+        timestamp: '10 Okt 2026, 19:40 WIB',
       },
       {
-        step: 'handed_over',
-        title: 'Diserahkan ke Kurir',
-        description: 'Paket telah diterima di counter JNE Reguler',
-        location: 'JNE Hub Jakarta Selatan',
-        timestamp: '16 Sep 2026, 14:15 WIB',
+        step: 'packed',
+        title: 'Dikemas',
+        description: 'Paket selesai dikemas dan diserahterimakan ke agen JNE',
+        location: 'Warehouse SHILLSTORE Jakarta Selatan',
+        timestamp: '11 Okt 2026, 09:30 WIB',
       },
       {
         step: 'in_transit',
         title: 'Dalam Pengiriman',
-        description: 'Paket sedang diantar kurir ke alamat tujuan',
-        location: 'Jakarta Selatan',
-        timestamp: '17 Sep 2026, 11:20 WIB',
+        description: 'Paket tiba di Hub Logistik JNE Jakarta Selatan',
+        location: 'JNE Hub Jakarta Selatan',
+        timestamp: '11 Okt 2026, 16:45 WIB',
+      },
+      {
+        step: 'out_for_delivery',
+        title: 'Sedang Diantar',
+        description: 'Kurir sedang dalam perjalanan ke Gedung Menara 2',
+        location: 'Area Setiabudi, Jakarta Selatan',
+        timestamp: '12 Okt 2026, 10:15 WIB',
       },
       {
         step: 'delivered',
-        title: 'Pesanan Sampai',
-        description: 'Paket telah diterima dengan baik oleh penerima',
-        location: 'Kebayoran Baru, Jakarta Selatan',
-        timestamp: '17 Sep 2026, 15:40 WIB',
+        title: 'Terkirim',
+        description: 'Paket berhasil diterima oleh Resepsionis Gedung (Dian Permata)',
+        location: 'Gedung Menara 2 Lt. 14, Setiabudi',
+        timestamp: '12 Okt 2026, 13:40 WIB',
       },
     ],
   },
@@ -269,14 +258,23 @@ export function getOrders(): ShillOrder[] {
   }
 }
 
-export function getOrderById(orderNumber: string): ShillOrder | null {
-  if (!orderNumber) return null;
-  const cleanId = orderNumber.replace(/^#/, '').trim().toUpperCase();
+export function getOrderByTrackingOrId(identifier: string): ShillOrder | null {
+  if (!identifier) return null;
+  const clean = identifier.replace(/^#/, '').trim().toUpperCase();
   const orders = getOrders();
-  const found = orders.find(
-    (o) => o.orderNumber.toUpperCase() === cleanId || o.orderNumber.toUpperCase().includes(cleanId)
+  return (
+    orders.find((o) => {
+      const orderMatch =
+        o.orderNumber.toUpperCase() === clean || o.orderNumber.toUpperCase().includes(clean);
+      const trackingMatch =
+        o.trackingNumber.toUpperCase() === clean || o.trackingNumber.toUpperCase().includes(clean);
+      return orderMatch || trackingMatch;
+    }) || null
   );
-  return found || null;
+}
+
+export function getOrderById(orderNumber: string): ShillOrder | null {
+  return getOrderByTrackingOrId(orderNumber);
 }
 
 export function getLatestOrderId(): string | null {
@@ -294,17 +292,26 @@ export function getLatestOrderId(): string | null {
 export function saveOrder(newOrder: ShillOrder): void {
   if (typeof window === 'undefined') return;
   try {
+    const orderWithCoords: ShillOrder = {
+      ...newOrder,
+      destinationCoordinates: newOrder.destinationCoordinates || {
+        lat: -6.2425,
+        lng: 106.8016,
+        label: `${newOrder.customer.address}, ${newOrder.customer.city}`,
+      },
+    };
+
     const orders = getOrders();
-    const existingIndex = orders.findIndex((o) => o.orderNumber === newOrder.orderNumber);
+    const existingIndex = orders.findIndex((o) => o.orderNumber === orderWithCoords.orderNumber);
     let updated: ShillOrder[];
     if (existingIndex >= 0) {
       updated = [...orders];
-      updated[existingIndex] = newOrder;
+      updated[existingIndex] = orderWithCoords;
     } else {
-      updated = [newOrder, ...orders];
+      updated = [orderWithCoords, ...orders];
     }
     localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(updated));
-    localStorage.setItem(LATEST_ORDER_KEY, newOrder.orderNumber);
+    localStorage.setItem(LATEST_ORDER_KEY, orderWithCoords.orderNumber);
     window.dispatchEvent(new Event('shill-orders-updated'));
   } catch (e) {
     console.error('Failed to save order to localStorage', e);
@@ -315,20 +322,21 @@ export function updateOrderStep(
   orderNumber: string,
   targetStep: TrackingStepStatus
 ): ShillOrder | null {
-  const order = getOrderById(orderNumber);
+  const order = getOrderByTrackingOrId(orderNumber);
   if (!order) return null;
 
   const targetIndex = TRACKING_STEPS_ORDER.findIndex((s) => s.key === targetStep);
   if (targetIndex === -1) return null;
 
   const now = new Date();
-  const timeFormatted = now.toLocaleDateString('id-ID', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }) + ' WIB';
+  const timeFormatted =
+    now.toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }) + ' WIB';
 
   // Build history up to target step
   const updatedHistory: TrackingHistoryItem[] = [];
@@ -359,7 +367,7 @@ export function updateOrderStep(
 }
 
 export function advanceOrderStep(orderNumber: string): ShillOrder | null {
-  const order = getOrderById(orderNumber);
+  const order = getOrderByTrackingOrId(orderNumber);
   if (!order) return null;
 
   const currentIndex = TRACKING_STEPS_ORDER.findIndex((s) => s.key === order.currentStep);
@@ -371,8 +379,8 @@ export function advanceOrderStep(orderNumber: string): ShillOrder | null {
 }
 
 export function resetOrderStep(orderNumber: string): ShillOrder | null {
-  const order = getOrderById(orderNumber);
+  const order = getOrderByTrackingOrId(orderNumber);
   if (!order) return null;
-  // Reset back to 'processing' (standard status right after payment)
+  // Reset back to 'processing'
   return updateOrderStep(orderNumber, 'processing');
 }
