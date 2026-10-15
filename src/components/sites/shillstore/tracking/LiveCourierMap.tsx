@@ -55,20 +55,44 @@ export interface LiveCourierMapProps {
   onProgressUpdate?: (data: LiveTelemetryData) => void;
 }
 
-// Real Jakarta Selatan Road Waypoints (OpenStreetMap Geographic Coordinates)
-// From: SHILLSTORE Central Warehouse (Jl. TB Simatupang) -> Fatmawati -> Panglima Polim -> Blok M -> Recipient (Kebayoran Baru)
+// Real Jakarta Selatan Winding Urban Delivery Route (OpenStreetMap Geographic Coordinates)
+// From: SHILLSTORE Central Warehouse (TB Simatupang) -> Ampera -> Kemang -> Bangka -> Wolter Monginsidi -> Senopati -> Barito -> Kebayoran Baru
 export const JAKARTA_DELIVERY_WAYPOINTS = [
-  { lat: -6.2941, lng: 106.8042, street: 'Fulfillment Center SHILLSTORE, Jl. TB Simatupang', speed: 0 },
-  { lat: -6.2934, lng: 106.8010, street: 'Gerbang Logistik Jl. TB Simatupang', speed: 24 },
-  { lat: -6.2925, lng: 106.7975, street: 'Simpang Susun Fatmawati Raya', speed: 36 },
-  { lat: -6.2860, lng: 106.7971, street: 'Jl. RS Fatmawati Raya (Cilandak)', speed: 44 },
-  { lat: -6.2785, lng: 106.7970, street: 'Stasiun MRT Cipete Raya', speed: 46 },
-  { lat: -6.2690, lng: 106.7968, street: 'Stasiun MRT Haji Nawi', speed: 45 },
-  { lat: -6.2580, lng: 106.7975, street: 'Blok A MRT • Jl. Panglima Polim', speed: 40 },
-  { lat: -6.2495, lng: 106.7988, street: 'Jl. Panglima Polim Raya (Kebayoran Baru)', speed: 38 },
-  { lat: -6.2440, lng: 106.8005, street: 'Kawasan Melawai • Blok M Plaza', speed: 32 },
-  { lat: -6.2425, lng: 106.8014, street: 'Masuk Jl. Melati (Kompleks Perumahan)', speed: 20 },
-  { lat: -6.2415, lng: 106.8020, street: 'Jl. Melati No. 12 (Rumah Penerima)', speed: 0 },
+  // 1. Gudang Pusat SHILLSTORE (TB Simatupang)
+  { lat: -6.2945, lng: 106.8045, street: 'Gudang Pusat SHILLSTORE, Jl. TB Simatupang', speed: 0 },
+  { lat: -6.2938, lng: 106.8080, street: 'Jl. TB Simatupang (Arah Timur)', speed: 28 },
+
+  // 2. Belok Kiri masuk Jl. Ampera Raya (Belokan 1)
+  { lat: -6.2910, lng: 106.8125, street: 'Simpang Cilandak • Belok Masuk Jl. Ampera Raya', speed: 26 },
+  { lat: -6.2835, lng: 106.8152, street: 'Jl. Ampera Raya (Cilandak Timur)', speed: 42 },
+  { lat: -6.2760, lng: 106.8175, street: 'Jl. Ampera Raya • Area Pengadilan Jaksel', speed: 44 },
+
+  // 3. Belok Tajam ke Kiri masuk Jl. Kemang Timur (Belokan 2)
+  { lat: -6.2730, lng: 106.8170, street: 'Belok Kiri Tajam ke Jl. Kemang Timur', speed: 22 },
+  { lat: -6.2715, lng: 106.8135, street: 'Jl. Kemang Timur Raya', speed: 34 },
+
+  // 4. Belok Kanan masuk Jl. Kemang Raya ke Utara (Belokan 3)
+  { lat: -6.2690, lng: 106.8140, street: 'Persimpangan Kemang • Belok Kanan ke Jl. Kemang Raya', speed: 24 },
+  { lat: -6.2630, lng: 106.8155, street: 'Jl. Kemang Raya (Kawasan Kafe & Butik)', speed: 38 },
+
+  // 5. Belok Kanan & Berkelok ke Jl. Bangka (Belokan 4 - S-Curve Bangka)
+  { lat: -6.2575, lng: 106.8185, street: 'Belok Kanan masuk Jl. Bangka Raya', speed: 24 },
+  { lat: -6.2520, lng: 106.8160, street: 'Kelokan Jl. Bangka II • Pela Mampang', speed: 32 },
+
+  // 6. Belok Kiri 90° ke Jl. Wolter Monginsidi (Belokan 5)
+  { lat: -6.2435, lng: 106.8145, street: 'Simpang Santa • Belok Kiri Jl. Wolter Monginsidi', speed: 26 },
+  { lat: -6.2410, lng: 106.8105, street: 'Jl. Wolter Monginsidi (Kebayoran Baru)', speed: 40 },
+
+  // 7. Masuk kawasan Senopati - Suryo (Belokan 6)
+  { lat: -6.2375, lng: 106.8065, street: 'Jl. Suryo • Masuk Kawasan Senopati', speed: 34 },
+  { lat: -6.2360, lng: 106.8020, street: 'Kurva Bundaran Gunawarman • Arah Kyai Maja', speed: 24 },
+
+  // 8. Menuju Barito (Belokan 7)
+  { lat: -6.2395, lng: 106.7975, street: 'Belok Kiri Jl. Kyai Maja • Taman Barito', speed: 30 },
+
+  // 9. Masuk Kompleks Perumahan Penerima (Belokan 8)
+  { lat: -6.2420, lng: 106.7955, street: 'Belok Masuk Jl. Melati (Kompleks Perumahan)', speed: 18 },
+  { lat: -6.2435, lng: 106.7940, street: 'Jl. Melati No. 12 (Tiba di Rumah Penerima)', speed: 0 },
 ];
 
 // Helper to compute bearing angle between two lat/lng points
@@ -346,7 +370,7 @@ export function LiveCourierMap({
       stageDescription = 'Paket melaju di jalur arteri kota Jakarta Selatan';
       phaseTitle = 'Dalam Perjalanan Antar-Hub / Jalan Raya';
       phaseBadge = 'Melaju di Jalan Raya';
-      phaseActionNote = 'Kurir bergerak melintasi rute utama Jl. TB Simatupang & Jl. RS Fatmawati Raya.';
+      phaseActionNote = 'Kurir bergerak melintasi rute berkelok Jl. TB Simatupang, Ampera, Kemang, Bangka, hingga Senopati.';
       isVehicleMoving = true;
       const tInPhase = tClamped - tPhase3;
       driveFraction = (tInPhase / PHASE_DURATIONS.IN_TRANSIT) * 0.8;
@@ -481,7 +505,7 @@ export function LiveCourierMap({
         zoomControl: false,
         attributionControl: false,
         scrollWheelZoom: false, // Prevent interfering with page scroll
-      }).setView([-6.2678, 106.8005], 13);
+      }).setView([-6.2652, 106.8062], 13);
 
       // 1. Initial Tile Layer: 100% Free OpenStreetMap (No API Key Required)
       const providerConfig = FREE_TILE_PROVIDERS[tileProvider];
@@ -792,7 +816,7 @@ export function LiveCourierMap({
                 </span>
               </div>
               <p className="text-[11px] text-neutral-500 truncate max-w-lg mt-0.5">
-                Rute Asli Jakarta Selatan: TB Simatupang → Fatmawati → Panglima Polim → Kebayoran Baru
+                Rute Berkelok Asli Jakarta: Simatupang → Ampera → Kemang → Bangka → Senopati → Kebayoran Baru
               </p>
             </div>
           </div>
