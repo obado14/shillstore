@@ -1608,6 +1608,141 @@ export const productsData: Product[] = [
     sizes: ['All Size'],
     colors: ['Olive', 'Washed Black', 'Brown'],
     isNew: true
+  },
+
+  // ==========================================
+  // ACCESSORIES: TIMEPIECES & WATCHES (6 PRODUCTS)
+  // ==========================================
+  // 1. Digital Sport Watch (Rp 149.000)
+  {
+    id: 'shill-watch-digital-sport-black',
+    title: 'Shill Digital Sport Watch Black',
+    category: 'Aksesoris',
+    subcategory: 'Digital Sport',
+    price: 149000,
+    formattedPrice: 'Rp 149.000',
+    compareAtPrice: 219000,
+    formattedCompareAtPrice: 'Rp 219.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/accessories/digital-sport-watch-black.png',
+      '/images/accessories/digital-sport-watch-cream.png'
+    ],
+    link: '/products/shill-digital-sport-watch-black',
+    rating: 5.0,
+    reviewCount: 156,
+    sizes: ['All Size (Adjustable)'],
+    colors: ['Black', 'Cream'],
+    isNew: true
+  },
+  {
+    id: 'shill-watch-digital-sport-cream',
+    title: 'Shill Digital Sport Watch Cream',
+    category: 'Aksesoris',
+    subcategory: 'Digital Sport',
+    price: 149000,
+    formattedPrice: 'Rp 149.000',
+    compareAtPrice: 219000,
+    formattedCompareAtPrice: 'Rp 219.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/accessories/digital-sport-watch-cream.png',
+      '/images/accessories/digital-sport-watch-black.png'
+    ],
+    link: '/products/shill-digital-sport-watch-cream',
+    rating: 4.9,
+    reviewCount: 104,
+    sizes: ['All Size (Adjustable)'],
+    colors: ['Cream', 'Black'],
+    isNew: true
+  },
+
+  // 2. Minimalist Leather Watch (Rp 179.000)
+  {
+    id: 'shill-watch-minimalist-leather-black',
+    title: 'Shill Minimalist Leather Watch Black',
+    category: 'Aksesoris',
+    subcategory: 'Minimalist Leather',
+    price: 179000,
+    formattedPrice: 'Rp 179.000',
+    compareAtPrice: 249000,
+    formattedCompareAtPrice: 'Rp 249.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/accessories/minimalist-leather-watch-black.png',
+      '/images/accessories/minimalist-leather-watch-brown.png'
+    ],
+    link: '/products/shill-minimalist-leather-watch-black',
+    rating: 5.0,
+    reviewCount: 142,
+    sizes: ['All Size (Adjustable)'],
+    colors: ['Black', 'Brown'],
+    isNew: true
+  },
+  {
+    id: 'shill-watch-minimalist-leather-brown',
+    title: 'Shill Minimalist Leather Watch Brown',
+    category: 'Aksesoris',
+    subcategory: 'Minimalist Leather',
+    price: 179000,
+    formattedPrice: 'Rp 179.000',
+    compareAtPrice: 249000,
+    formattedCompareAtPrice: 'Rp 249.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/accessories/minimalist-leather-watch-brown.png',
+      '/images/accessories/minimalist-leather-watch-black.png'
+    ],
+    link: '/products/shill-minimalist-leather-watch-brown',
+    rating: 4.9,
+    reviewCount: 116,
+    sizes: ['All Size (Adjustable)'],
+    colors: ['Brown', 'Black'],
+    isNew: true
+  },
+
+  // 3. Classic Analog Watch (Rp 199.000)
+  {
+    id: 'shill-watch-classic-analog-black',
+    title: 'Shill Classic Analog Watch Black',
+    category: 'Aksesoris',
+    subcategory: 'Classic Analog',
+    price: 199000,
+    formattedPrice: 'Rp 199.000',
+    compareAtPrice: 289000,
+    formattedCompareAtPrice: 'Rp 289.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/accessories/classic-analog-watch-black.png',
+      '/images/accessories/classic-analog-watch-silver.png'
+    ],
+    link: '/products/shill-classic-analog-watch-black',
+    rating: 5.0,
+    reviewCount: 124,
+    sizes: ['All Size (Adjustable)'],
+    colors: ['Black', 'Silver'],
+    isNew: true
+  },
+  {
+    id: 'shill-watch-classic-analog-silver',
+    title: 'Shill Classic Analog Watch Silver',
+    category: 'Aksesoris',
+    subcategory: 'Classic Analog',
+    price: 199000,
+    formattedPrice: 'Rp 199.000',
+    compareAtPrice: 289000,
+    formattedCompareAtPrice: 'Rp 289.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/accessories/classic-analog-watch-silver.png',
+      '/images/accessories/classic-analog-watch-black.png'
+    ],
+    link: '/products/shill-classic-analog-watch-silver',
+    rating: 4.9,
+    reviewCount: 98,
+    sizes: ['All Size (Adjustable)'],
+    colors: ['Silver', 'Black'],
+    isNew: true
   }
 ];
 

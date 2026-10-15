@@ -70,8 +70,11 @@ function CollectionContent({ handle }: { handle: string }) {
 
   const accessoriesSubcategories = [
     { id: 'ALL', label: 'ALL ACCESSORIES' },
-    { id: 'BASEBALL', label: 'CLASSIC BASEBALL' },
-    { id: 'VINTAGE', label: 'VINTAGE WASHED' },
+    { id: 'WATCHES', label: 'WATCHES' },
+    { id: 'CAPS', label: 'CAPS & HEADWEAR' },
+    { id: 'CLASSIC_ANALOG', label: 'CLASSIC ANALOG' },
+    { id: 'MINIMALIST_LEATHER', label: 'MINIMALIST LEATHER' },
+    { id: 'DIGITAL_SPORT', label: 'DIGITAL SPORT' },
   ];
 
   // Dynamic counts for MEN categories
@@ -94,8 +97,11 @@ function CollectionContent({ handle }: { handle: string }) {
     const base = productsData.filter((p) => p.category === 'Aksesoris');
     return {
       ALL: base.length,
-      BASEBALL: base.filter((p) => p.subcategory === 'Baseball Cap').length,
-      VINTAGE: base.filter((p) => p.subcategory === 'Vintage Washed').length,
+      WATCHES: base.filter((p) => p.title.toLowerCase().includes('watch')).length,
+      CAPS: base.filter((p) => p.title.toLowerCase().includes('cap')).length,
+      CLASSIC_ANALOG: base.filter((p) => p.subcategory === 'Classic Analog').length,
+      MINIMALIST_LEATHER: base.filter((p) => p.subcategory === 'Minimalist Leather').length,
+      DIGITAL_SPORT: base.filter((p) => p.subcategory === 'Digital Sport').length,
     };
   }, [isAccessoriesPage]);
 
@@ -104,8 +110,8 @@ function CollectionContent({ handle }: { handle: string }) {
     if (isAccessoriesPage) {
       return {
         title: 'ACCESSORIES',
-        subtitle: 'Signature headwear and everyday essentials, crafted with premium embroidery.',
-        description: 'Explore the Classic Baseball Cap series (Rp 89.000) and Vintage Washed Cap series (Rp 108.000) from SHILL.',
+        subtitle: 'Everyday essentials, precision timepieces, and signature headwear.',
+        description: 'Explore Classic Analog, Minimalist Leather, and Digital Sport watches alongside our signature cap collections from SHILL.',
         breadcrumb: 'ACCESSORIES',
       };
     }
@@ -173,10 +179,16 @@ function CollectionContent({ handle }: { handle: string }) {
     } else if (isAccessoriesPage) {
       list = list.filter((p) => p.category === 'Aksesoris');
 
-      if (activeCategory === 'BASEBALL') {
-        list = list.filter((p) => p.subcategory === 'Baseball Cap');
-      } else if (activeCategory === 'VINTAGE') {
-        list = list.filter((p) => p.subcategory === 'Vintage Washed');
+      if (activeCategory === 'WATCHES') {
+        list = list.filter((p) => p.title.toLowerCase().includes('watch'));
+      } else if (activeCategory === 'CAPS') {
+        list = list.filter((p) => p.title.toLowerCase().includes('cap'));
+      } else if (activeCategory === 'CLASSIC_ANALOG') {
+        list = list.filter((p) => p.subcategory === 'Classic Analog');
+      } else if (activeCategory === 'MINIMALIST_LEATHER') {
+        list = list.filter((p) => p.subcategory === 'Minimalist Leather');
+      } else if (activeCategory === 'DIGITAL_SPORT') {
+        list = list.filter((p) => p.subcategory === 'Digital Sport');
       }
     } else if (isMenPage) {
       // Base MEN collection includes apparel, pants, jackets, and accessories

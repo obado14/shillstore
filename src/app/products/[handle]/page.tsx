@@ -208,14 +208,15 @@ function ProductDetailContent({ handle }: { handle: string }) {
 
   const isPerfume = product.category === 'Parfum';
   const isShoes = product.category === 'Sepatu' || product.category === 'Shoes';
-  const isCap = product.category === 'Aksesoris' || product.category === 'Accessories';
+  const isWatch = (product.category === 'Aksesoris' || product.category === 'Accessories') && product.title.toLowerCase().includes('watch');
+  const isCap = (product.category === 'Aksesoris' || product.category === 'Accessories') && product.title.toLowerCase().includes('cap');
   const foundPerfumeKey = Object.keys(perfumeProfiles).find(
     (key) => product.id.includes(key.replace('shillstore-', '')) || handle.includes(key.replace('shillstore-', ''))
   );
   const perfumeInfo = foundPerfumeKey ? perfumeProfiles[foundPerfumeKey] : perfumeProfiles['shillstore-noir'];
 
-  const sizes = product.sizes || (isPerfume ? ['100ml'] : isShoes ? ['39', '40', '41', '42', '43', '44'] : isCap ? ['All Size'] : ['S', 'M', 'L', 'XL', 'XXL']);
-  const colors = product.colors || (isShoes ? ['Triple White', 'Black'] : isCap ? ['Black', 'Navy', 'Cream'] : []);
+  const sizes = product.sizes || (isPerfume ? ['100ml'] : isShoes ? ['39', '40', '41', '42', '43', '44'] : isWatch ? ['All Size (Adjustable)'] : isCap ? ['All Size'] : ['S', 'M', 'L', 'XL', 'XXL']);
+  const colors = product.colors || (isShoes ? ['Triple White', 'Black'] : isWatch ? ['Black', 'Silver', 'Brown', 'Cream'] : isCap ? ['Black', 'Navy', 'Cream'] : []);
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
   const [selectedColor, setSelectedColor] = useState(colors[0] || '');
   const [quantity, setQuantity] = useState(1);
@@ -808,6 +809,30 @@ function ProductDetailContent({ handle }: { handle: string }) {
                           </div>
                         </div>
                       </>
+                    ) : isWatch ? (
+                      <>
+                        <p>
+                          Jam tangan presisi dari SHILLSTORE, dirancang untuk menyempurnakan penampilan sehari-hari dengan estetika modern, minimalis, dan elegan. Menggunakan mesin Japan Quartz presisi berdaya tahan tinggi, kaca mineral tahan gores (*scratch-resistant*), serta fitur tahan air (*water resistant*) untuk menunjang aktivitas profesional maupun kasual.
+                        </p>
+                        <div className="grid grid-cols-2 gap-y-2.5 text-xs pt-3 border-t border-neutral-100">
+                          <div>
+                            <span className="text-neutral-400 block">Movement</span>
+                            <span className="text-neutral-900 font-medium">Japan Quartz Precision Engine</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Case &amp; Kaca</span>
+                            <span className="text-neutral-900 font-medium">Stainless Steel &amp; Mineral Glass</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Ketahanan Air</span>
+                            <span className="text-neutral-900 font-medium">3 ATM / 30m Water Resistant</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Tali / Strap</span>
+                            <span className="text-neutral-900 font-medium">Stainless Steel / Leather / Resin</span>
+                          </div>
+                        </div>
+                      </>
                     ) : (
                       <>
                         <p>
@@ -945,6 +970,36 @@ function ProductDetailContent({ handle }: { handle: string }) {
                           <div className="grid grid-cols-2 p-2.5">
                             <span className="text-neutral-600">Tipe Pengait</span>
                             <span className="font-medium text-neutral-900">Strap Gesper Logam Kuningan</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : isWatch ? (
+                      <div className="space-y-4">
+                        <p className="text-neutral-500">Panduan spesifikasi ukuran jam tangan SHILLSTORE:</p>
+                        <div className="border border-neutral-200 divide-y divide-neutral-200 text-xs">
+                          <div className="grid grid-cols-2 p-2.5 bg-neutral-50 font-semibold text-neutral-900">
+                            <span>Komponen Jam</span>
+                            <span>Spesifikasi</span>
+                          </div>
+                          <div className="grid grid-cols-2 p-2.5">
+                            <span className="text-neutral-600">Diameter Case</span>
+                            <span className="font-medium text-neutral-900">40 mm (Unisex)</span>
+                          </div>
+                          <div className="grid grid-cols-2 p-2.5">
+                            <span className="text-neutral-600">Ketebalan Case</span>
+                            <span className="font-medium text-neutral-900">8.5 mm (Slim Profile)</span>
+                          </div>
+                          <div className="grid grid-cols-2 p-2.5">
+                            <span className="text-neutral-600">Lebar Strap</span>
+                            <span className="font-medium text-neutral-900">20 mm</span>
+                          </div>
+                          <div className="grid grid-cols-2 p-2.5">
+                            <span className="text-neutral-600">Panjang Strap</span>
+                            <span className="font-medium text-neutral-900">Adjustable (160 - 215 mm)</span>
+                          </div>
+                          <div className="grid grid-cols-2 p-2.5">
+                            <span className="text-neutral-600">Ketahanan Air</span>
+                            <span className="font-medium text-neutral-900">3 ATM (Tahan Percikan Air / Hujan)</span>
                           </div>
                         </div>
                       </div>
