@@ -750,9 +750,12 @@ export function LiveCourierMap({
         // Advance cycle clock by delta * speed
         elapsedCycleMsRef.current += delta * speedRef.current;
 
-        // Auto-loop seamlessly when full cycle is completed
-        if (elapsedCycleMsRef.current >= TOTAL_CYCLE_MS) {
-          elapsedCycleMsRef.current = 0;
+        // Stop automatically when delivery is finished (do NOT auto-loop)
+        const isNowFinished = elapsedCycleMsRef.current >= TOTAL_CYCLE_MS;
+        if (isNowFinished) {
+          elapsedCycleMsRef.current = TOTAL_CYCLE_MS;
+          isPlayingRef.current = false;
+          setIsPlaying(false);
         }
 
         const result = computeTelemetryAtTime(elapsedCycleMsRef.current);
@@ -780,8 +783,8 @@ export function LiveCourierMap({
           leafletMapRef.current.panTo([result.lat, result.lng], { animate: false });
         }
 
-        // Throttle React State updates to ~5 times per second (every 180ms) for snappy UI without lag
-        if (now - lastTelemetryUpdateRef.current > 180) {
+        // Update React State immediately if completed, otherwise throttle to ~5 times per second
+        if (isNowFinished || now - lastTelemetryUpdateRef.current > 180) {
           lastTelemetryUpdateRef.current = now;
           setTelemetry(result.telemetry);
           onProgressUpdateRef.current?.(result.telemetry);
@@ -818,12 +821,21 @@ export function LiveCourierMap({
       rotator.style.transform = `rotate(${result.targetBearing}deg)`;
     }
 
+    if (targetMs >= TOTAL_CYCLE_MS) {
+      isPlayingRef.current = false;
+      setIsPlaying(false);
+    }
+
     setTelemetry(result.telemetry);
     onProgressUpdateRef.current?.(result.telemetry);
   };
 
   // Play / Pause Toggle
   const togglePlayPause = () => {
+    if (elapsedCycleMsRef.current >= TOTAL_CYCLE_MS) {
+      handleReplay();
+      return;
+    }
     const next = !isPlaying;
     setIsPlaying(next);
     isPlayingRef.current = next;
