@@ -1469,6 +1469,145 @@ export const productsData: Product[] = [
     sizes: ['38', '39', '40', '41', '42', '43', '44'],
     colors: ['Navy', 'Black', 'White'],
     isNew: true
+  },
+
+  // ==========================================
+  // ACCESSORIES: CAPS & HEADWEAR (6 PRODUCTS)
+  // ==========================================
+  // 1. Classic Baseball Cap Series (Rp 89.000)
+  {
+    id: 'shill-cap-classic-baseball-black',
+    title: 'Shill Classic Baseball Cap Black',
+    category: 'Aksesoris',
+    subcategory: 'Baseball Cap',
+    price: 89000,
+    formattedPrice: 'Rp 89.000',
+    compareAtPrice: 129000,
+    formattedCompareAtPrice: 'Rp 129.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/accessories/classic-baseball-cap-black.jpg',
+      '/images/accessories/classic-baseball-cap-navy.jpg',
+      '/images/accessories/classic-baseball-cap-cream.jpg'
+    ],
+    link: '/products/shill-classic-baseball-cap-black',
+    rating: 5.0,
+    reviewCount: 94,
+    sizes: ['All Size'],
+    colors: ['Black', 'Navy', 'Cream'],
+    isNew: true
+  },
+  {
+    id: 'shill-cap-classic-baseball-navy',
+    title: 'Shill Classic Baseball Cap Navy',
+    category: 'Aksesoris',
+    subcategory: 'Baseball Cap',
+    price: 89000,
+    formattedPrice: 'Rp 89.000',
+    compareAtPrice: 129000,
+    formattedCompareAtPrice: 'Rp 129.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/accessories/classic-baseball-cap-navy.jpg',
+      '/images/accessories/classic-baseball-cap-black.jpg',
+      '/images/accessories/classic-baseball-cap-cream.jpg'
+    ],
+    link: '/products/shill-classic-baseball-cap-navy',
+    rating: 4.9,
+    reviewCount: 78,
+    sizes: ['All Size'],
+    colors: ['Navy', 'Black', 'Cream'],
+    isNew: true
+  },
+  {
+    id: 'shill-cap-classic-baseball-cream',
+    title: 'Shill Classic Baseball Cap Cream',
+    category: 'Aksesoris',
+    subcategory: 'Baseball Cap',
+    price: 89000,
+    formattedPrice: 'Rp 89.000',
+    compareAtPrice: 129000,
+    formattedCompareAtPrice: 'Rp 129.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/accessories/classic-baseball-cap-cream.jpg',
+      '/images/accessories/classic-baseball-cap-black.jpg',
+      '/images/accessories/classic-baseball-cap-navy.jpg'
+    ],
+    link: '/products/shill-classic-baseball-cap-cream',
+    rating: 5.0,
+    reviewCount: 82,
+    sizes: ['All Size'],
+    colors: ['Cream', 'Black', 'Navy'],
+    isNew: true
+  },
+
+  // 2. Vintage Washed Cap Series (Rp 108.000)
+  {
+    id: 'shill-cap-vintage-washed-black',
+    title: 'Shill Vintage Washed Cap Washed Black',
+    category: 'Aksesoris',
+    subcategory: 'Vintage Washed',
+    price: 108000,
+    formattedPrice: 'Rp 108.000',
+    compareAtPrice: 159000,
+    formattedCompareAtPrice: 'Rp 159.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/accessories/vintage-washed-cap-washed-black.jpg',
+      '/images/accessories/vintage-washed-cap-brown.jpg',
+      '/images/accessories/vintage-washed-cap-olive.jpg'
+    ],
+    link: '/products/shill-vintage-washed-cap-washed-black',
+    rating: 5.0,
+    reviewCount: 112,
+    sizes: ['All Size'],
+    colors: ['Washed Black', 'Brown', 'Olive'],
+    isNew: true
+  },
+  {
+    id: 'shill-cap-vintage-washed-brown',
+    title: 'Shill Vintage Washed Cap Brown',
+    category: 'Aksesoris',
+    subcategory: 'Vintage Washed',
+    price: 108000,
+    formattedPrice: 'Rp 108.000',
+    compareAtPrice: 159000,
+    formattedCompareAtPrice: 'Rp 159.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/accessories/vintage-washed-cap-brown.jpg',
+      '/images/accessories/vintage-washed-cap-washed-black.jpg',
+      '/images/accessories/vintage-washed-cap-olive.jpg'
+    ],
+    link: '/products/shill-vintage-washed-cap-brown',
+    rating: 4.9,
+    reviewCount: 95,
+    sizes: ['All Size'],
+    colors: ['Brown', 'Washed Black', 'Olive'],
+    isNew: true
+  },
+  {
+    id: 'shill-cap-vintage-washed-olive',
+    title: 'Shill Vintage Washed Cap Olive',
+    category: 'Aksesoris',
+    subcategory: 'Vintage Washed',
+    price: 108000,
+    formattedPrice: 'Rp 108.000',
+    compareAtPrice: 159000,
+    formattedCompareAtPrice: 'Rp 159.000',
+    discountBadge: 'Sale',
+    images: [
+      '/images/accessories/vintage-washed-cap-olive.jpg',
+      '/images/accessories/vintage-washed-cap-washed-black.jpg',
+      '/images/accessories/vintage-washed-cap-brown.jpg'
+    ],
+    link: '/products/shill-vintage-washed-cap-olive',
+    rating: 5.0,
+    reviewCount: 88,
+    sizes: ['All Size'],
+    colors: ['Olive', 'Washed Black', 'Brown'],
+    isNew: true
   }
 ];
 

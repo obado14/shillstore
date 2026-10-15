@@ -68,6 +68,12 @@ function CollectionContent({ handle }: { handle: string }) {
     { id: 'ACCESSORIES', label: 'ACCESSORIES' },
   ];
 
+  const accessoriesSubcategories = [
+    { id: 'ALL', label: 'ALL ACCESSORIES' },
+    { id: 'BASEBALL', label: 'CLASSIC BASEBALL' },
+    { id: 'VINTAGE', label: 'VINTAGE WASHED' },
+  ];
+
   // Dynamic counts for MEN categories
   const menCounts = useMemo(() => {
     if (!isMenPage) return {} as Record<string, number>;
@@ -82,13 +88,24 @@ function CollectionContent({ handle }: { handle: string }) {
     };
   }, [isMenPage]);
 
+  // Dynamic counts for ACCESSORIES categories
+  const accessoriesCounts = useMemo(() => {
+    if (!isAccessoriesPage) return {} as Record<string, number>;
+    const base = productsData.filter((p) => p.category === 'Aksesoris');
+    return {
+      ALL: base.length,
+      BASEBALL: base.filter((p) => p.subcategory === 'Baseball Cap').length,
+      VINTAGE: base.filter((p) => p.subcategory === 'Vintage Washed').length,
+    };
+  }, [isAccessoriesPage]);
+
   // Collection metadata
   const collectionInfo = useMemo(() => {
     if (isAccessoriesPage) {
       return {
         title: 'ACCESSORIES',
-        subtitle: 'Everyday essentials, made to complete your look.',
-        description: '',
+        subtitle: 'Signature headwear and everyday essentials, crafted with premium embroidery.',
+        description: 'Explore the Classic Baseball Cap series (Rp 89.000) and Vintage Washed Cap series (Rp 108.000) from SHILL.',
         breadcrumb: 'ACCESSORIES',
       };
     }
@@ -153,6 +170,14 @@ function CollectionContent({ handle }: { handle: string }) {
       } else if (activeCategory === 'ACCESSORIES') {
         list = list.filter((p) => p.category === 'Aksesoris');
       }
+    } else if (isAccessoriesPage) {
+      list = list.filter((p) => p.category === 'Aksesoris');
+
+      if (activeCategory === 'BASEBALL') {
+        list = list.filter((p) => p.subcategory === 'Baseball Cap');
+      } else if (activeCategory === 'VINTAGE') {
+        list = list.filter((p) => p.subcategory === 'Vintage Washed');
+      }
     } else if (isMenPage) {
       // Base MEN collection includes apparel, pants, jackets, and accessories
       list = list.filter((p) => p.category !== 'Parfum' && p.category !== 'Sepatu');
@@ -213,12 +238,14 @@ function CollectionContent({ handle }: { handle: string }) {
     }
 
     return list;
-  }, [handle, isSalePage, isMenPage, activeCategory, sortBy, searchQuery]);
+  }, [handle, isSalePage, isMenPage, isAccessoriesPage, activeCategory, sortBy, searchQuery]);
 
   const activeSubcategories = isSalePage
     ? saleSubcategories
     : isMenPage
     ? menSubcategories
+    : isAccessoriesPage
+    ? accessoriesSubcategories
     : null;
 
   // Pagination / Load more slice
@@ -269,7 +296,11 @@ function CollectionContent({ handle }: { handle: string }) {
         {activeSubcategories && (
           <div className="flex items-center gap-6 sm:gap-8 overflow-x-auto scrollbar-none py-3 border-b border-neutral-100 text-xs uppercase tracking-[0.18em]">
             {activeSubcategories.map((sub) => {
-              const count = isMenPage ? menCounts[sub.id] : undefined;
+              const count = isMenPage
+                ? menCounts[sub.id]
+                : isAccessoriesPage
+                ? accessoriesCounts[sub.id]
+                : undefined;
               return (
                 <button
                   key={sub.id}
@@ -355,7 +386,24 @@ function CollectionContent({ handle }: { handle: string }) {
 
         {/* 4. Product Catalog Grid or Editorial States */}
         {filteredProducts.length === 0 ? (
-          isMenPage && activeCategory === 'ACCESSORIES' ? (
+          searchQuery ? (
+            /* In-catalog Search yielded no results */
+            <div className="py-20 text-center max-w-md mx-auto">
+              <h3 className="text-base font-medium text-neutral-900 mb-2">
+                No products matching &ldquo;{searchQuery}&rdquo;
+              </h3>
+              <p className="text-xs text-neutral-500 mb-6">
+                Try searching for different keywords or clear your filter.
+              </p>
+              <button
+                type="button"
+                onClick={() => handleSearchChange('')}
+                className="px-6 py-3 border border-black text-xs font-semibold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-colors cursor-pointer"
+              >
+                Clear Filter
+              </button>
+            </div>
+          ) : isMenPage && activeCategory === 'ACCESSORIES' ? (
             /* Men's Accessories Coming Soon */
             <div className="py-20 sm:py-28 text-center max-w-xl mx-auto px-4">
               <div className="w-10 h-[1px] bg-neutral-300 mx-auto mb-8" />
@@ -411,23 +459,6 @@ function CollectionContent({ handle }: { handle: string }) {
                 </Link>
               </div>
               <div className="w-12 h-[1px] bg-neutral-200 mx-auto mt-14 sm:mt-16" />
-            </div>
-          ) : searchQuery ? (
-            /* In-catalog Search yielded no results */
-            <div className="py-20 text-center max-w-md mx-auto">
-              <h3 className="text-base font-medium text-neutral-900 mb-2">
-                No products matching &ldquo;{searchQuery}&rdquo;
-              </h3>
-              <p className="text-xs text-neutral-500 mb-6">
-                Try searching for different keywords or clear your filter.
-              </p>
-              <button
-                type="button"
-                onClick={() => handleSearchChange('')}
-                className="px-6 py-3 border border-black text-xs font-semibold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-colors cursor-pointer"
-              >
-                Clear Filter
-              </button>
             </div>
           ) : (
             <div className="py-24 text-center">

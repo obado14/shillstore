@@ -208,13 +208,14 @@ function ProductDetailContent({ handle }: { handle: string }) {
 
   const isPerfume = product.category === 'Parfum';
   const isShoes = product.category === 'Sepatu' || product.category === 'Shoes';
+  const isCap = product.category === 'Aksesoris' || product.category === 'Accessories';
   const foundPerfumeKey = Object.keys(perfumeProfiles).find(
     (key) => product.id.includes(key.replace('shillstore-', '')) || handle.includes(key.replace('shillstore-', ''))
   );
   const perfumeInfo = foundPerfumeKey ? perfumeProfiles[foundPerfumeKey] : perfumeProfiles['shillstore-noir'];
 
-  const sizes = product.sizes || (isPerfume ? ['100ml'] : isShoes ? ['39', '40', '41', '42', '43', '44'] : ['S', 'M', 'L', 'XL', 'XXL']);
-  const colors = product.colors || (isShoes ? ['Triple White', 'Black'] : []);
+  const sizes = product.sizes || (isPerfume ? ['100ml'] : isShoes ? ['39', '40', '41', '42', '43', '44'] : isCap ? ['All Size'] : ['S', 'M', 'L', 'XL', 'XXL']);
+  const colors = product.colors || (isShoes ? ['Triple White', 'Black'] : isCap ? ['Black', 'Navy', 'Cream'] : []);
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
   const [selectedColor, setSelectedColor] = useState(colors[0] || '');
   const [quantity, setQuantity] = useState(1);
@@ -783,6 +784,30 @@ function ProductDetailContent({ handle }: { handle: string }) {
                           </div>
                         </div>
                       </>
+                    ) : isCap ? (
+                      <>
+                        <p>
+                          Topi kasual siluet klasik dari SHILLSTORE, dibuat dari material katun twill premium bertekstur lembut dan berdaya tahan tinggi. Dilengkapi dengan bordir logo SHILLSTORE berkualitas tinggi di bagian depan serta strap belakang yang dapat disesuaikan (adjustable buckle) untuk kenyamanan pemakaian seharian.
+                        </p>
+                        <div className="grid grid-cols-2 gap-y-2.5 text-xs pt-3 border-t border-neutral-100">
+                          <div>
+                            <span className="text-neutral-400 block">Material</span>
+                            <span className="text-neutral-900 font-medium">100% Premium Cotton Twill</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Bordir</span>
+                            <span className="text-neutral-900 font-medium">High-Density 3D Stitching</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Closure</span>
+                            <span className="text-neutral-900 font-medium">Adjustable Metal Buckle</span>
+                          </div>
+                          <div>
+                            <span className="text-neutral-400 block">Fitting</span>
+                            <span className="text-neutral-900 font-medium">Unstructured 6-Panel Low Profile</span>
+                          </div>
+                        </div>
+                      </>
                     ) : (
                       <>
                         <p>
@@ -895,6 +920,32 @@ function ProductDetailContent({ handle }: { handle: string }) {
                               </tr>
                             </tbody>
                           </table>
+                        </div>
+                      </div>
+                    ) : isCap ? (
+                      <div className="space-y-4">
+                        <p className="text-neutral-500">Panduan spesifikasi ukuran topi SHILLSTORE:</p>
+                        <div className="border border-neutral-200 divide-y divide-neutral-200 text-xs">
+                          <div className="grid grid-cols-2 p-2.5 bg-neutral-50 font-semibold text-neutral-900">
+                            <span>Dimensi Topi</span>
+                            <span>Ukuran (cm)</span>
+                          </div>
+                          <div className="grid grid-cols-2 p-2.5">
+                            <span className="text-neutral-600">Lingkar Kepala</span>
+                            <span className="font-medium text-neutral-900">54 - 60 cm (Adjustable)</span>
+                          </div>
+                          <div className="grid grid-cols-2 p-2.5">
+                            <span className="text-neutral-600">Kedalaman Mahkota (Crown)</span>
+                            <span className="font-medium text-neutral-900">12 cm</span>
+                          </div>
+                          <div className="grid grid-cols-2 p-2.5">
+                            <span className="text-neutral-600">Panjang Visor / Brim</span>
+                            <span className="font-medium text-neutral-900">7.2 cm</span>
+                          </div>
+                          <div className="grid grid-cols-2 p-2.5">
+                            <span className="text-neutral-600">Tipe Pengait</span>
+                            <span className="font-medium text-neutral-900">Strap Gesper Logam Kuningan</span>
+                          </div>
                         </div>
                       </div>
                     ) : (
