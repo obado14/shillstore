@@ -127,6 +127,45 @@ const TOTAL_CYCLE_MS =
   PHASE_DURATIONS.OUT_FOR_DELIVERY +
   PHASE_DURATIONS.DELIVERED;
 
+export type FreeTileProviderKey = 'osm' | 'humanitarian' | 'esri';
+
+export const FREE_TILE_PROVIDERS: Record<
+  FreeTileProviderKey,
+  {
+    name: string;
+    label: string;
+    url: string;
+    maxZoom: number;
+    subdomains: string[];
+    attribution: string;
+  }
+> = {
+  osm: {
+    name: 'OpenStreetMap Standar (100% Gratis)',
+    label: 'OSM Standar',
+    url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    maxZoom: 19,
+    subdomains: ['a', 'b', 'c'],
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  },
+  humanitarian: {
+    name: 'OSM Detail Humanitarian (100% Gratis)',
+    label: 'OSM Detail',
+    url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+    maxZoom: 19,
+    subdomains: ['a', 'b'],
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  },
+  esri: {
+    name: 'Esri World Street Map (100% Gratis)',
+    label: 'Esri HD',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+    maxZoom: 18,
+    subdomains: [],
+    attribution: 'Tiles &copy; Esri',
+  },
+};
+
 export function LiveCourierMap({
   orderNumber,
   recipientName,
@@ -141,13 +180,13 @@ export function LiveCourierMap({
   // Map Container & Leaflet References
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const leafletMapRef = useRef<LeafletType.Map | null>(null);
+  const currentTileLayerRef = useRef<LeafletType.TileLayer | null>(null);
   const courierMarkerRef = useRef<LeafletType.Marker | null>(null);
   const plannedPolylineRef = useRef<LeafletType.Polyline | null>(null);
   const traveledPolylineRef = useRef<LeafletType.Polyline | null>(null);
-  const courierIconElementRef = useRef<HTMLDivElement | null>(null);
 
-  // Map Modes & Options
-  const [tileProvider, setTileProvider] = useState<'voyager' | 'osm' | 'positron'>('voyager');
+  // Map Modes & Options (Default to 100% Free OpenStreetMap Standar)
+  const [tileProvider, setTileProvider] = useState<FreeTileProviderKey>('osm');
   const [autoPan, setAutoPan] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -444,19 +483,15 @@ export function LiveCourierMap({
         scrollWheelZoom: false, // Prevent interfering with page scroll
       }).setView([-6.2678, 106.8005], 13);
 
-      leafletMapRef.current = map;
-
-      // 1. Tile Layers: CartoDB Voyager (Modern OSM), Standard OSM, or Positron
-      const tileUrls = {
-        voyager: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-        osm: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        positron: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-      };
-
-      const tileLayer = L.tileLayer(tileUrls[tileProvider], {
-        maxZoom: 19,
-        subdomains: 'abcd',
+      // 1. Initial Tile Layer: 100% Free OpenStreetMap (No API Key Required)
+      const providerConfig = FREE_TILE_PROVIDERS[tileProvider];
+      const tileLayer = L.tileLayer(providerConfig.url, {
+        maxZoom: providerConfig.maxZoom,
+        subdomains: providerConfig.subdomains,
+        attribution: providerConfig.attribution,
       }).addTo(map);
+
+      currentTileLayerRef.current = tileLayer;
 
       // 2. Full Planned Route Polyline (dashed gray)
       const latLngPoints = JAKARTA_DELIVERY_WAYPOINTS.map((w) => [w.lat, w.lng] as [number, number]);
@@ -569,6 +604,15 @@ export function LiveCourierMap({
         maxZoom: 14,
       });
 
+      // Invalidate map size so Leaflet loads tiles for full dimensions immediately
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 100);
+
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 500);
+
       setMapLoaded(true);
     }
 
@@ -581,7 +625,29 @@ export function LiveCourierMap({
         leafletMapRef.current = null;
       }
     };
-  }, [tileProvider, recipientName, courierName]);
+  }, [recipientName, courierName]);
+
+  // Handle 100% Free Tile Switching without reloading the entire map
+  useEffect(() => {
+    if (!leafletMapRef.current || !mapLoaded) return;
+    const map = leafletMapRef.current;
+    const providerConfig = FREE_TILE_PROVIDERS[tileProvider];
+
+    import('leaflet').then((LModule) => {
+      const L = LModule.default;
+      if (currentTileLayerRef.current) {
+        map.removeLayer(currentTileLayerRef.current);
+      }
+      const newLayer = L.tileLayer(providerConfig.url, {
+        maxZoom: providerConfig.maxZoom,
+        subdomains: providerConfig.subdomains,
+        attribution: providerConfig.attribution,
+      }).addTo(map);
+
+      currentTileLayerRef.current = newLayer;
+      map.invalidateSize();
+    });
+  }, [tileProvider, mapLoaded]);
 
   // Main 60 FPS RequestAnimationFrame Animation Loop
   useEffect(() => {
@@ -733,28 +799,25 @@ export function LiveCourierMap({
 
           {/* Map Layer Mode & External Google Maps Button */}
           <div className="flex items-center gap-2">
-            {/* Tile Layer Selector */}
+            {/* 100% Free Tile Layer Selector */}
             <div className="inline-flex p-0.5 bg-neutral-200 rounded-[2px] text-[10px] font-semibold uppercase tracking-wider">
-              <button
-                type="button"
-                onClick={() => setTileProvider('voyager')}
-                className={`px-2.5 py-1 rounded-[2px] transition-colors cursor-pointer ${
-                  tileProvider === 'voyager' ? 'bg-black text-white shadow-2xs' : 'text-neutral-600 hover:text-black'
-                }`}
-                title="Peta OpenStreetMap Modern dengan detail gedung & landmark (CARTO Voyager)"
-              >
-                OSM Voyager
-              </button>
-              <button
-                type="button"
-                onClick={() => setTileProvider('osm')}
-                className={`px-2.5 py-1 rounded-[2px] transition-colors cursor-pointer ${
-                  tileProvider === 'osm' ? 'bg-black text-white shadow-2xs' : 'text-neutral-600 hover:text-black'
-                }`}
-                title="Peta OpenStreetMap Standar Resmi"
-              >
-                OSM Standar
-              </button>
+              {(['osm', 'humanitarian', 'esri'] as FreeTileProviderKey[]).map((key) => {
+                const conf = FREE_TILE_PROVIDERS[key];
+                const isActive = tileProvider === key;
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setTileProvider(key)}
+                    className={`px-2.5 py-1 rounded-[2px] transition-colors cursor-pointer ${
+                      isActive ? 'bg-black text-white shadow-2xs font-bold' : 'text-neutral-600 hover:text-black'
+                    }`}
+                    title={conf.name}
+                  >
+                    {conf.label}
+                  </button>
+                );
+              })}
             </div>
 
             <a
@@ -805,7 +868,11 @@ export function LiveCourierMap({
       {/* 3. OPENSTREETMAP DISPLAY CANVAS */}
       <div className="relative w-full h-[400px] sm:h-[480px] bg-[#EEF2EF] overflow-hidden select-none">
         {/* Leaflet Mount Container */}
-        <div ref={mapContainerRef} className="w-full h-full z-0" />
+        <div
+          ref={mapContainerRef}
+          className="w-full h-full min-h-[380px] sm:min-h-[460px] z-0"
+          style={{ width: '100%', height: '100%' }}
+        />
 
         {/* Loading Indicator */}
         {!mapLoaded && (
@@ -983,7 +1050,7 @@ export function LiveCourierMap({
           <span>Rute logistik diverifikasi berdasarkan data OpenStreetMap &amp; GPS telemetri armada.</span>
         </div>
         <span className="text-[10px] font-mono text-neutral-400">
-          OSM CartoDB • Lat: {JAKARTA_DELIVERY_WAYPOINTS[0].lat.toFixed(4)}, Lng: {JAKARTA_DELIVERY_WAYPOINTS[0].lng.toFixed(4)}
+          OpenStreetMap Standar (100% Gratis) • Lat: {JAKARTA_DELIVERY_WAYPOINTS[0].lat.toFixed(4)}, Lng: {JAKARTA_DELIVERY_WAYPOINTS[0].lng.toFixed(4)}
         </span>
       </div>
 
