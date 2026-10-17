@@ -222,7 +222,7 @@ function DeliveryTrackingContent() {
         </div>
       </div>
 
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-8 py-8 sm:py-12">
+      <main className="flex-1 max-w-6xl mx-auto w-full px-3.5 sm:px-8 py-6 sm:py-12">
         {/* PAGE HEADER */}
         <div className="mb-6 sm:mb-8 pb-4 border-b border-neutral-150">
           <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-neutral-400 font-semibold block mb-1">
@@ -237,7 +237,7 @@ function DeliveryTrackingContent() {
         </div>
 
         {/* 1. SECTION: SEARCH BOX (Dual Input: Nomor Pesanan & Nomor Resi) */}
-        <div className="mb-8 p-5 sm:p-6 bg-[#FAFAF9] border border-neutral-200 rounded-[2px]">
+        <div className="mb-6 sm:mb-8 p-3.5 sm:p-6 bg-[#FAFAF9] border border-neutral-200 rounded-[2px]">
           <h2 className="text-xs font-semibold tracking-[0.18em] uppercase text-neutral-900 mb-3 flex items-center gap-2">
             <Search className="w-3.5 h-3.5" />
             <span>Pencarian Status Pengiriman</span>
@@ -372,18 +372,18 @@ function DeliveryTrackingContent() {
         ) : (
           <div className="space-y-8">
             {/* 2. SECTION: 5 STATUS TAHAP PESANAN (Pesanan Diproses, Dikemas, Dalam Pengiriman, Sedang Diantar, Terkirim) */}
-            <div className="bg-white border border-neutral-200 p-5 sm:p-7 rounded-[2px]">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 mb-6 border-b border-neutral-150">
+            <div className="bg-white border border-neutral-200 p-3.5 sm:p-7 rounded-[2px]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 sm:pb-5 mb-5 sm:mb-6 border-b border-neutral-150">
                 <div>
                   <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-neutral-400 block mb-1">
                     STATUS PROGRESS PENGIRIMAN
                   </span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg sm:text-xl font-semibold text-neutral-900">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-base sm:text-xl font-semibold text-neutral-900">
                       {isDelivered ? 'Terkirim (Paket Berhasil Diterima)' : currentMainStage.title}
                     </span>
                     <span
-                      className={`px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold rounded-[2px] transition-colors ${
+                      className={`px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold rounded-[2px] transition-colors shrink-0 ${
                         isDelivered ? 'bg-emerald-600 text-white' : 'bg-neutral-900 text-white'
                       }`}
                     >
@@ -403,7 +403,7 @@ function DeliveryTrackingContent() {
 
               {/* 5-Step Horizontal Progress Bar */}
               <div className="relative">
-                {/* Connecting line behind stages */}
+                {/* Connecting line behind stages (Desktop) */}
                 <div className="absolute top-4 sm:top-5 left-6 right-6 h-[2px] bg-neutral-200 z-0 hidden sm:block">
                   <div
                     className="h-full bg-black transition-all duration-300 ease-out"
@@ -415,7 +415,7 @@ function DeliveryTrackingContent() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 sm:gap-2 relative z-10">
+                <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 sm:gap-2 relative z-10">
                   {MAIN_TRACKING_STAGES.map((stage, idx) => {
                     const isPassed = idx < currentMainStageIndex;
                     const isCurrent = idx === currentMainStageIndex;
@@ -424,13 +424,22 @@ function DeliveryTrackingContent() {
                     return (
                       <div
                         key={stage.key}
-                        className={`flex sm:flex-col items-center sm:text-center gap-3 sm:gap-2 p-2 sm:p-0 rounded-[2px] ${
-                          isCurrent ? 'bg-neutral-50 sm:bg-transparent' : ''
+                        className={`relative flex sm:flex-col items-center sm:text-center gap-3 sm:gap-2 p-2.5 sm:p-0 rounded-[2px] transition-colors ${
+                          isCurrent ? 'bg-neutral-50 sm:bg-transparent border border-neutral-200/80 sm:border-transparent' : ''
                         }`}
                       >
+                        {/* Mobile Vertical Connecting Line */}
+                        {idx < 4 && (
+                          <div
+                            className={`sm:hidden absolute left-[19px] top-9 bottom-[-14px] w-[2px] ${
+                              isPassed ? 'bg-black' : 'bg-neutral-200'
+                            }`}
+                          />
+                        )}
+
                         {/* Circle Indicator */}
                         <div
-                          className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0 transition-colors ${
+                          className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0 transition-colors z-10 ${
                             isPassed
                               ? 'bg-black text-white'
                               : isCurrent
@@ -454,7 +463,7 @@ function DeliveryTrackingContent() {
                         </div>
 
                         {/* Stage Titles */}
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1 sm:flex-initial">
                           <p
                             className={`text-xs sm:text-[13px] font-semibold leading-tight ${
                               isCurrent
@@ -469,7 +478,7 @@ function DeliveryTrackingContent() {
                             {stage.title}
                           </p>
                           <span
-                            className={`text-[10px] hidden sm:block mt-0.5 ${
+                            className={`text-[10px] sm:text-[11px] block mt-0.5 leading-snug ${
                               isCurrent
                                 ? isDelivered
                                   ? 'text-emerald-600 font-medium'
@@ -488,21 +497,21 @@ function DeliveryTrackingContent() {
             </div>
 
             {/* 3. KEY METRICS BAR (Kurir, Resi, Estimasi, Penerima) */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 bg-[#FAFAF9] border border-neutral-200 rounded-[2px] text-xs">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-3.5 sm:p-5 bg-[#FAFAF9] border border-neutral-200 rounded-[2px] text-xs">
               {/* Kurir & Resi */}
-              <div>
+              <div className="min-w-0">
                 <span className="text-[10px] uppercase tracking-wider text-neutral-400 block mb-1">
                   Ekspedisi &amp; No. Resi
                 </span>
-                <span className="font-semibold text-neutral-900 block">
+                <span className="font-semibold text-neutral-900 block truncate">
                   {order.courierName}
                 </span>
-                <div className="flex items-center gap-1.5 font-mono font-bold text-neutral-900 mt-0.5">
-                  <span className="truncate">{order.trackingNumber}</span>
+                <div className="flex items-center gap-1.5 font-mono font-bold text-neutral-900 mt-0.5 min-w-0">
+                  <span className="truncate text-xs">{order.trackingNumber}</span>
                   <button
                     type="button"
                     onClick={copyResi}
-                    className="text-neutral-400 hover:text-black cursor-pointer shrink-0"
+                    className="text-neutral-400 hover:text-black cursor-pointer shrink-0 p-0.5"
                     title="Salin No. Resi"
                   >
                     {copiedResi ? (
@@ -515,16 +524,16 @@ function DeliveryTrackingContent() {
               </div>
 
               {/* Order ID */}
-              <div>
+              <div className="min-w-0">
                 <span className="text-[10px] uppercase tracking-wider text-neutral-400 block mb-1">
                   Nomor Pesanan
                 </span>
-                <div className="flex items-center gap-1.5 font-mono font-semibold text-neutral-900">
-                  <span>#{order.orderNumber}</span>
+                <div className="flex items-center gap-1.5 font-mono font-semibold text-neutral-900 min-w-0">
+                  <span className="truncate">#{order.orderNumber}</span>
                   <button
                     type="button"
                     onClick={copyOrderNo}
-                    className="text-neutral-400 hover:text-black cursor-pointer"
+                    className="text-neutral-400 hover:text-black cursor-pointer shrink-0 p-0.5"
                     title="Salin Nomor Pesanan"
                   >
                     {copiedOrderNo ? (
@@ -534,33 +543,33 @@ function DeliveryTrackingContent() {
                     )}
                   </button>
                 </div>
-                <span className="text-[10px] text-neutral-400 block mt-0.5">
+                <span className="text-[10px] text-neutral-400 block mt-0.5 truncate">
                   {order.date}
                 </span>
               </div>
 
               {/* Estimasi Kedatangan */}
-              <div>
+              <div className="min-w-0">
                 <span className="text-[10px] uppercase tracking-wider text-neutral-400 block mb-1">
                   Estimasi Tiba
                 </span>
-                <span className="font-semibold text-neutral-900 flex items-center gap-1.5">
+                <span className="font-semibold text-neutral-900 flex items-center gap-1.5 leading-snug break-words">
                   <Clock className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
                   <span>
                     {isDelivered
                       ? 'Telah Sampai di Lokasi'
                       : liveTelemetry
-                      ? `${liveTelemetry.remainingMinutes} Menit Lagi (${liveTelemetry.remainingKm} km)`
+                      ? `${liveTelemetry.remainingMinutes} mnt (${liveTelemetry.remainingKm} km)`
                       : order.estimatedArrival}
                   </span>
                 </span>
-                <span className="text-[10px] text-neutral-400 block mt-0.5">
+                <span className="text-[10px] text-neutral-400 block mt-0.5 truncate">
                   Tujuan: {order.customer.city}
                 </span>
               </div>
 
               {/* Status Pembayaran */}
-              <div>
+              <div className="min-w-0">
                 <span className="text-[10px] uppercase tracking-wider text-neutral-400 block mb-1">
                   Pembayaran
                 </span>
@@ -568,7 +577,7 @@ function DeliveryTrackingContent() {
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                   {order.paymentStatus === 'paid' ? 'Lunas / Berhasil' : 'Menunggu'}
                 </span>
-                <span className="text-[11px] text-neutral-500 block mt-0.5">
+                <span className="text-[11px] text-neutral-500 block mt-0.5 truncate">
                   via {order.paymentMethodName}
                 </span>
               </div>
@@ -590,8 +599,8 @@ function DeliveryTrackingContent() {
             {/* 5. 2-COLUMN SECTION: RIWAYAT PERJALANAN PAKET + SIMULASI/SUMMARY */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* LEFT: TIMELINE RIWAYAT PERJALANAN PAKET (lg:col-span-7) */}
-              <div className="lg:col-span-7 bg-white border border-neutral-200 p-6 sm:p-8 rounded-[2px]">
-                <div className="flex items-center justify-between pb-4 mb-6 border-b border-neutral-150">
+              <div className="lg:col-span-7 bg-white border border-neutral-200 p-4 sm:p-8 rounded-[2px]">
+                <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-6 border-b border-neutral-150">
                   <div className="flex items-center gap-2">
                     <Truck className="w-4 h-4 text-neutral-800" />
                     <h3 className="text-xs sm:text-[13px] font-semibold tracking-[0.18em] uppercase text-neutral-900">
@@ -733,7 +742,7 @@ function DeliveryTrackingContent() {
                             }`}
                           >
                             <MapPin className="w-3 h-3 text-neutral-400 shrink-0" />
-                            <span className="truncate">{record.location}</span>
+                            <span className="break-words leading-tight">{record.location}</span>
                           </div>
                         </div>
                       </div>
@@ -745,7 +754,7 @@ function DeliveryTrackingContent() {
               {/* RIGHT: STATUS OTOMATIS & TELEMETRI + RINGKASAN PESANAN (lg:col-span-5) */}
               <div className="lg:col-span-5 space-y-6">
                 {/* 1. STATUS PENGIRIMAN LIVE & TELEMETRI OTOMATIS */}
-                <div className="border border-neutral-200 bg-white p-5 sm:p-6 rounded-[2px] shadow-xs">
+                <div className="border border-neutral-200 bg-white p-4 sm:p-6 rounded-[2px] shadow-xs">
                   <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-neutral-150">
                     <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-neutral-900 flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -758,25 +767,25 @@ function DeliveryTrackingContent() {
 
                   {/* Active Milestone Action & Pause Status Banner */}
                   <div className="mb-4 p-3 bg-neutral-50 border border-neutral-200 rounded-[2px]">
-                    <div className="flex items-center justify-between gap-2 mb-1.5">
-                      <span className="text-xs font-bold text-neutral-900 flex items-center gap-1.5 truncate">
+                    <div className="flex items-start sm:items-center justify-between gap-2 mb-1.5">
+                      <span className="text-xs font-bold text-neutral-900 flex items-center gap-1.5 min-w-0">
                         <Sparkles className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span className="truncate">{liveTelemetry ? liveTelemetry.phaseTitle : currentMainStage.title}</span>
+                        <span className="break-words leading-tight">{liveTelemetry ? liveTelemetry.phaseTitle : currentMainStage.title}</span>
                       </span>
                       <span className="text-[9px] font-mono px-1.5 py-0.5 bg-white border border-neutral-200 text-neutral-700 font-semibold rounded shrink-0">
                         {liveTelemetry ? liveTelemetry.phaseBadge : 'Proses'}
                       </span>
                     </div>
-                    <p className="text-[11px] text-neutral-600 leading-relaxed">
+                    <p className="text-[11px] text-neutral-600 leading-relaxed break-words">
                       {liveTelemetry ? liveTelemetry.phaseActionNote : 'Pesanan sedang diproses di fulfillment center'}
                     </p>
                   </div>
 
                   {/* Realtime Street Location & Speed */}
-                  <div className="mb-4 p-2.5 bg-white border border-neutral-200 rounded-[2px] flex items-center justify-between text-xs shadow-2xs">
-                    <div className="flex items-center gap-2 min-w-0 pr-2">
+                  <div className="mb-4 p-2.5 bg-white border border-neutral-200 rounded-[2px] flex items-center justify-between gap-2 text-xs shadow-2xs">
+                    <div className="flex items-center gap-2 min-w-0">
                       <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span className="truncate text-neutral-800 text-[11px] font-medium">
+                      <span className="break-words text-neutral-800 text-[11px] font-medium leading-tight">
                         {liveTelemetry?.currentStreetName || 'Gudang SHILLSTORE (TB Simatupang)'}
                       </span>
                     </div>
@@ -791,7 +800,7 @@ function DeliveryTrackingContent() {
                       <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">
                         Status Tahap
                       </span>
-                      <span className="font-bold text-neutral-900 text-xs sm:text-[13px] block mt-0.5 truncate">
+                      <span className="font-bold text-neutral-900 text-xs sm:text-[13px] block mt-0.5 break-words leading-tight">
                         {isDelivered ? 'Terkirim ✓' : currentMainStage.title}
                       </span>
                     </div>
@@ -800,23 +809,23 @@ function DeliveryTrackingContent() {
                       <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">
                         Sisa Jarak &amp; Waktu
                       </span>
-                      <span className="font-bold text-neutral-900 text-xs sm:text-[13px] block mt-0.5">
+                      <span className="font-bold text-neutral-900 text-xs sm:text-[13px] block mt-0.5 break-words leading-tight">
                         {isDelivered ? 'Tiba di Lokasi' : `${liveTelemetry?.remainingKm ?? '4.8'} km • ${liveTelemetry?.remainingMinutes ?? 12} mnt`}
                       </span>
                     </div>
                   </div>
 
                   {/* Driver info snippet */}
-                  <div className="p-3 bg-neutral-50 border border-neutral-200 rounded-[2px] flex items-center justify-between gap-3 text-xs mb-3">
+                  <div className="p-3 bg-neutral-50 border border-neutral-200 rounded-[2px] flex items-center justify-between gap-2.5 text-xs mb-3">
                     <div className="flex items-center gap-2.5 min-w-0">
                       <div className="w-8 h-8 rounded-full bg-neutral-900 text-white font-bold flex items-center justify-center shrink-0 text-xs">
                         AF
                       </div>
                       <div className="min-w-0">
-                        <span className="font-bold text-neutral-900 block truncate">
+                        <span className="font-bold text-neutral-900 block break-words text-xs leading-snug">
                           Ahmad Fauzi • {order.courierName}
                         </span>
-                        <span className="text-[10px] text-neutral-500 font-mono block">
+                        <span className="text-[10px] text-neutral-500 font-mono block break-words">
                           Honda Vario 160 • B 4821 SDE
                         </span>
                       </div>
@@ -848,7 +857,7 @@ function DeliveryTrackingContent() {
                 </div>
 
                 {/* 2. TUJUAN PENGIRIMAN & PENERIMA */}
-                <div className="border border-neutral-200 bg-[#FAFAF9] p-5 sm:p-6 rounded-[2px] text-xs">
+                <div className="border border-neutral-200 bg-[#FAFAF9] p-4 sm:p-6 rounded-[2px] text-xs">
                   <div className="pb-3 mb-3 border-b border-neutral-200 flex items-center justify-between">
                     <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#111111]">
                       Alamat Penerima
@@ -863,15 +872,15 @@ function DeliveryTrackingContent() {
                     <p className="font-mono text-[11px] text-neutral-500">
                       {order.customer.phone}
                     </p>
-                    <p className="pt-1 leading-relaxed text-neutral-800">
+                    <p className="pt-1 leading-relaxed text-neutral-800 break-words">
                       {order.customer.address}
                     </p>
-                    <p className="text-neutral-500">
+                    <p className="text-neutral-500 break-words">
                       {order.customer.city}, {order.customer.province}{' '}
                       {order.customer.postalCode ? `(${order.customer.postalCode})` : ''}
                     </p>
                     {order.customer.notes && (
-                      <p className="text-[11px] text-neutral-500 italic pt-1 border-t border-neutral-200 mt-2">
+                      <p className="text-[11px] text-neutral-500 italic pt-1 border-t border-neutral-200 mt-2 break-words">
                         Catatan: &ldquo;{order.customer.notes}&rdquo;
                       </p>
                     )}
@@ -879,7 +888,7 @@ function DeliveryTrackingContent() {
                 </div>
 
                 {/* 3. RINGKASAN PRODUK PESANAN */}
-                <div className="border border-neutral-200 bg-white p-5 sm:p-6 rounded-[2px]">
+                <div className="border border-neutral-200 bg-white p-4 sm:p-6 rounded-[2px]">
                   <div className="flex items-center justify-between pb-3 mb-3 border-b border-neutral-150">
                     <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#111111]">
                       Produk yang Dikirim
@@ -905,7 +914,7 @@ function DeliveryTrackingContent() {
                             />
                           </div>
                           <div className="min-w-0">
-                            <p className="font-medium text-neutral-900 truncate">
+                            <p className="font-medium text-neutral-900 line-clamp-2 leading-snug">
                               {item.title}
                             </p>
                             <p className="text-[11px] text-neutral-400 mt-0.5">

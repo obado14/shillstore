@@ -884,32 +884,32 @@ export function LiveCourierMap({
   return (
     <div className="w-full bg-white border border-neutral-200 rounded-[2px] overflow-hidden mb-8 shadow-xs">
       {/* 1. MAP HEADER & REAL-TIME LOGISTICS BANNER */}
-      <div className="p-4 sm:p-5 border-b border-neutral-150 bg-[#FAFAF9]/90">
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center shrink-0">
+      <div className="p-3.5 sm:p-5 border-b border-neutral-150 bg-[#FAFAF9]/90">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center shrink-0">
               <Compass className="w-4 h-4 text-white" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-xs sm:text-[13px] font-semibold tracking-[0.16em] uppercase text-neutral-900">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <h3 className="text-xs sm:text-[13px] font-semibold tracking-[0.14em] uppercase text-neutral-900">
                   Simulasi Pengiriman OpenStreetMap
                 </h3>
-                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[9px] font-bold uppercase tracking-wider rounded-[2px] flex items-center gap-1.5">
+                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[9px] font-bold uppercase tracking-wider rounded-[2px] inline-flex items-center gap-1.5 shrink-0">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
                   Live GPS Akurat 🛵
                 </span>
               </div>
-              <p className="text-[11px] text-neutral-500 truncate max-w-lg mt-0.5">
+              <p className="text-[11px] text-neutral-500 mt-0.5 leading-snug break-words">
                 Rute Berkelok Asli Jakarta: Simatupang → Ampera → Kemang → Bangka → Senopati → Kebayoran Baru
               </p>
             </div>
           </div>
 
           {/* Map Layer Mode & External Google Maps Button */}
-          <div className="flex items-center gap-2">
-            {/* 100% Free Tile Layer Selector */}
-            <div className="inline-flex p-0.5 bg-neutral-200 rounded-[2px] text-[10px] font-semibold uppercase tracking-wider">
+          <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0">
+            {/* 100% Free Tile Layer Selector (Desktop: visible in header) */}
+            <div className="hidden sm:inline-flex p-0.5 bg-neutral-200 rounded-[2px] text-[10px] font-semibold uppercase tracking-wider">
               {(['osm', 'humanitarian', 'esri'] as FreeTileProviderKey[]).map((key) => {
                 const conf = FREE_TILE_PROVIDERS[key];
                 const isActive = tileProvider === key;
@@ -933,34 +933,36 @@ export function LiveCourierMap({
               href={googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 border border-neutral-300 hover:border-black hover:bg-neutral-900 hover:text-white text-neutral-800 rounded-[2px] transition-colors flex items-center justify-center cursor-pointer"
+              className="px-2.5 py-1.5 border border-neutral-300 hover:border-black hover:bg-neutral-900 hover:text-white text-neutral-800 rounded-[2px] transition-colors flex items-center gap-1.5 text-[11px] font-medium cursor-pointer shadow-2xs"
               title="Buka Koordinat di Google Maps"
             >
               <ExternalLink className="w-3.5 h-3.5" />
+              <span className="hidden xs:inline">Lihat di Google Maps</span>
+              <span className="xs:hidden">Google Maps</span>
             </a>
           </div>
         </div>
 
         {/* 2. REAL-TIME MILESTONE & JEDA PROCESS BANNER */}
         <div className="bg-white border border-neutral-200 p-3 sm:p-3.5 rounded-[2px] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-2xs">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
+          <div className="flex items-start sm:items-center gap-2.5 min-w-0">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0 animate-pulse mt-1 sm:mt-0" />
             <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-neutral-900 truncate">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-bold text-neutral-900">
                   {telemetry.phaseTitle}
                 </span>
                 <span className="px-2 py-0.5 bg-neutral-100 border border-neutral-200 text-neutral-700 text-[9px] font-mono font-semibold uppercase tracking-wider rounded">
                   {telemetry.phaseBadge}
                 </span>
               </div>
-              <p className="text-[11px] text-neutral-500 mt-0.5 truncate">
+              <p className="text-[11px] text-neutral-600 mt-1 leading-snug break-words">
                 {telemetry.phaseActionNote}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0 self-start sm:self-auto text-xs font-mono">
+          <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-neutral-150 text-xs font-mono">
             <div className="flex items-center gap-1.5 text-neutral-600">
               <Activity className="w-3.5 h-3.5 text-neutral-400" />
               <span>{telemetry.isVehicleMoving ? `${telemetry.courierSpeedKmH} km/jam` : 'Standby (0 km/jam)'}</span>
@@ -975,11 +977,11 @@ export function LiveCourierMap({
       </div>
 
       {/* 3. OPENSTREETMAP DISPLAY CANVAS */}
-      <div className="relative w-full h-[400px] sm:h-[480px] bg-[#EEF2EF] overflow-hidden select-none">
+      <div className="relative w-full h-[340px] sm:h-[480px] bg-[#EEF2EF] overflow-hidden select-none">
         {/* Leaflet Mount Container */}
         <div
           ref={mapContainerRef}
-          className="w-full h-full min-h-[380px] sm:min-h-[460px] z-0"
+          className="w-full h-full min-h-[320px] sm:min-h-[460px] z-0"
           style={{ width: '100%', height: '100%' }}
         />
 
@@ -990,8 +992,47 @@ export function LiveCourierMap({
           </div>
         )}
 
-        {/* FLOATING HUD (Top Left): Telemetri Kurir & Profil Driver */}
-        <div className="absolute top-3 left-3 right-3 sm:right-auto sm:max-w-sm z-[400] pointer-events-auto">
+        {/* MOBILE TOP LIVE PILL (Ultra-compact, takes minimal height, 0 map blockage) */}
+        <div className="block sm:hidden absolute top-2.5 left-2.5 right-2.5 z-[400] pointer-events-auto">
+          <div className="bg-white/95 backdrop-blur-md border border-neutral-200/90 px-3 py-1.5 rounded-[2px] shadow-md flex items-center justify-between gap-2 text-xs">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 animate-ping" />
+              <span className="font-bold text-neutral-900 text-[11px] truncate">
+                {telemetry.isCompleted ? '✓ Paket Tiba di Tujuan' : `Ahmad (Kurir) • ${telemetry.currentStreetName}`}
+              </span>
+            </div>
+            <span className="font-mono font-bold text-neutral-900 text-[10px] bg-neutral-100 px-1.5 py-0.5 rounded border border-neutral-200 shrink-0">
+              {telemetry.isVehicleMoving ? `${telemetry.courierSpeedKmH} km/h` : '0 km/h'}
+            </span>
+          </div>
+        </div>
+
+        {/* MOBILE MAP BUTTONS (Non-intrusive bottom corners) */}
+        <div className="sm:hidden absolute bottom-2.5 left-2.5 right-2.5 z-[400] flex items-center justify-between pointer-events-none">
+          <button
+            type="button"
+            onClick={handleFitRouteBounds}
+            className="pointer-events-auto px-2.5 py-1.5 bg-white/95 backdrop-blur-md border border-neutral-300 hover:border-black rounded-[2px] shadow-md text-neutral-800 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider cursor-pointer"
+            title="Lihat seluruh rute"
+          >
+            <Compass className="w-3.5 h-3.5" />
+            <span>Rute Penuh</span>
+          </button>
+
+          <a
+            href={googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pointer-events-auto px-2.5 py-1.5 bg-white/95 backdrop-blur-md border border-neutral-300 hover:border-black rounded-[2px] shadow-md text-neutral-800 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider cursor-pointer"
+            title="Buka di Google Maps"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>Google Maps</span>
+          </a>
+        </div>
+
+        {/* DESKTOP FLOATING HUD (Top Left): Visible only on sm: and up */}
+        <div className="hidden sm:block absolute top-3 left-3 sm:max-w-sm z-[400] pointer-events-auto">
           <div className="bg-white/95 backdrop-blur-md border border-neutral-200 p-3.5 rounded-[2px] shadow-lg text-xs">
             {/* Driver Profile */}
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-neutral-150">
@@ -1075,7 +1116,7 @@ export function LiveCourierMap({
           </div>
         </div>
 
-        {/* FLOATING ROUTE LEGEND (Bottom Left): Clearly explains route colors and stops to customer */}
+        {/* DESKTOP FLOATING ROUTE LEGEND (Bottom Left): Visible only on sm: and up */}
         <div className="absolute bottom-3 left-3 z-[400] hidden sm:flex items-center gap-2.5 bg-white/95 backdrop-blur-md px-3 py-1.5 border border-neutral-200 rounded-[2px] shadow-md text-[10px] font-medium text-neutral-700 pointer-events-none">
           <div className="flex items-center gap-1.5">
             <span className="w-3.5 h-1.5 bg-blue-600 rounded-full"></span>
@@ -1098,8 +1139,8 @@ export function LiveCourierMap({
           </div>
         </div>
 
-        {/* FLOATING CONTROLS (Bottom Right): Play/Pause, Speed, Camera, Replay */}
-        <div className="absolute bottom-3 right-3 z-[400] flex flex-wrap items-center gap-1.5 bg-white/95 backdrop-blur-md p-1.5 border border-neutral-300 rounded-[2px] shadow-md text-xs">
+        {/* DESKTOP FLOATING CONTROLS (Bottom Right): Visible only on sm: and up */}
+        <div className="hidden sm:flex absolute bottom-3 right-3 z-[400] flex-wrap items-center gap-1.5 bg-white/95 backdrop-blur-md p-1.5 border border-neutral-300 rounded-[2px] shadow-md text-xs">
           {/* Play / Pause Toggle */}
           <button
             type="button"
@@ -1172,6 +1213,205 @@ export function LiveCourierMap({
           >
             <RotateCcw className="w-3.5 h-3.5" />
           </button>
+        </div>
+      </div>
+
+      {/* 4. MOBILE-EXCLUSIVE DEDICATED TELEMETRY & CONTROL DECK (Visible only on < sm) */}
+      <div className="block sm:hidden bg-white border-t border-neutral-200 divide-y divide-neutral-150">
+        {/* Row A: Driver Info & Quick Contact */}
+        <div className="p-3.5 flex items-center justify-between gap-3 bg-[#FAFAF9]/80">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-10 h-10 rounded-full bg-neutral-900 text-white font-bold flex items-center justify-center shrink-0 text-xs shadow-xs">
+              AF
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5">
+                <span className="font-bold text-neutral-900 text-xs truncate">
+                  Ahmad Fauzi
+                </span>
+                <span className="text-[10px] text-amber-600 font-semibold shrink-0">★ 4.9</span>
+              </div>
+              <span className="text-[10px] text-neutral-500 font-mono block truncate">
+                {courierName} • Vario 160 (B 4821 SDE)
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              type="button"
+              onClick={() => setContactModalOpen(true)}
+              className="h-8.5 px-3 bg-neutral-900 text-white rounded-[2px] text-[10px] font-semibold uppercase tracking-wider flex items-center gap-1.5 shadow-xs cursor-pointer hover:bg-black transition-colors"
+              title="Hubungi Kurir"
+            >
+              <Phone className="w-3 h-3" />
+              <span>Kontak</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Row B: Location & Live Telemetry Stats */}
+        <div className="p-3.5 space-y-2.5">
+          {/* Current Street Pill */}
+          <div className="flex items-center gap-2 text-[11px] text-neutral-800 bg-neutral-50 px-2.5 py-1.5 rounded-[2px] border border-neutral-200 shadow-2xs">
+            <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+            <span className="font-medium break-words leading-tight">
+              {telemetry.currentStreetName}
+            </span>
+          </div>
+
+          {/* 3 Metric Badges */}
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="bg-[#FAFAF9] p-2 rounded-[2px] border border-neutral-200">
+              <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">
+                Kecepatan
+              </span>
+              <span className="font-bold text-neutral-900 text-xs block mt-0.5 font-mono">
+                {telemetry.courierSpeedKmH} km/h
+              </span>
+            </div>
+            <div className="bg-[#FAFAF9] p-2 rounded-[2px] border border-neutral-200">
+              <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">
+                Sisa Jarak
+              </span>
+              <span className="font-bold text-neutral-900 text-xs block mt-0.5 font-mono">
+                {telemetry.isCompleted ? '0.0 km' : `${telemetry.remainingKm} km`}
+              </span>
+            </div>
+            <div className="bg-[#FAFAF9] p-2 rounded-[2px] border border-neutral-200">
+              <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold block">
+                Estimasi
+              </span>
+              <span className="font-bold text-neutral-900 text-xs block mt-0.5 font-mono">
+                {telemetry.isCompleted ? 'Tiba' : `${telemetry.remainingMinutes} mnt`}
+              </span>
+            </div>
+          </div>
+
+          {/* Interactive Progress Slider */}
+          <div className="pt-1">
+            <div className="flex items-center justify-between text-[10px] text-neutral-500 mb-1">
+              <span className="flex items-center gap-1 font-medium text-neutral-700">
+                <Sparkles className="w-3 h-3 text-emerald-600" />
+                Progress Pengiriman
+              </span>
+              <span className="font-mono font-bold text-neutral-900">
+                {telemetry.progressPct}% • {telemetry.stageTitle}
+              </span>
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.001"
+              value={telemetry.progress}
+              onChange={(e) => handleScrub(parseFloat(e.target.value))}
+              className="w-full accent-black cursor-pointer h-2 bg-neutral-200 rounded-lg touch-none"
+              title="Geser timeline perjalanan kurir"
+            />
+          </div>
+        </div>
+
+        {/* Row C: Structured Mobile Playback & Camera Controls */}
+        <div className="p-3 bg-white flex items-center justify-between gap-2">
+          {/* Main Play / Pause / Replay Button */}
+          <button
+            type="button"
+            onClick={togglePlayPause}
+            className="flex-1 h-9 bg-neutral-950 hover:bg-black text-white text-[11px] font-semibold uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+          >
+            {telemetry.isCompleted ? (
+              <>
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Ulangi Simulasi</span>
+              </>
+            ) : isPlaying ? (
+              <>
+                <Pause className="w-3.5 h-3.5" />
+                <span>Jeda</span>
+              </>
+            ) : (
+              <>
+                <Play className="w-3.5 h-3.5" />
+                <span>Lanjut</span>
+              </>
+            )}
+          </button>
+
+          {/* Speed Multipliers */}
+          <div className="flex items-center border border-neutral-200 rounded-[2px] overflow-hidden shrink-0 h-9">
+            {[1, 2, 4].map((spd) => (
+              <button
+                key={spd}
+                type="button"
+                onClick={() => setSpeedMultiplier(spd)}
+                className={`h-full px-2.5 text-[10px] font-mono font-bold transition-colors cursor-pointer ${
+                  speedMultiplier === spd
+                    ? 'bg-neutral-900 text-white'
+                    : 'bg-white hover:bg-neutral-100 text-neutral-600'
+                }`}
+              >
+                {spd}x
+              </button>
+            ))}
+          </div>
+
+          {/* Auto-Pan Toggle */}
+          <button
+            type="button"
+            onClick={() => {
+              if (autoPan) {
+                handleFitRouteBounds();
+              } else {
+                setAutoPan(true);
+              }
+            }}
+            className={`h-9 px-2.5 border text-[10px] uppercase font-semibold rounded-[2px] transition-colors cursor-pointer flex items-center gap-1 shrink-0 ${
+              autoPan
+                ? 'bg-emerald-600 text-white border-emerald-600'
+                : 'bg-white hover:bg-neutral-100 text-neutral-700 border-neutral-300'
+            }`}
+            title={autoPan ? 'Kamera mengikuti kurir' : 'Lihat seluruh rute'}
+          >
+            <Navigation className="w-3 h-3" />
+            <span className="hidden xs:inline">{autoPan ? 'Ikuti' : 'Penuh'}</span>
+          </button>
+
+          {/* Quick Replay Reset */}
+          <button
+            type="button"
+            onClick={handleReplay}
+            className="w-9 h-9 border border-neutral-300 hover:border-black text-neutral-700 hover:text-black rounded-[2px] transition-colors cursor-pointer flex items-center justify-center shrink-0"
+            title="Reset simulasi ke awal"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
+        {/* Row D: Mobile Map Layer Selector */}
+        <div className="px-3.5 py-2.5 bg-[#FAFAF9] border-t border-neutral-150 flex items-center justify-between gap-2 text-[10px]">
+          <span className="text-neutral-500 font-medium flex items-center gap-1">
+            <Layers className="w-3 h-3 text-neutral-400" />
+            <span>Pilihan Peta:</span>
+          </span>
+          <div className="inline-flex p-0.5 bg-neutral-200 rounded-[2px] font-semibold uppercase tracking-wider">
+            {(['osm', 'humanitarian', 'esri'] as FreeTileProviderKey[]).map((key) => {
+              const conf = FREE_TILE_PROVIDERS[key];
+              const isActive = tileProvider === key;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setTileProvider(key)}
+                  className={`px-2 py-0.5 rounded-[2px] transition-colors cursor-pointer text-[9px] ${
+                    isActive ? 'bg-black text-white shadow-2xs font-bold' : 'text-neutral-600 hover:text-black'
+                  }`}
+                >
+                  {conf.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
